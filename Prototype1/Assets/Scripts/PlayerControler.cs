@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+ * Caleb Kahn
+ * Assignment 2
+ * Controls player movement
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

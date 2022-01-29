@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+ * Caleb Kahn
+ * Assignment 2
+ * Updates text (win/lose/score)
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

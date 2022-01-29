@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+ * Caleb Kahn
+ * Assignment 2
+ * Updates game when player falls
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

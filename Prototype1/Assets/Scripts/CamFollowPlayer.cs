@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+ * Caleb Kahn
+ * Assignment 2
+ * Camera follows player as they move
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

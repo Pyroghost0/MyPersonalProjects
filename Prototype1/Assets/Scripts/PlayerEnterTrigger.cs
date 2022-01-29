@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+ * Caleb Kahn
+ * Assignment 2
+ * Adds score once player enters trigger zone
+*/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
