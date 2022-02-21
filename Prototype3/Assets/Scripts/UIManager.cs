@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     public Text scoreText;
     public int score = 0;
 
-    public PlayerControlerX playerControlerScript;
+    public PlayerControler playerControlerScript;
     public bool won = false;
 
     // Start is called before the first frame update
