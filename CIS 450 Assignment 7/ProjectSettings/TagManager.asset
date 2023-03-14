@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - Projectile
   - Bullet
+  - BGM
   layers:
   - Default
   - TransparentFX
@@ -44,4 +45,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Screens
+    uniqueID: 1289495581
     locked: 0

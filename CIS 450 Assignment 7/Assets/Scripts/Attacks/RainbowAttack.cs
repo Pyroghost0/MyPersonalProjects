@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RainbowAttack : MonoBehaviour
+public class RainbowAttack : Attack
 {
     private AttackExecutor attackExecutor;
 
@@ -16,8 +16,8 @@ public class RainbowAttack : MonoBehaviour
         attackExecutor = executor;
     }
 
-    public float StartAttack()
+    public void StartAttack()
     {
-        return attackExecutor.RainbowAttack();
+        attackExecutor.RainbowAttack();
     }
 }

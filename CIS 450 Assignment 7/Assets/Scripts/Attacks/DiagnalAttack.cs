@@ -17,10 +17,11 @@ public class DiagnalAttack : Attack
         attackExecutor = executor;
     }
 
-    public float StartAttack()
+    public void StartAttack()
     {
         //positionHistory.Push(moveObject.GetCurrentPosition());
-        return attackExecutor.DiagnalAttack();
+        //return attackExecutor.DiagnalAttack();
+        attackExecutor.DiagnalAttack();
     }
 
     /*public void Undo()

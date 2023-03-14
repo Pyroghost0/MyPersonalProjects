@@ -9,5 +9,5 @@ using UnityEngine;
 
 public interface Attack
 {
-    public float StartAttack();
+    public void StartAttack();
 }

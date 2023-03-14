@@ -12,6 +12,7 @@ using TMPro;
 
 public class GameController : MonoBehaviour
 {
+    public GameObject sceneBGM;
     public GameObject startScreen;
     public GameObject endScreen;
     public GameObject[] doors;
@@ -25,6 +26,11 @@ public class GameController : MonoBehaviour
         {
             Time.timeScale = 0f;
             startScreen.SetActive(true);
+            DontDestroyOnLoad(sceneBGM);
+        }
+        else
+        {
+            sceneBGM.SetActive(false);
         }
     }
 
