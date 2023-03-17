@@ -10,6 +10,7 @@ using UnityEngine;
 public class AttackExecutor : MonoBehaviour
 {
     public bool isAttacking = false;
+    public Animator enemyAnimator;
     public float multiplier = 1f;
     public GameObject normalProjectile;
     public Sprite[] projectileSprites;
@@ -98,7 +99,10 @@ public class AttackExecutor : MonoBehaviour
                 spawnPosition += new Vector2(-1f, 0f);
             }
         }
+        enemyAnimator.SetTrigger("Attack End");
         yield return new WaitForSeconds(1f / startMultiplier);
+        yield return new WaitUntil(() => isAttacking);
+        //Debug.Log("Diagnal " + Time.realtimeSinceStartup);
         isAttacking = false;
     }
 
@@ -180,7 +184,7 @@ public class AttackExecutor : MonoBehaviour
         rightPortal.SetActive(false);
     }
 
-        public void RainbowAttack()
+    public void RainbowAttack()
     {
         StartCoroutine(RainbowAttackCoroutine());
     }
@@ -206,7 +210,10 @@ public class AttackExecutor : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(.8f, .9f) / startMultiplier);
         }
         canAnimator.SetTrigger("Down");
+        enemyAnimator.SetTrigger("Attack End");
         yield return new WaitForSeconds(1.5f / startMultiplier);
+        yield return new WaitUntil(() => isAttacking);
+        //Debug.Log("Cannon " + Time.realtimeSinceStartup);
         isAttacking = false;
     }
 
@@ -232,7 +239,10 @@ public class AttackExecutor : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(.3f, .425f) / startMultiplier);
         }
         binAnimator.SetTrigger("End");
+        enemyAnimator.SetTrigger("Attack End");
         yield return new WaitForSeconds(1f / startMultiplier);
+        yield return new WaitUntil(() => isAttacking);
+        //Debug.Log("Random " + Time.realtimeSinceStartup);
         isAttacking = false;
     }
 
@@ -258,7 +268,10 @@ public class AttackExecutor : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(.5f, .65f) / startMultiplier);
         }
         binAnimator.SetTrigger("End");
+        enemyAnimator.SetTrigger("Attack End");
         yield return new WaitForSeconds(1f / startMultiplier);
+        yield return new WaitUntil(() => isAttacking);
+        //Debug.Log("Accel " + Time.realtimeSinceStartup);
         isAttacking = false;
     }
 
@@ -296,7 +309,7 @@ public class AttackExecutor : MonoBehaviour
         {
             if (i % 5 == redSpawnNum)
             {
-                SpawnProjectile(new Vector2(Random.Range(3.5f, 6.25f), -5.6f), new Vector2(0f, 1.5f * startMultiplier), false, 2, true, 0f, 2f * startMultiplier, 5f);//Spawn Fly
+                SpawnProjectile(new Vector2(Random.Range(3.5f, 6.25f), -5.6f), new Vector2(0f, 1.5f * Mathf.Pow(startMultiplier, .8f)), false, 2, true, 0f, 2f * Mathf.Pow(startMultiplier, .5f), 5f / Mathf.Pow(startMultiplier, .35f));//Spawn Fly
             }
             else
             {
@@ -320,7 +333,10 @@ public class AttackExecutor : MonoBehaviour
             timer += Time.deltaTime;
         }
         clouds.SetActive(false);
+        enemyAnimator.SetTrigger("Attack End");
         yield return new WaitForSeconds(1f / startMultiplier);
+        yield return new WaitUntil(() => isAttacking);
+        //Debug.Log("Follow " + Time.realtimeSinceStartup);
         isAttacking = false;
     }
 
@@ -359,8 +375,9 @@ public class AttackExecutor : MonoBehaviour
             portalTransforms[i * 2 + 1].GetComponent<SpriteRenderer>().color = colors[i];
         }
 
+        float velocity = Mathf.Pow(startMultiplier, .7f) * 2.5f;
         int num = 0;
-        while (num < total)
+        while (num < total && isAttacking)
         {
             int redSpawnNum = Random.Range(0, 3);
             bool[] left = { Random.value < .5f, Random.value < .5f, Random.value < .5f };
@@ -372,17 +389,18 @@ public class AttackExecutor : MonoBehaviour
                 {
                     if (left[j])
                     {//Left
-                        SpawnProjectile(new Vector2(portalTransforms[j * 2].transform.position.x - 1.2255f, portalTransforms[j * 2].transform.position.y), new Vector2(multiplier * 2.5f, 0f), j != redSpawnNum, 3);
+                        SpawnProjectile(new Vector2(portalTransforms[j * 2].transform.position.x - 1.2255f, portalTransforms[j * 2].transform.position.y), new Vector2(velocity, 0f), j != redSpawnNum, 3);
                     }
                     else
                     {
-                        SpawnProjectile(new Vector2(portalTransforms[j * 2 + 1].transform.position.x + 1.2255f, portalTransforms[j * 2].transform.position.y), new Vector2(multiplier * -2.5f, 0f), j != redSpawnNum, 3);
+                        SpawnProjectile(new Vector2(portalTransforms[j * 2 + 1].transform.position.x + 1.2255f, portalTransforms[j * 2].transform.position.y), new Vector2(-velocity, 0f), j != redSpawnNum, 3);
                     }
                 }
                 yield return new WaitForSeconds(2f / startMultiplier);
-            } while (Random.value < .66f && num < total);
+            } while (Random.value < .66f && num < total && isAttacking);
             yield return new WaitForSeconds(2.25f / startMultiplier);
         }
+        enemyAnimator.SetTrigger("Attack End");
 
         timer = 0f;
         while (timer < .25f / startMultiplier)
@@ -400,6 +418,8 @@ public class AttackExecutor : MonoBehaviour
             }
         }
         truckPortals.SetActive(false);
+        //yield return new WaitUntil(() => isAttacking);
+        //Debug.Log("Truck Attack " + Time.realtimeSinceStartup);
         isAttacking = false;
     }
 

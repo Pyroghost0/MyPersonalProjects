@@ -17,7 +17,8 @@ public class Player : MonoBehaviour
     public GameObject key;
     private float speed = 4f;
     public Image[] hearts;
-    private int health = 5;
+    public Image[] easyHearts;
+    public int health = 5;
     public bool canMove = true;
     //public Animator animator;
     public bool invincible = false;
@@ -33,17 +34,20 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        health = hearts.Length;
+        if (!GameController.openMainMenu)
+        {
+            if (GameController.easyMode)
+            {
+                hearts = easyHearts;
+            }
+            hearts[0].transform.parent.gameObject.SetActive(true);
+            health = hearts.Length;
+        }
     }
 
     //Updates movement
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().resultText.text = "You Died";
-            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().EndGame();
-        }
         if (canMove)
         {
             float x = Input.GetAxisRaw("Horizontal");
@@ -63,7 +67,7 @@ public class Player : MonoBehaviour
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         invincible = true;
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 12; i++)
         {
             spriteRenderer.color = new Color(1f, 1f, 1f, i % 2 == 0 ? .5f : .75f);
             yield return new WaitForSeconds(.25f);
@@ -102,6 +106,39 @@ public class Player : MonoBehaviour
         heart.gameObject.SetActive(false);
     }
 
+    IEnumerator Death()
+    {
+        float timer = 0f;
+        float red = 1f;
+        float green = 1f;
+        float blue = 1f;
+        SpriteRenderer heart = GetComponent<SpriteRenderer>();
+        while (timer < 3f)
+        {
+            transform.localScale = Vector3.one * ((3f - timer) / 3f);
+            red -= Random.value < .5f ? Time.deltaTime : 0f;
+            green -= Random.value < .5f ? Time.deltaTime : 0f;
+            blue -= Random.value < .5f ? Time.deltaTime : 0f;
+            if (red < 0f)
+            {
+                red = 0f;
+            }
+            if (green < 0f)
+            {
+                green = 0f;
+            }
+            if (blue < 0f)
+            {
+                blue = 0f;
+            }
+            heart.color = new Color(red, green, blue, (3f - timer) / 3f);
+            yield return new WaitForFixedUpdate();
+            timer += Time.deltaTime;
+        }
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().EndGame(false);
+        gameObject.SetActive(false);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Projectile") && !collision.GetComponent<Projectile>().hitPlayer)//!attacking
@@ -116,17 +153,16 @@ public class Player : MonoBehaviour
             {
                 health--;
                 hitAudio.Play();
+                StartCoroutine(Heart(hearts[health]));
                 //healthText.text = "Health: " + health;
                 if (health > 0)
                 {
                     //StopAllCoroutines();
                     StartCoroutine(IFrames());
-                    StartCoroutine(Heart(hearts[health]));
                 }
                 else
                 {
-                    GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().resultText.text = "You Died";
-                    GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().EndGame();
+                    StartCoroutine(Death());
                 }
             }
             projectile.hitPlayer = true;

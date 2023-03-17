@@ -9,6 +9,7 @@ TagManager:
   - Projectile
   - Bullet
   - BGM
+  - Attacker
   layers:
   - Default
   - TransparentFX

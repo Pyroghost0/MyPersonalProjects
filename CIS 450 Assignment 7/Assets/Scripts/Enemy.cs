@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
             Instantiate(tempBullet, new Vector3(4.9f, -.65f, 0f), rotation).GetComponent<Rigidbody2D>().velocity = (new Vector2(0f, -1f)).normalized * 10f;
         }*/
         timer -= Time.deltaTime;//Negetive for oposite direction
-        floatingThing.localPosition = new Vector2(Mathf.Cos(timer), Mathf.Sin(timer)) * 2.5f;
+        floatingThing.localPosition = new Vector2(Mathf.Cos(timer), Mathf.Sin(timer)) * 3f;
         floatingThing.transform.rotation = Quaternion.Euler(0f, 0f, timer * 150f);
         /*
         animator.SetFloat("X", rigidbody.velocity.normalized.x);
@@ -46,12 +46,19 @@ public class Enemy : MonoBehaviour
             health--;
             enemyHealthbar.fillAmount = health / maxHealth;
             enemyHealthbarGrey.fillAmount = 1f - enemyHealthbar.fillAmount;
-            if (health == 0)
+            if (health == 0 && GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().health > 0)
             {
-                GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().EndGame();
-                gameObject.SetActive(false);
+                StartCoroutine(Death());
             }
         }
+    }
+
+    IEnumerator Death()
+    {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>().enabled = false;
+        animator.SetTrigger("Dead");
+        yield return new WaitForSeconds(5f);
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().EndGame(true);
     }
 
     //Take damage from contact
