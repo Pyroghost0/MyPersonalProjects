@@ -72,6 +72,9 @@ public class Attacker : MonoBehaviour
 
     IEnumerator FadeInText(float time)
     {
+#pragma warning disable CS0618 // Type or member is obsolete
+        yield return new WaitUntil(() => !textBox.gameObject.active);
+#pragma warning restore CS0618 // Type or member is obsolete
         textBox.gameObject.SetActive(true);
         float timer = 0f;
         while (timer < .5f)
