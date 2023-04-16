@@ -1,0 +1,1030 @@
+fileFormatVersion: 2
+guid: 8d914c05387164649aaabad1e2771737
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 0
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Flower Chunks_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 79
+        width: 34
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 8, y: -19}
+        - {x: 12, y: -19}
+        - {x: 13, y: -18}
+        - {x: 15, y: -18}
+        - {x: 17, y: -16}
+        - {x: 17, y: -10}
+        - {x: 15, y: -8}
+        - {x: 15, y: -6}
+        - {x: 17, y: -4}
+        - {x: 17, y: 8}
+        - {x: 14, y: 10}
+        - {x: 15, y: 11}
+        - {x: 15, y: 15}
+        - {x: 11, y: 19}
+        - {x: 8, y: 19}
+        - {x: 6, y: 17}
+        - {x: 6, y: 19}
+        - {x: 3, y: 21}
+        - {x: -4, y: 21}
+        - {x: -4, y: 20}
+        - {x: -5.029998, y: 19.970001}
+        - {x: -5, y: 19}
+        - {x: -6, y: 19}
+        - {x: -6, y: 17}
+        - {x: -7, y: 17}
+        - {x: -7, y: 15}
+        - {x: -9, y: 15}
+        - {x: -9, y: 16}
+        - {x: -15, y: 16}
+        - {x: -15, y: 15}
+        - {x: -16, y: 15}
+        - {x: -16, y: 14}
+        - {x: -17, y: 14}
+        - {x: -17, y: -9}
+        - {x: -15, y: -11}
+        - {x: -13, y: -11}
+        - {x: -9, y: -15}
+        - {x: -8, y: -18}
+        - {x: -4, y: -21}
+        - {x: 4, y: -21}
+        - {x: 5, y: -20}
+        - {x: 5, y: -18}
+        - {x: 7, y: -18}
+      - - {x: -16, y: 14}
+        - {x: -16, y: 15}
+        - {x: -16, y: 15}
+        - {x: -16, y: 14}
+      tessellationDetail: 1
+      bones: []
+      spriteID: d280c04807fe5d94aabbb9ed08d69e27
+      internalID: 19172355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_1
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 87
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6213a5cc955141948b7267a9de3a101e
+      internalID: -184197190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_2
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 105
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ded7da0844982342802aefd5c742460
+      internalID: -590878754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_3
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 99
+        width: 17
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 394e961763ea33f4ca81302f56478f6b
+      internalID: 86741128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_4
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 97
+        width: 13
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f363c07084b65ce4caebca2fb7b6542a
+      internalID: 1096099212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_5
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 103
+        width: 11
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 326eb4d7c52230847bc78a5902d6c890
+      internalID: -1064329880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_6
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 95
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7938bc8038469cc44a6289482ef6d6c0
+      internalID: 620074206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_7
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 86
+        width: 16
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b3746c5d4fafe74784ef38038f64648
+      internalID: -621559348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_8
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 107
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7180623dbed4e943a7a534f958309b1
+      internalID: -1100132462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_9
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 103
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bbcb3bbe9cc16184aa88760b8a3f9bb8
+      internalID: 1613587628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_10
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 105
+        width: 12
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 705bd092131c6d54293883d744549783
+      internalID: 1278510580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 33
+        width: 46
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03a9f8941fa587d4faf07e97ee85d042
+      internalID: 440293588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_12
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 50
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e2ea03e6fd8c554e9bc66c0fb3164b1
+      internalID: -204153881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_13
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 54
+        width: 12
+        height: 3
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3cbc5f616fb0384b93dcf3f324c25b3
+      internalID: 1202674308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_15
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 54
+        width: 6
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14b216d1a98afd144897ab84ad847ea6
+      internalID: 287125753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_16
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 41
+        width: 19
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 467ad16303bce904aa0f20fc141945c0
+      internalID: 939250215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_20
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 47
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 481bbe9aaad6d7b4cbaa7dbe6a3cafa1
+      internalID: -357948844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_21
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 43
+        width: 21
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0cf24bfc2f2afd741b1f4693982d2b50
+      internalID: -514074634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_24
+      rect:
+        serializedVersion: 2
+        x: 395
+        y: 50
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b79e2d9c1838d1d4f92000eae42c1073
+      internalID: 102107574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_25
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3
+        width: 44
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf88f6b8a419b4840a6cf2506d76992f
+      internalID: -457598551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_26
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 8
+        width: 20
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db3f8105afde0e64c962bb2cbb3508e8
+      internalID: -385989108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_27
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 8
+        width: 13
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de262f5d473608343a568e9c8280a85d
+      internalID: -2065416697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_29
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 0
+        width: 10
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae02bf33bae73a0478f70d12da459708
+      internalID: 1244659360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_30
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 9
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 261351cae3edbb242aca580ca75441d3
+      internalID: -1915733234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_31
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 12
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1973ee71fac1b114cb02be4bd066ad4f
+      internalID: -2013101667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_32
+      rect:
+        serializedVersion: 2
+        x: 211
+        y: 13
+        width: 10
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bdc4527d6d7854419c14b6800758c99
+      internalID: 841184216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_33
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 10
+        width: 24
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70a274af19990c54abe5ccf901bcb213
+      internalID: 1364140485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_34
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 10
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20285d822e15d1e4484c1c4ff7d6fb93
+      internalID: 1355640494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_35
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 14
+        width: 11
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 722badfe6b28e3b4c9e1dea2fb34300a
+      internalID: -1394933279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_36
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 14
+        width: 12
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8074b6df0fe4ab4a8fe93174c2f8eea
+      internalID: -1304485573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_37
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 9
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31df0d262c8d200439d1d621719e2a62
+      internalID: 2039636607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_22
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 54
+        width: 12
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b07604f2442d824aaadb8e5ef243337
+      internalID: 2072412382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_18
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 53
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 483206b4d91f41d45b136edeca3aba62
+      internalID: -126764532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_23
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 48
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e5225a56465efe448126381e4686b86
+      internalID: 1490598700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_19
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 51
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58b08c83bb9428548801c5633684eb07
+      internalID: 1260932241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_14
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 54
+        width: 9
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ee9b7a283e82c24c909108dbec1a7aa
+      internalID: 1260726778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_17
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 56
+        width: 13
+        height: 3
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8da2268e668cfcf49b202067d32e91c5
+      internalID: -39892722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Flower Chunks_28
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 12
+        width: 13
+        height: 3
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 544dd9f63ed91a045bbdedac2575cd75
+      internalID: -1112764591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Flower Chunks_11: 440293588
+      Flower Chunks_22: 2072412382
+      Flower Chunks_4: 1096099212
+      Flower Chunks_12: -204153881
+      Flower Chunks_2: -590878754
+      Flower Chunks_24: 102107574
+      Flower Chunks_16: 939250215
+      Flower Chunks_7: -621559348
+      Flower Chunks_19: 1260932241
+      Flower Chunks_21: -514074634
+      Flower Chunks_33: 1364140485
+      Flower Chunks_32: 841184216
+      Flower Chunks_8: -1100132462
+      Flower Chunks_17: -39892722
+      Flower Chunks_30: -1915733234
+      Flower Chunks_28: -1112764591
+      Flower Chunks_1: -184197190
+      Flower Chunks_6: 620074206
+      Flower Chunks_37: 2039636607
+      Flower Chunks_10: 1278510580
+      Flower Chunks_29: 1244659360
+      Flower Chunks_14: 1260726778
+      Flower Chunks_9: 1613587628
+      Flower Chunks_15: 287125753
+      Flower Chunks_27: -2065416697
+      Flower Chunks_13: 1202674308
+      Flower Chunks_23: 1490598700
+      Flower Chunks_0: 19172355
+      Flower Chunks_18: -126764532
+      Flower Chunks_25: -457598551
+      Flower Chunks_36: -1304485573
+      Flower Chunks_5: -1064329880
+      Flower Chunks_35: -1394933279
+      Flower Chunks_31: -2013101667
+      Flower Chunks_20: -357948844
+      Flower Chunks_26: -385989108
+      Flower Chunks_34: 1355640494
+      Flower Chunks_3: 86741128
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
