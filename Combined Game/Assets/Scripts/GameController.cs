@@ -12,84 +12,129 @@ using TMPro;
 
 public class GameController : MonoBehaviour
 {
-    public static bool openMainMenu = true;
     public GameObject startScreen;
     public GameObject endScreen;
-    //public int score = 0;
-    //public float timer = 60f;
-    //public TextMeshProUGUI timerText;
-    //public TextMeshProUGUI scoreText;
-    //public TextMeshProUGUI finalScoreText;
-    public TextMeshProUGUI resultText;
     public TextMeshProUGUI resultDescriptionText;
+    public TextMeshProUGUI resultText;
+
+    public GameObject pauseScreen;
+    private bool timeScale0;
+    public Image loadingImage;
+    public static bool paused = false;
+    public static bool fromMainMenu = false;
+    public static bool fromDungeon = false;
+    //public static bool doneLoading = false;
 
     //On start set timescale
     void Start()
     {
-        if (openMainMenu)
+        StartCoroutine(FadeLoad());
+    }
+
+    IEnumerator FadeLoad()
+    {
+        if (fromMainMenu)
         {
-            Time.timeScale = 0f;
-            startScreen.SetActive(true);
-            /*if (GameObject.FindGameObjectsWithTag("BGM").Length == 1)
+            yield return new WaitUntil(() => MainMenuManager.doneLoading);
+            loadingImage.gameObject.SetActive(true);
+            if (Data.Exists())
             {
-                DontDestroyOnLoad(sceneBGM);
+                TerrainGenerator.instance.Load();
             }
             else
             {
-                sceneBGM.SetActive(false);
-            }*/
+                TerrainGenerator.instance.GenerateTerrain(50);
+            }
+            AsyncOperation ao = SceneManager.UnloadSceneAsync("Main Menu");
+            yield return new WaitUntil(() => ao.isDone);
+        }
+        else if (fromDungeon)
+        {
+            TerrainGenerator.instance.Load();
+            loadingImage.gameObject.SetActive(true);
+            GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(18.5f, -23.5f, 0f);
+            fromDungeon = false;
         }
         else
         {
-            Time.timeScale = 1f;
-            //sceneBGM.SetActive(false);
+            if (SceneManager.GetActiveScene().name == "Game")
+            {
+                TerrainGenerator.instance.Load();
+            }
+            //yield return new WaitUntil(() => doneLoading);
+            loadingImage.gameObject.SetActive(true);
+            //AsyncOperation ao = SceneManager.UnloadSceneAsync("House");
+            //yield return new WaitUntil(() => ao.isDone);
         }
+        float timer = 0f;
+        while (timer < 1f)
+        {
+            loadingImage.color = new Color(0f, 0f, 0f, 1f - timer);
+            yield return new WaitForEndOfFrame();
+            timer += Time.unscaledDeltaTime;
+        }
+        Resume();
+        loadingImage.gameObject.SetActive(false);
     }
 
-    //Updates timer values
-    /*void Update()
+    public void LoadScene(string scene)
     {
-        if (Time.timeScale == 1f)
+        StartCoroutine(AppearLoad(scene));
+    }
+
+    IEnumerator AppearLoad(string scene)
+    {
+        //doneLoading = false;
+        Time.timeScale = 0f;
+        loadingImage.gameObject.SetActive(true);
+        float timer = 0f;
+        while (timer < 1f)
         {
-            timer -= Time.deltaTime;
-            //timerText.text = "Time Remaining: " + ((int)timer) + " Seconds";
-            if (timer <= 0f)
+            loadingImage.color = new Color(0f, 0f, 0f, timer);
+            yield return new WaitForEndOfFrame();
+            timer += Time.unscaledDeltaTime;
+        }
+        loadingImage.color = Color.black;
+        SceneManager.LoadScene(scene);
+        //doneLoading = true;
+        //yield return new WaitUntil(() => ao.isDone);
+    }
+
+    void Update()
+    {
+        if ((Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)) && !loadingImage.gameObject.activeSelf)
+        {
+            if (paused)
             {
-                resultText.text = "You Lose!";
-                EndGame();
+                Resume();
+            }
+            else
+            {
+                Pause();
             }
         }
-    }*/
-
-    //Sets up the game
-    public void StartGame()
-    {
-        startScreen.SetActive(false);
-        //endScreen.SetActive(false);
-        //gameScreen.SetActive(true);
-        //GameObject.FindGameObjectWithTag("Player").transform.position = Vector3.zero;
-        //GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().healthText.text = "Health: " + GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().health;
-        //GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().moneyText.text = "Money: $0";*/
-        Time.timeScale = 1f;
-        /*timer = 60f;
-        scoreText.text = "Killed: None";*/
     }
 
-    //Add to score
-    /*public void UpdateScore()
+    public void Pause()
     {
-        score++;
-        scoreText.text = "Score: " + score;
-        if (score >= 25)
+        paused = true;
+        pauseScreen.SetActive(true);
+        timeScale0 = Time.timeScale == 0f;
+        Time.timeScale = 0f;
+    }
+
+    public void Resume()
+    {
+        paused = false;
+        pauseScreen.SetActive(false);
+        if (!timeScale0)
         {
-            resultText.text = "You Win!";
-            EndGame();
+            Time.timeScale = 1f;
         }
-    }*/
+    }
 
     public void Retry()
     {
-        openMainMenu = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -106,20 +151,15 @@ public class GameController : MonoBehaviour
             resultText.text = "You Lose";
             //resultDescriptionText.text = "Try Again, I Won't Bite";
         }
-        //finalScoreText.text = "Score: " + score + " Kills\nTime Remaining: " + (int)timer + " Seconds";
         StopAllCoroutines();
         Time.timeScale = 0f;
         endScreen.SetActive(true);
-        //finalScoreText.text = "Score: " + score + " Kills\nTime Remaining: " + (int)timer + " Seconds";
     }
 
     //Switches to main menu screen
     public void MainMenu()
     {
-        openMainMenu = true;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        //endScreen.SetActive(false);
-        //startScreen.SetActive(true);
+        StartCoroutine(AppearLoad("Main Menu"));
     }
 
     //Quit game
@@ -130,7 +170,7 @@ public class GameController : MonoBehaviour
     }
 
     //Respawns idol after item picked up
-    public void DelayRecover(GameObject item, GameObject idol)
+    /*public void DelayRecover(GameObject item, GameObject idol)
     {
         StartCoroutine(DelayRecoverCoroutine(item, idol));
     }
@@ -142,5 +182,5 @@ public class GameController : MonoBehaviour
         yield return new WaitUntil(() => item == null);
         yield return new WaitForSeconds(5f);
         idol.SetActive(true);
-    }
+    }*/
 }

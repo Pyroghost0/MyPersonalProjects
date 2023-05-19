@@ -14,70 +14,114 @@ public class Player : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject key;
     public float speed = 2.2f;
-    //public int money = 0;
-    //public int health = 5;
+    public int health = 5;
     public bool hasKey = false;
     public Animator animator;
     public bool bulletCooldown = false;
     public bool invincible = false;
     public bool knockback = false;
-    //public TextMeshProUGUI healthText;
-    //public TextMeshProUGUI moneyText;
+    public SpriteRenderer spriteRenderer;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     public Camera camera;
     public Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
 
-    public ItemType inventory;
-    public Sprite[] itemSprites;
-    public Image inventorySprite;
+    public static float[] gatherEfficiency = { 1f, 1f, 1f };
+
+    public static short[] inventoryProgress = new short[20];
+    //public Sprite[] itemSprites;
+    //public Image inventorySprite;
     public GameObject bomb;
+    public List<Transform> objectsInRadius = new List<Transform>();
+
+    public static Player instance;
+    public bool isPaused = false;
+    public InteractableObject interaction;
+
+    void Start()
+    {
+        instance = this;
+    }
 
     //Updates movement and attacks
     void Update()
     {
-        if (!knockback)
+        if (!isPaused)
         {
-            float x = Input.GetAxis("Horizontal");
-            float y = Input.GetAxis("Vertical");
-            animator.SetFloat("X", x);
-            animator.SetFloat("Y", y);
-            float magnitude = Mathf.Sqrt(x * x + y * y);
-            if (magnitude != 0)
+            //Movement and interact
+            spriteRenderer.sortingOrder = -(int)transform.position.y * 10;
+            if (!knockback)
             {
-                x *= Mathf.Abs(x) / magnitude;
-                y *= Mathf.Abs(y) / magnitude;
+                float x = Input.GetAxis("Horizontal");
+                float y = Input.GetAxis("Vertical");
+                animator.SetFloat("X", x);
+                animator.SetFloat("Y", y);
+                float magnitude = Mathf.Sqrt(x * x + y * y);
+                if (magnitude != 0)
+                {
+                    x *= Mathf.Abs(x) / magnitude;
+                    y *= Mathf.Abs(y) / magnitude;
+                }
+                rigidbody.velocity = new Vector2(x, y) * speed;
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    if (interaction == null)
+                    {
+                        if (objectsInRadius.Count > 0)
+                        {
+                            Transform best = objectsInRadius[0];
+                            for (int i = 1; i < objectsInRadius.Count; i++)
+                            {
+                                if ((objectsInRadius[i].position - transform.position).magnitude < (best.position - transform.position).magnitude)
+                                {
+                                    best = objectsInRadius[i];
+                                }
+                            }
+                            interaction = best.GetComponent<InteractableObject>();
+                            interaction.Interact();
+                        }
+                    }
+                    else
+                    {
+                        interaction.Cancel();
+                    }
+                }
             }
-            rigidbody.velocity = new Vector2(x, y) * speed;
-            /*if (Input.GetKeyDown(KeyCode.Space))
-            {
-                StartCoroutine(AttackBehaivior());
-            }*/        
-        }
-        if (Input.GetKey(KeyCode.Mouse0) && !bulletCooldown)
-        {
-            Vector3 position = camera.ScreenToWorldPoint(Input.mousePosition);
-            position.z = 0f;
-            Quaternion rotation = Quaternion.Euler(0, 0f, Mathf.Atan2((position - transform.position).y, (position - transform.position).x) * 57.2958f - 90f);
-            //Instantiate(bulletPrefab, transform.position, rotation);
-            Instantiate(bulletPrefab, transform.position, rotation).GetComponent<Rigidbody2D>().velocity = (new Vector2( position.x - transform.position.x, position.y - transform.position.y)).normalized * 10f;
-            //Bullet bullet = Instantiate(bulletPrefab, transform.position, rotation).GetComponent<Bullet>();
-            //bullet.goal = position;
-            StartCoroutine(Cooldown());
-        }
-        if (Input.GetKeyDown(KeyCode.Mouse1) && inventory != ItemType.Empty)
-        {
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            worldPos.z = 0f;
-            Vector2 delta = worldPos - transform.position;
-            float angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
-            GameObject thrownObject = Instantiate(bomb, transform.position, Quaternion.Euler(0f, 0f, angle - 90f));
-            thrownObject.GetComponent<ThrownObject>().time = (delta.magnitude + 1f) / 8f;
-            thrownObject.GetComponent<ThrownObject>().velocity = delta / thrownObject.GetComponent<ThrownObject>().time;
-            thrownObject.GetComponent<ThrownObject>().target = worldPos;
 
-            inventory = ItemType.Empty;
-            inventorySprite.sprite = itemSprites[0];
+            //Shooting
+            if (Input.GetKey(KeyCode.Mouse0) && !bulletCooldown)
+            {
+                if (interaction != null)
+                {
+                    interaction.Cancel();
+                }
+                Vector3 position = camera.ScreenToWorldPoint(Input.mousePosition);
+                position.z = 0f;
+                Quaternion rotation = Quaternion.Euler(0, 0f, Mathf.Atan2((position - transform.position).y, (position - transform.position).x) * 57.2958f - 90f);
+                //Instantiate(bulletPrefab, transform.position, rotation);
+                Instantiate(bulletPrefab, transform.position, rotation).GetComponent<Rigidbody2D>().velocity = (new Vector2(position.x - transform.position.x, position.y - transform.position.y)).normalized * 10f;
+                //Bullet bullet = Instantiate(bulletPrefab, transform.position, rotation).GetComponent<Bullet>();
+                //bullet.goal = position;
+                StartCoroutine(Cooldown());
+            }
+            if (Input.GetKeyDown(KeyCode.Mouse1))// && inventory != ItemType.Empty)
+            {
+                if (interaction != null)
+                {
+                    interaction.Cancel();
+                }
+                Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                worldPos.z = 0f;
+                Vector2 delta = worldPos - transform.position;
+                float angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
+                GameObject thrownObject = Instantiate(bomb, transform.position, Quaternion.Euler(0f, 0f, angle - 90f));
+                thrownObject.GetComponent<ThrownObject>().time = (delta.magnitude + 1f) / 8f;
+                thrownObject.GetComponent<ThrownObject>().velocity = delta / thrownObject.GetComponent<ThrownObject>().time;
+                thrownObject.GetComponent<ThrownObject>().target = worldPos;
+
+                //inventory = ItemType.Empty;
+                //inventorySprite.sprite = itemSprites[0];
+            }
         }
     }
 
@@ -108,8 +152,8 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && !knockback && !invincible)//!attacking
         {
-            /*health--;
-            healthText.text = "Health: " + health;
+            health--;
+            //healthText.text = "Health: " + health;
             if (health > 0)
             {
                 //StopAllCoroutines();
@@ -117,9 +161,9 @@ public class Player : MonoBehaviour
                 StartCoroutine(IFrames());
             }
             else
-            {*/
+            {
                 GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().EndGame(false);
-            //}
+            }
         }
         else if (collision.gameObject.CompareTag("Goal"))
         {
@@ -131,6 +175,10 @@ public class Player : MonoBehaviour
     IEnumerator Knockback(Vector3 dir, int power)
     {
         knockback = true;
+        if (interaction != null)
+        {
+            interaction.Cancel();
+        }
         float timer = 0f;
         dir *= power;
         while (timer < power / 2f)
@@ -151,6 +199,22 @@ public class Player : MonoBehaviour
             timer += Time.deltaTime * (1f + (rigidbody.velocity.magnitude * rigidbody.velocity.magnitude / 4f));
         }
         knockback = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("InteractableObject"))
+        {
+            objectsInRadius.Add(collision.transform);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("InteractableObject"))
+        {
+            objectsInRadius.Remove(collision.transform);
+        }
     }
 
     //Attacks with a charge

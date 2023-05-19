@@ -21,6 +21,7 @@ TagManager:
   - Mouse
   - Pot
   - Potion Maker
+  - InteractableObject
   layers:
   - Default
   - TransparentFX
@@ -55,6 +56,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Below Player
+    uniqueID: 888705381
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Above Player
+    uniqueID: 348748385
+    locked: 0
+  - name: UI
+    uniqueID: 1444670439
     locked: 0

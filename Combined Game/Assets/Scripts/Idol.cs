@@ -20,8 +20,8 @@ public class Idol : MonoBehaviour
             {
                 Destroy(collision.gameObject);
             }
-            //Destroy(gameObject);
-            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().DelayRecover(Instantiate(item, transform.position, transform.rotation), gameObject);
+            Destroy(gameObject);
+            //GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().DelayRecover(Instantiate(item, transform.position, transform.rotation), gameObject);
         }
     }
 }

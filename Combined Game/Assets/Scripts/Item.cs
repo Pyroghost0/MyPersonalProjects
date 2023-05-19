@@ -11,12 +11,39 @@ public enum ItemType
 {
     Empty = 0,
     Key = 1,
-    Bomb = 2
+    Bomb = 2,
+    Red = 3,
+    Yellow = 4,
+    Blue = 5,
+    Wood = 6,
+    Rock = 7,
+    SeedApple = 8,
+    TreeHeart = 9,
+    Sulfer = 10,
+    Voidshroom = 11,
+    IceFlower = 12,
+    Orangeberry = 13,
+    TearGem = 14,
+    Charcoal = 15
 }
 
 public class Item : MonoBehaviour
 {
-    public ItemType itemType;
+    //public ItemType itemType { get; set; }
+    private ItemType type;
+    public ItemType itemType { 
+        get
+        {
+            return type;
+        }
+        set
+        {
+            spriteRenderer.sprite = itemSprites[(int)value];
+            type = value;
+        }
+    }
+    public Sprite[] itemSprites;
+    public SpriteRenderer spriteRenderer;
     public float floatCycleTime = .8f;
     public float floatCycleDistence = .2f;
     private float curentYpos = 0f;
@@ -53,13 +80,13 @@ public class Item : MonoBehaviour
             }
             else// if (itemType == ItemType.Bomb)
             {
-                if (collision.GetComponent<Player>().inventory == ItemType.Empty)
-                {
+                //if (collision.GetComponent<Player>().inventory == ItemType.Empty)
+                //{
                     pickedUp = true;
-                    collision.GetComponent<Player>().inventory = itemType;
-                    collision.GetComponent<Player>().inventorySprite.sprite = collision.GetComponent<Player>().itemSprites[(int)itemType];
+                    //collision.GetComponent<Player>().inventory = itemType;
+                    //collision.GetComponent<Player>().inventorySprite.sprite = collision.GetComponent<Player>().itemSprites[(int)itemType];
                     StartCoroutine(CollectionAnimation());
-                }
+                //}
             }
         }
     }
