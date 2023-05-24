@@ -9,13 +9,22 @@ using UnityEngine;
 
 public class Idol : MonoBehaviour
 {
+    public ItemType itemType;
     public GameObject item;
+
+    void Start()
+    {
+        if (itemType != ItemType.Free)
+        {
+            itemType = (ItemType)Random.Range(2, 16);
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Bullet") || collision.CompareTag("Explosion"))
         {
-            //Instantiate(item, transform.position, transform.rotation);
+            Instantiate(item, transform.position, transform.rotation).GetComponent<Item>().itemType = itemType;
             if (collision.CompareTag("Bullet"))
             {
                 Destroy(collision.gameObject);

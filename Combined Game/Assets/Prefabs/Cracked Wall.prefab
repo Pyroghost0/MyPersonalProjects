@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 402727225363640203}
   - component: {fileID: 8894927487413141704}
   - component: {fileID: 7159527453288686762}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cracked Wall
   m_TagString: Cracked Wall
   m_Icon: {fileID: 0}
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86b2ff80e5e9ef54082e8f2ca477340e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  num: 0
 --- !u!50 &8894927487413141704
 Rigidbody2D:
   serializedVersion: 4

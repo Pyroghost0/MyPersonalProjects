@@ -15,7 +15,8 @@ public class Spawner : MonoBehaviour
     public int maxEnemies = 5;
     public float averageRespawnTime = 2f;
     public float spawnDistence = 20f;
-    //public int maxSlimesPerCycle = -1;
+    public int totalSpawned = 0;
+    public int maxEnemiesPerCycle = -1;
     private Transform player;
     private bool currentlySpawning = false;
     public float ranSpawnRange = 1.5f;
@@ -25,6 +26,9 @@ public class Spawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        maxEnemies = (int) Mathf.Pow(1.1f, Player.inventoryProgress[22]);
+        maxEnemiesPerCycle = (int) Mathf.Pow(1.15f, Player.inventoryProgress[22]);
+        averageRespawnTime = 200 / (Player.inventoryProgress[22] + 10);
         player = GameObject.FindGameObjectWithTag("Player").transform;
         StartCoroutine(StartSpawning());
     }
@@ -43,8 +47,8 @@ public class Spawner : MonoBehaviour
     IEnumerator StartSpawning()
     {
         currentlySpawning = true;
-        //while (numEnemies < maxEnemies && (maxSlimesPerCycle == -1 || slimesSpawned < maxSlimesPerCycle))
-        while (numEnemies < maxEnemies)
+        while (numEnemies < maxEnemies && (maxEnemiesPerCycle == -1 || totalSpawned < maxEnemiesPerCycle))
+        //while (numEnemies < maxEnemies)
         {
             yield return new WaitForSeconds(Random.Range(averageRespawnTime / 4, averageRespawnTime * 3 / 4));
             if (Mathf.Abs((player.position - transform.position).magnitude) < spawnDistence)
@@ -77,6 +81,7 @@ public class Spawner : MonoBehaviour
         }
         else
         {*/
+        totalSpawned++;
             GameObject enemySpawned = Instantiate(enemy, spawnPoint.transform.position + new Vector3(Random.Range(-ranSpawnRange, ranSpawnRange), Random.Range(-ranSpawnRange, ranSpawnRange), 0f), enemy.transform.rotation);
             enemySpawned.GetComponent<Enemy>().spawner = this;
             numEnemies++;

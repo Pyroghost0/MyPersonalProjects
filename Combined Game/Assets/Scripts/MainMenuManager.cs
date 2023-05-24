@@ -15,11 +15,21 @@ public class MainMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Player.select = 0;
         if (Data.Exists())
         {
             continueButton.interactable = true;
         }
         StartCoroutine(FadeLoad());
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene("Potion");
+        }
     }
 
     IEnumerator FadeLoad()
@@ -71,7 +81,7 @@ public class MainMenuManager : MonoBehaviour
     public void NewGame()
     {
         Data.ClearData();
-        Player.inventoryProgress = null;
+        Player.inventoryProgress = new ushort[23];
         TerrainGenerator.resourceTypes = null;
         StartCoroutine(AppearLoad());
     }

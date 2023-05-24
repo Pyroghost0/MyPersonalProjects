@@ -6,8 +6,7 @@ using UnityEngine;
 
 public static class Data
 {
-	//data[0] = level 1 completed?		data[1] = level 1 available?		data[2] = level 2...		data[12] = alt level 1 completed?		data[13] = alt level 1 available?		data[14] = alt level 2...
-	public static void Save(short[,] terrain, short[] progress)
+	public static void Save(short[,] terrain, ushort[] progress)
 	{
 		//save data
 		BinaryFormatter bf = new BinaryFormatter();
@@ -63,13 +62,13 @@ public static class Data
 		}
 	}
 
-	public static short[] Progress()
+	public static ushort[] Progress()
 	{
 		if (File.Exists(Application.persistentDataPath + "/progressData.gd"))
 		{
 			BinaryFormatter bf = new BinaryFormatter();
 			FileStream file = File.Open(Application.persistentDataPath + "/progressData.gd", FileMode.Open);
-			short[] data = (short[])bf.Deserialize(file);
+			ushort[] data = (ushort[])bf.Deserialize(file);
 			file.Close();
 			return data;
 		}

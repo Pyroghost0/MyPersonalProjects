@@ -18,7 +18,7 @@ public class PotIngredient : MonoBehaviour
     private float size = 1f;
     public ingredient ingredientType;
     //private bool used = false;
-    private bool inWater = false;
+    public bool inWater = false;
     private bool touchingWater = false;
     public Collider2D ingredientCollider;
     private Collider2D mouseCollider;

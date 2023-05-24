@@ -9,7 +9,7 @@ using UnityEngine;
 
 public enum ItemType
 {
-    Empty = 0,
+    Free = 0,
     Key = 1,
     Bomb = 2,
     Red = 3,
@@ -17,7 +17,7 @@ public enum ItemType
     Blue = 5,
     Wood = 6,
     Rock = 7,
-    SeedApple = 8,
+    SeedSkinApple = 8,
     TreeHeart = 9,
     Sulfer = 10,
     Voidshroom = 11,

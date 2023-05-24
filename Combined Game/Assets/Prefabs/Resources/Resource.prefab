@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6308291705190874203}
   - component: {fileID: 6308291705190874202}
   - component: {fileID: 6308291705190874278}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Resource
   m_TagString: InteractableObject
   m_Icon: {fileID: 0}
@@ -147,6 +147,8 @@ MonoBehaviour:
   spriteRenderer: {fileID: 6308291705190874200}
   gatherBarAmount: {fileID: 6308291706215473356}
   gatherBar: {fileID: 6308291705856411705}
+  row: 0
+  column: 0
 --- !u!1 &6308291705856411705
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6308291705856411654}
   - component: {fileID: 6308291705856411655}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Outside Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +244,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6308291706215473359}
   - component: {fileID: 6308291706215473356}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}

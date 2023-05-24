@@ -4928,6 +4928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da43083df636bff46a23fd01cd05ef76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectType: 2
   explosionParticle: {fileID: 2689476043193606463}
   explosionCollider: {fileID: 7220325328900148159}
   target: {x: 0, y: 0, z: 0}

@@ -25,6 +25,11 @@ public class GameController : MonoBehaviour
     public static bool fromDungeon = false;
     //public static bool doneLoading = false;
 
+    public GameObject tutorialScreen;
+    public TextMeshProUGUI titleText;
+    public TextMeshProUGUI explainationText;
+    public GameObject[] upgradeStations;
+
     //On start set timescale
     void Start()
     {
@@ -118,6 +123,7 @@ public class GameController : MonoBehaviour
     public void Pause()
     {
         paused = true;
+        //Player.isPaused = true;
         pauseScreen.SetActive(true);
         timeScale0 = Time.timeScale == 0f;
         Time.timeScale = 0f;
@@ -126,6 +132,7 @@ public class GameController : MonoBehaviour
     public void Resume()
     {
         paused = false;
+        //Player.isPaused = false;
         pauseScreen.SetActive(false);
         if (!timeScale0)
         {
@@ -135,6 +142,7 @@ public class GameController : MonoBehaviour
 
     public void Retry()
     {
+        Player.healed = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -167,6 +175,27 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("Quit");
         Application.Quit();
+    }
+
+    public void Tutorial(string title, string explaination)
+    {
+        tutorialScreen.SetActive(true);
+        titleText.text = title;
+        explainationText.text = explaination;
+        Time.timeScale = 0f;
+    }
+
+    public void ExitTutorialScreen()
+    {
+        tutorialScreen.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
+    public void Build(int type)
+    {
+        Player.inventoryProgress[17] += (ushort)Mathf.Pow(2, type);
+        upgradeStations[type].SetActive(true);
+        upgradeStations[type].GetComponent<UpgradeStations>().Build();
     }
 
     //Respawns idol after item picked up

@@ -22,6 +22,7 @@ TagManager:
   - Pot
   - Potion Maker
   - InteractableObject
+  - Heart
   layers:
   - Default
   - TransparentFX
@@ -31,8 +32,8 @@ TagManager:
   - UI
   - Pot
   - Above Pot
-  - 
-  - 
+  - Unaffact Enemy
+  - Enemy
   - 
   - 
   - 

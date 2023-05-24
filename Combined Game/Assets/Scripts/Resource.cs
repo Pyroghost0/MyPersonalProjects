@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum MiningType
 {
-    gather = 0,
-    chop = 1,
-    mine = 2
+    Gather = 0,
+    Chop = 1,
+    Mine = 2
 }
 
 public class Resource : MonoBehaviour, InteractableObject
@@ -36,7 +37,7 @@ public class Resource : MonoBehaviour, InteractableObject
     void Start()
     {
         gatherTime = totalGatherTime;
-        spriteRenderer.sortingOrder = -(int)transform.position.y * 10;
+        spriteRenderer.sortingOrder = -(int)(transform.position.y * 10f);
     }
 
     public void Interact()//Player p)
@@ -67,7 +68,10 @@ public class Resource : MonoBehaviour, InteractableObject
         }
         //Player.instance.objectsInRadius.Remove(transform);
         Player.instance.interaction = null;
-        TerrainGenerator.instance.RemoveResource(row, column);
+        if (SceneManager.GetActiveScene().name == "Game")
+        {
+            TerrainGenerator.instance.RemoveResource(row, column);
+        }
         Destroy(gameObject);
     }
 
@@ -75,6 +79,7 @@ public class Resource : MonoBehaviour, InteractableObject
     {
         StopCoroutine(gatherCoroutine);
         Player.instance.interaction = null;
+        Player.instance.animator.SetTrigger("Stop");
         gatherBar.SetActive(false);
     }
 }

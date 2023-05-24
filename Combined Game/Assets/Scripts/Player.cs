@@ -14,9 +14,10 @@ public class Player : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject key;
     public float speed = 2.2f;
-    public int health = 5;
+    public static int health = 5;
     public bool hasKey = false;
     public Animator animator;
+    public static float bulletCooldownTime = .6f;
     public bool bulletCooldown = false;
     public bool invincible = false;
     public bool knockback = false;
@@ -28,16 +29,25 @@ public class Player : MonoBehaviour
 
     public static float[] gatherEfficiency = { 1f, 1f, 1f };
 
-    public static short[] inventoryProgress = new short[20];
+    //0-15 = inventory, 16 = day, 17 = upgrade stations, 18 = cracked walls, 19 = desk upgrades, 20 = health upgaredes, 21 = fire status, 22 = dugeonLevel (health reset to 100% due to fairity)
+    public static ushort[] inventoryProgress = new ushort[23];
     //public Sprite[] itemSprites;
     //public Image inventorySprite;
+    public static int select = 1;
     public GameObject bomb;
+    public GameObject red;
+    public GameObject yellow;
+    public GameObject blue;
     public List<Transform> objectsInRadius = new List<Transform>();
 
     public static Player instance;
-    public bool isPaused = false;
+    //public static bool isPaused = false;
     public InteractableObject interaction;
 
+    public static bool healed = false;
+    public bool inHouse = false;
+    public bool buildMode = false;
+    public GameObject buildUI;
     void Start()
     {
         instance = this;
@@ -46,90 +56,214 @@ public class Player : MonoBehaviour
     //Updates movement and attacks
     void Update()
     {
-        if (!isPaused)
+        //if (!isPaused)
+        if (Time.timeScale == 1f)
         {
-            //Movement and interact
-            spriteRenderer.sortingOrder = -(int)transform.position.y * 10;
-            if (!knockback)
+            spriteRenderer.sortingOrder = -(int)(transform.position.y * 10f);
+
+            //Inventory Selection
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                float x = Input.GetAxis("Horizontal");
-                float y = Input.GetAxis("Vertical");
-                animator.SetFloat("X", x);
-                animator.SetFloat("Y", y);
-                float magnitude = Mathf.Sqrt(x * x + y * y);
-                if (magnitude != 0)
+                select = 1;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                select = 2;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                select = 3;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                select = 4;
+            }
+
+            if (inHouse)
+            {
+                if (Input.GetKeyDown(KeyCode.B))
                 {
-                    x *= Mathf.Abs(x) / magnitude;
-                    y *= Mathf.Abs(y) / magnitude;
+                    buildMode = !buildMode;
+                    buildUI.SetActive(buildMode);
+                    Time.timeScale = buildMode ? 0f : 1f;
+                    if (buildMode)
+                    {
+                        transform.position = new Vector3(-.5f, -.25f);
+                        animator.SetFloat("X", 0f);
+                        animator.SetFloat("Y", 0f);
+                        rigidbody.velocity = Vector2.zero;
+                    }
                 }
-                rigidbody.velocity = new Vector2(x, y) * speed;
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (!buildMode)
+                {
+                    //Movement and interact
+                    float x = Input.GetAxis("Horizontal");
+                    float y = Input.GetAxis("Vertical");
+                    animator.SetFloat("X", x);
+                    animator.SetFloat("Y", y);
+                    float magnitude = Mathf.Sqrt(x * x + y * y);
+                    if (magnitude != 0)
+                    {
+                        x *= Mathf.Abs(x) / magnitude;
+                        y *= Mathf.Abs(y) / magnitude;
+                    }
+                    rigidbody.velocity = new Vector2(x, y) * speed;
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        if (interaction == null)
+                        {
+                            if (objectsInRadius.Count > 0)
+                            {
+                                Transform best = objectsInRadius[0];
+                                for (int i = 1; i < objectsInRadius.Count; i++)
+                                {
+                                    if ((objectsInRadius[i].position - transform.position).magnitude < (best.position - transform.position).magnitude)
+                                    {
+                                        best = objectsInRadius[i];
+                                    }
+                                }
+                                interaction = best.GetComponent<InteractableObject>();
+                                interaction.Interact();
+                            }
+                        }
+                        else
+                        {
+                            interaction.Cancel();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //Movement and interact
+                if (!knockback)
                 {
                     if (interaction == null)
                     {
-                        if (objectsInRadius.Count > 0)
+                        float x = Input.GetAxis("Horizontal");
+                        float y = Input.GetAxis("Vertical");
+                        animator.SetFloat("X", x);
+                        animator.SetFloat("Y", y);
+                        float magnitude = Mathf.Sqrt(x * x + y * y);
+                        if (magnitude != 0)
                         {
-                            Transform best = objectsInRadius[0];
-                            for (int i = 1; i < objectsInRadius.Count; i++)
-                            {
-                                if ((objectsInRadius[i].position - transform.position).magnitude < (best.position - transform.position).magnitude)
-                                {
-                                    best = objectsInRadius[i];
-                                }
-                            }
-                            interaction = best.GetComponent<InteractableObject>();
-                            interaction.Interact();
+                            x *= Mathf.Abs(x) / magnitude;
+                            y *= Mathf.Abs(y) / magnitude;
                         }
+                        rigidbody.velocity = new Vector2(x, y) * speed;
                     }
                     else
                     {
-                        interaction.Cancel();
+                        
+                    }
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        if (interaction == null)
+                        {
+                            if (objectsInRadius.Count > 0)
+                            {
+                                Transform best = objectsInRadius[0];
+                                for (int i = 1; i < objectsInRadius.Count; i++)
+                                {
+                                    if ((objectsInRadius[i].position - transform.position).magnitude < (best.position - transform.position).magnitude)
+                                    {
+                                        best = objectsInRadius[i];
+                                    }
+                                }
+                                interaction = best.GetComponent<InteractableObject>();
+                                interaction.Interact();
+                                if (best.GetComponent<Resource>() != null)
+                                {
+                                    animator.SetTrigger(best.GetComponent<Resource>().miningType.ToString());
+                                    animator.SetFloat("X", 0);
+                                    animator.SetFloat("Y", 0);
+                                    rigidbody.velocity = Vector2.zero;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            interaction.Cancel();
+                        }
                     }
                 }
-            }
 
-            //Shooting
-            if (Input.GetKey(KeyCode.Mouse0) && !bulletCooldown)
-            {
-                if (interaction != null)
+                //Shooting
+                if (Input.GetKey(KeyCode.Mouse0) && !bulletCooldown)
                 {
-                    interaction.Cancel();
+                    if (interaction != null)
+                    {
+                        interaction.Cancel();
+                    }
+                    Vector3 position = camera.ScreenToWorldPoint(Input.mousePosition);
+                    position.z = 0f;
+                    Quaternion rotation = Quaternion.Euler(0, 0f, Mathf.Atan2((position - transform.position).y, (position - transform.position).x) * 57.2958f - 90f);
+                    //Instantiate(bulletPrefab, transform.position, rotation);
+                    Instantiate(bulletPrefab, transform.position, rotation).GetComponent<Rigidbody2D>().velocity = (new Vector2(position.x - transform.position.x, position.y - transform.position.y)).normalized * 10f;
+                    //Bullet bullet = Instantiate(bulletPrefab, transform.position, rotation).GetComponent<Bullet>();
+                    //bullet.goal = position;
+                    StartCoroutine(Cooldown());
                 }
-                Vector3 position = camera.ScreenToWorldPoint(Input.mousePosition);
-                position.z = 0f;
-                Quaternion rotation = Quaternion.Euler(0, 0f, Mathf.Atan2((position - transform.position).y, (position - transform.position).x) * 57.2958f - 90f);
-                //Instantiate(bulletPrefab, transform.position, rotation);
-                Instantiate(bulletPrefab, transform.position, rotation).GetComponent<Rigidbody2D>().velocity = (new Vector2(position.x - transform.position.x, position.y - transform.position.y)).normalized * 10f;
-                //Bullet bullet = Instantiate(bulletPrefab, transform.position, rotation).GetComponent<Bullet>();
-                //bullet.goal = position;
-                StartCoroutine(Cooldown());
-            }
-            if (Input.GetKeyDown(KeyCode.Mouse1))// && inventory != ItemType.Empty)
-            {
-                if (interaction != null)
-                {
-                    interaction.Cancel();
-                }
-                Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                worldPos.z = 0f;
-                Vector2 delta = worldPos - transform.position;
-                float angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
-                GameObject thrownObject = Instantiate(bomb, transform.position, Quaternion.Euler(0f, 0f, angle - 90f));
-                thrownObject.GetComponent<ThrownObject>().time = (delta.magnitude + 1f) / 8f;
-                thrownObject.GetComponent<ThrownObject>().velocity = delta / thrownObject.GetComponent<ThrownObject>().time;
-                thrownObject.GetComponent<ThrownObject>().target = worldPos;
 
-                //inventory = ItemType.Empty;
-                //inventorySprite.sprite = itemSprites[0];
+                //Throwing
+                if (Input.GetKeyDown(KeyCode.Mouse1))// && inventory != ItemType.Empty)
+                {
+                    GameObject spawned = null;
+                    if (select == 1 && inventoryProgress[3] > 0)
+                    {
+                        inventoryProgress[3]--;
+                        spawned = red;
+                    }
+                    else if (select == 2 && inventoryProgress[4] > 0)
+                    {
+                        inventoryProgress[4]--;
+                        spawned = yellow;
+                    }
+                    else if (select == 3 && inventoryProgress[5] > 0)
+                    {
+                        inventoryProgress[5]--;
+                        spawned = blue;
+                    }
+                    else if (select == 4 && inventoryProgress[2] > 0)
+                    {
+                        inventoryProgress[2]--;
+                        spawned = bomb;
+                    }
+
+                    if (spawned != null)
+                    {
+                        if (interaction != null)
+                        {
+                            interaction.Cancel();
+                        }
+                        Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        worldPos.z = 0f;
+                        Vector2 delta = worldPos - transform.position;
+                        float angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
+                        GameObject thrownObject = Instantiate(spawned, transform.position, Quaternion.Euler(0f, 0f, angle - 90f));
+                        thrownObject.GetComponent<ThrownObject>().time = (delta.magnitude + 1f) / 8f;
+                        thrownObject.GetComponent<ThrownObject>().velocity = delta / thrownObject.GetComponent<ThrownObject>().time;
+                        thrownObject.GetComponent<ThrownObject>().target = worldPos;
+                    }
+                    //inventory = ItemType.Empty;
+                    //inventorySprite.sprite = itemSprites[0];
+                }
             }
         }
+    }
+
+    public void UpdateHealth(int difference)
+    {
+        health += difference;
+        //Check possibility
+        //update UI
     }
 
     //Cooldown fpr shooting the gun
     IEnumerator Cooldown()
     {
         bulletCooldown = true;
-        yield return new WaitForSeconds(.6f);
+        yield return new WaitForSeconds(bulletCooldownTime);
         bulletCooldown = false;
     }
 
@@ -215,6 +349,13 @@ public class Player : MonoBehaviour
         {
             objectsInRadius.Remove(collision.transform);
         }
+    }
+
+    public void CancelBuild()
+    {
+        buildMode = false;
+        Time.timeScale = 1f;
+        buildUI.SetActive(false);
     }
 
     //Attacks with a charge

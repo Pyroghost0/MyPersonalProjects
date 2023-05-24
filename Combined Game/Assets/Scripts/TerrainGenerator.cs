@@ -114,6 +114,12 @@ public class TerrainGenerator : MonoBehaviour
                 terrain[i, j] = TerrainType.Unavailable;
             }
         }
+
+        //Campfire
+        terrain[17, 28] = TerrainType.Unavailable;
+        terrain[17, 29] = TerrainType.Unavailable;
+        terrain[16, 28] = TerrainType.Unavailable;
+        terrain[16, 29] = TerrainType.Unavailable;
     }
 
     // Update is called once per frame
@@ -178,7 +184,9 @@ public class TerrainGenerator : MonoBehaviour
             {
                 if (terrain[i, j] == TerrainType.Covered)
                 {
+#pragma warning disable CS0162 // Unreachable code detected
                     for (int k = 0; k < coveredResourcePrefabs.Length; k++)
+#pragma warning restore CS0162 // Unreachable code detected
                     {
                         Instantiate(coveredResourcePrefabs[k], new Vector3(startX + i, startY + j), transform.rotation).GetComponent<Resource>().SetRowColumn(i, j);
                         terrain[i, j] = TerrainType.CoveredResource;

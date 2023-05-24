@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class CrackedWall : MonoBehaviour
 {
-    public short num = 0;
+    public ushort num = 0;
 
     void Start()
     {

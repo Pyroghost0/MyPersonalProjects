@@ -72,8 +72,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 888705381
+  m_SortingLayer: -1
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: d964358e19fe25f4e83f66b7debbb516, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -104,8 +104,9 @@ MonoBehaviour:
   maxEnemies: 2
   averageRespawnTime: 8
   spawnDistence: 10
+  totalSpawned: 0
+  maxEnemiesPerCycle: -1
   ranSpawnRange: 0.5
-  offsetSpawn: 0
 --- !u!1 &8326623044696495003
 GameObject:
   m_ObjectHideFlags: 0

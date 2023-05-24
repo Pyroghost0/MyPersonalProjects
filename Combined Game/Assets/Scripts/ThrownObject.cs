@@ -9,11 +9,13 @@ using UnityEngine;
 
 public class ThrownObject : MonoBehaviour
 {
+    public ItemType objectType;
     public GameObject explosionParticle;
     public GameObject explosionCollider;
     public Vector3 target;
     public Vector3 velocity;
     public float time;
+
     // Start is called before the first frame update
     void Start()
     {
