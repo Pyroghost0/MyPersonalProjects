@@ -48,7 +48,7 @@ public class TreeHeart : MonoBehaviour
                 //mouse.position = position;
                 if (!heartCollider.IsTouching(mouseCollider))
                 {
-                    rigidbody.AddForce((heartCollider.ClosestPoint(position) - ((Vector2)transform.position)) * 30f);
+                    rigidbody.AddForce((heartCollider.ClosestPoint(position) - ((Vector2)transform.position)) * 500f);
                 }
             }
 

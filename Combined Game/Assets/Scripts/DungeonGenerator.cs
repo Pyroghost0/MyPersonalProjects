@@ -13,7 +13,13 @@ public class DungeonGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Doors
         terrain[7, 0] = TerrainType.Unavailable;
+        terrain[6, 6] = TerrainType.Unavailable;
+        terrain[7, 6] = TerrainType.Unavailable;
+        terrain[8, 6] = TerrainType.Unavailable;
+        terrain[13, 6] = TerrainType.Unavailable;
+        terrain[14, 6] = TerrainType.Unavailable;
         Player.inventoryProgress[22]++;
         MustSpawn(prefabs[0]);
         MustSpawn(prefabs[1]);
@@ -24,7 +30,7 @@ public class DungeonGenerator : MonoBehaviour
         }
         //rarity[2] = Player.inventoryProgress[22];
         //Debug.Log(Player.inventoryProgress[22]);
-        GenerateTerrain(Player.inventoryProgress[22]);
+        GenerateTerrain(Mathf.Sqrt(Player.inventoryProgress[22]));
     }
 
     public void MustSpawn(GameObject prefab)

@@ -23,6 +23,10 @@ TagManager:
   - Potion Maker
   - InteractableObject
   - Heart
+  - Laddle
+  - Slow Enemy
+  - Falling Dust
+  - Stop Dust
   layers:
   - Default
   - TransparentFX
@@ -34,7 +38,7 @@ TagManager:
   - Above Pot
   - Unaffact Enemy
   - Enemy
-  - 
+  - Unaffect Same
   - 
   - 
   - 

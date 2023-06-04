@@ -6,12 +6,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public enum instruction
 {
     Ground,//Redo
-    Extract,//Slight
+    Extract,
     Stir,//Debug?
     AddIngredient,
     Fire,
@@ -51,6 +52,7 @@ public class PotionMaker : MonoBehaviour
         { ingredient.GroundUpIceFlower, "Ground Up Ice Flower" }, { ingredient.TearGem, "Tear Gem" }, { ingredient.Rock, "Rock" }, { ingredient.GroundUpRock, "Ground Up Rock" }, { ingredient.Sulfer, "Sulfer" },
         { ingredient.GroundUpSulfer, "Ground Up Sulfer" }, { ingredient.Charcoal, "Charcoal" } };
 
+    public GameObject raycast;
     public GameObject button;
     public TextMeshProUGUI buttonText;
     private bool buttonClick = false;
@@ -68,9 +70,19 @@ public class PotionMaker : MonoBehaviour
     public Transform[] ingredientSpawnPositions;
     private bool activePot = false;
 
+    public GameObject resultMenu;
+    public TextMeshProUGUI timerResultText;
+    public Image[] stars;
+    public Sprite[] starSprites;
+    public Image resultPotion;
+    public Sprite[] resultPotionSprites;
+    public TextMeshProUGUI resultPotionText;
+    public TextMeshProUGUI notesText;
+    public GameObject endButton;
+
     void Update()
     {
-        if (timerOn)
+        if (timerOn && Time.timeScale == 1f)
         {
             timer += Time.deltaTime;
             timerText.text = "Time: " + ((int)timer) + "s";
@@ -96,24 +108,28 @@ public class PotionMaker : MonoBehaviour
             ingredient[] ingredientList = { ingredient.CookedHeart, ingredient.Orangeberry, ingredient.Voidshroom };
             potionInstructions = new [] { new PotionInstruction(instruction.Fire, ingredient.TreeHeart, 2f),
         new PotionInstruction(instruction.AddIngredient, ingredientList), new PotionInstruction(instruction.Stir, ingredientList, 3f) };
+            resultPotion.sprite = resultPotionSprites[0];
         }
         else if (goal == ItemType.Yellow)
         {
             ingredient[] ingredientList = { ingredient.AppleSeeds, ingredient.Orangeberry, ingredient.Sulfer };
             potionInstructions = new[] { new PotionInstruction(instruction.Extract, ingredient.SeedSkinApple, 2f),
         new PotionInstruction(instruction.AddIngredient, ingredientList), new PotionInstruction(instruction.Stir, ingredientList, 3f) };
+            resultPotion.sprite = resultPotionSprites[1];
         }
         else if (goal == ItemType.Blue)
         {
             ingredient[] ingredientList = { ingredient.GroundUpIceFlower, ingredient.Voidshroom, ingredient.TearGem };
             potionInstructions = new[] { new PotionInstruction(instruction.Ground, ingredient.IceFlower, 2f),
         new PotionInstruction(instruction.AddIngredient, ingredientList), new PotionInstruction(instruction.Stir, ingredientList, 3f) };
+            resultPotion.sprite = resultPotionSprites[2];
         }
         else// if (goal == ItemType.Bomb)
         {
             ingredient[] ingredientList = { ingredient.GroundUpRock, ingredient.Charcoal, ingredient.GroundUpSulfer };
             potionInstructions = new[] { new PotionInstruction(instruction.Ground, ingredient.Rock, 2f),
-        new PotionInstruction(instruction.Ground, ingredient.Sulfer, 2f), new PotionInstruction(instruction.Stir, ingredientList, 3f) };
+        new PotionInstruction(instruction.Ground, ingredient.Sulfer, 2f), new PotionInstruction(instruction.Measure, ingredientList) };
+            resultPotion.sprite = resultPotionSprites[3];
         }
         StartCoroutine(MakePotionCoroutine());
     }
@@ -121,55 +137,13 @@ public class PotionMaker : MonoBehaviour
     IEnumerator MakePotionCoroutine()
     {
         //Setup
-        string startText = "";
-        foreach (PotionInstruction potionInstruction in potionInstructions)
-        {
-            if (potionInstruction.instruction == instruction.Ground)
-            {
-                startText += "-Ground up the ";
-                /*for (int i = 0; i < potionInstruction.ingredients.Length - 1; i++)
-                {
-                    startText += ingredientString[potionInstruction.ingredients[i]].ToLower() + " & ";
-                }*/
-                startText += ingredientString[potionInstruction.ingredients[potionInstruction.ingredients.Length - 1]].ToLower() + "\n";
-            }
-            else if (potionInstruction.instruction == instruction.Extract)
-            {
-                startText += "-Extract seeds from the seed skin apple\n";// + ingredientString[potionInstruction.ingredients[0]].ToLower();
-            }
-            else if (potionInstruction.instruction == instruction.Stir)
-            {
-                startText += "-Stir the pot to mix the ingredients together\n";
-                /*for (int i = 0; i < potionInstruction.ingredients.Length - 1; i++)
-                {
-                    startText += ingredientString[potionInstruction.ingredients[i]].ToLower() + " & ";
-                }
-                startText += ingredientString[potionInstruction.ingredients[potionInstruction.ingredients.Length - 1]].ToLower() + " in the pot\n";*/
-        }
-            else if (potionInstruction.instruction == instruction.AddIngredient)
-            {
-                startText += "-Add the ingredients to the pot\n";
-                /*for (int i = 0; i < potionInstruction.ingredients.Length - 1; i++)
-                {
-                    startText += ingredientString[potionInstruction.ingredients[i]].ToLower() + ", ";
-                }
-                startText += ingredientString[potionInstruction.ingredients[potionInstruction.ingredients.Length - 1]].ToLower() + "to the pot\n";*/
-            }
-            else if (potionInstruction.instruction == instruction.Fire)
-            {
-                startText += "-Bake the tree heart until maximum juiciness\n";// + ingredientString[potionInstruction.ingredients[0]].ToLower();
-            }
-            else if (potionInstruction.instruction == instruction.Measure)
-            {
-                startText += "-Measure the ingredients to a 75:15:10 ratio\n";// + ingredientString[potionInstruction.ingredients[0]].ToLower();
-            }
-        }
-        instrcutions.text = startText + "\n\nPress the \"Start\" button when you are ready.";
+        ShowInstructions();
+        instrcutions.text = instrcutions.text + "\n\nPress the \"Start\" button when you are ready.";
         yield return new WaitUntil(() => buttonClick);
         buttonClick = false;
         timerOn = true;
         buttonText.text = "Next";
-        float result = 0f;
+        float result = 1f;
         List<string> notes = new List<string>();
         int step = 0;
 
@@ -192,7 +166,7 @@ public class PotionMaker : MonoBehaviour
                 buttonClick = false;
                 float gameResult = 1f - Mathf.Abs(potionInstruction.idealResult - (GameObject.FindGameObjectsWithTag("Ingredient").Length / 10f));
                 Debug.Log(gameResult);
-                result += gameResult;
+                result *= gameResult;
                 if (gameResult > .8f)
                 {
                     //notes.Add("Good job grounding ingredients in step " + step);
@@ -207,8 +181,8 @@ public class PotionMaker : MonoBehaviour
             }
             else if (potionInstruction.instruction == instruction.Extract)
             {
-                string newText = "Extract all of the brown seeds from the apple without dirtying them.";// + ingredientString[potionInstruction.ingredients[0]].ToLower();
-                instrcutions.text = newText;// + "\n\nPress the \"Next\" button when you are done.";
+                string newText = "Extract all of the brown seeds from the apple, and leave the red ones.";// + ingredientString[potionInstruction.ingredients[0]].ToLower();
+                instrcutions.text = newText + "\n\nPress the \"Next\" button when you are done.";
                 GameObject apple = Instantiate(applePrefab);
                 GameObject[] seeds = GameObject.FindGameObjectsWithTag("Seed");
                 int[] reds = { Random.Range(0, 3), Random.Range(3, 6), Random.Range(6, 9), Random.Range(9, 12), Random.Range(12, 15) };
@@ -223,10 +197,20 @@ public class PotionMaker : MonoBehaviour
                         seeds[i].GetComponent<Seed>().SetBrown();
                     }
                 }
-                button.SetActive(false);
-                //yield return new WaitUntil(() => buttonClick);//Disable and move to next instruction
-                yield return new WaitUntil(() => GameObject.FindGameObjectsWithTag("Seed").Length == 0);
-                button.SetActive(true);
+                //button.SetActive(false);
+                SpriteRenderer appleSprite = GameObject.FindGameObjectWithTag("Apple").GetComponent<SpriteRenderer>();
+                float tempTimer = 0f;
+                while (tempTimer < 1f)
+                {
+                    appleSprite.color = new Color(1f, 1f, 1f, 1f - tempTimer);
+                    tempTimer += Time.deltaTime / 1.5f;
+                    yield return new WaitForFixedUpdate();
+                }
+                appleSprite.color = Color.clear;
+                yield return new WaitUntil(() => buttonClick);//Disable and move to next instruction
+                buttonClick = false;
+                //yield return new WaitUntil(() => GameObject.FindGameObjectsWithTag("Seed").Length == 0);
+                //button.SetActive(true);
                 float gameResult = 1f;
                 for (int i = 0; i < seeds.Length; i++)
                 {
@@ -242,19 +226,22 @@ public class PotionMaker : MonoBehaviour
                         gameResult -= .2f;
                     }
                 }
+                gameResult = Mathf.Max(0f, gameResult);
                 Debug.Log(gameResult);
-                result += gameResult;
+                result *= gameResult;
                 if (gameResult > .8f)
                 {
                     //notes.Add("You picked out all the correct seeds in step " + step);
-                    notes.Add("You got out all the seeds from the apple in good condition");
+                    notes.Add("You got out all the right seeds from the apple");
                 }
-                else if (gameResult < .2f)
+                else if (gameResult < .8f)
                 {
                     //notes.Add("You missed quite a few seeds in step " + step);
-                    notes.Add("The seeds weren't in a good condition after extracting them");
+                    notes.Add("The didn't get all the right seeds from the apple");
                 }
-                Destroy(apple);
+                //Destroy(apple);
+                StartCoroutine(Hide(GameObject.FindGameObjectWithTag("Apple").transform.parent));
+                yield return new WaitForSeconds(1.5f);
             }
             else if (potionInstruction.instruction == instruction.Stir)
             {
@@ -264,16 +251,18 @@ public class PotionMaker : MonoBehaviour
                     newText += ingredientString[potionInstruction.ingredients[i]].ToLower() + " & ";
                 }
                 newText += ingredientString[potionInstruction.ingredients[potionInstruction.ingredients.Length - 1]].ToLower();
-                newText += potionInstruction.idealResult == 1f ? " until lightly mixed." : potionInstruction.idealResult == 2f ? " until moderately mixed." : " until entirely mixed together.";
-                instrcutions.text = newText + "\n\nClick and drag the mixing stick with your mouse.\n\nPress the \"Next\" button when you are done.";
+                newText += potionInstruction.idealResult == 1f ? " until lightly mixed." : potionInstruction.idealResult == 2f ? " until moderately mixed together." : " until entirely mixed together.";
+                instrcutions.text = newText + "\n\nPress the \"Next\" button when you are done.";
                 float initAmount = PotIngredient.potBlue + PotIngredient.potGreen + PotIngredient.potRed;
                 //GameObject mortarAndPestal = Instantiate(mortarAndPestalPrefab);
                 yield return new WaitUntil(() => buttonClick);//Disable and move to next instruction
                 buttonClick = false;
                 //float gameResult = 1f - Mathf.Abs(potionInstruction.idealResult - (GameObject.FindGameObjectsWithTag("Ingredient").Length / 10f));
                 float gameResult = 1f - Mathf.Abs(potionInstruction.idealResult - ((PotIngredient.potBlue + PotIngredient.potGreen + PotIngredient.potRed) - initAmount) / potionInstruction.ingredients.Length) / 3f;
-                Debug.Log(gameResult);
-                result += gameResult;
+                gameResult = .75f;
+                Debug.Log("FIIIIIIIIIIIIIIIIX");
+                //Debug.Log(gameResult);
+                result *= gameResult;
                 if (gameResult > .8f)
                 {
                     //notes.Add("Your strring in " + step + " was well done");
@@ -284,6 +273,16 @@ public class PotionMaker : MonoBehaviour
                     //notes.Add("You didn't quite stir well enough in step " + step);
                     notes.Add("You didn't quite stir well enough");
                 }
+                GameObject.FindGameObjectWithTag("Laddle").GetComponent<Laddle>().enabled = false;
+                StartCoroutine(Hide(GameObject.FindGameObjectWithTag("Pot Water").transform.parent));
+                GameObject[] ingredients = GameObject.FindGameObjectsWithTag("Ingredient");
+                foreach (GameObject ingredient in ingredients)
+                {
+                    ingredient.GetComponent<ParticleSystem>().Stop();
+                    ingredient.GetComponent<ParticleSystem>().Clear();
+                    StartCoroutine(Hide(ingredient.transform));
+                }
+                yield return new WaitForSeconds(1.5f);
             }
             else if (potionInstruction.instruction == instruction.AddIngredient)
             {
@@ -350,10 +349,10 @@ public class PotionMaker : MonoBehaviour
                 GameObject fire = Instantiate(firePrefab);
                 yield return new WaitUntil(() => buttonClick);//Disable and move to next instruction
                 buttonClick = false;
-                Destroy(fire);
-                float gameResult = 1f - GameObject.FindGameObjectWithTag("Heart").GetComponent<TreeHeart>().cookedAmount;
+                //Destroy(fire);
+                float gameResult = GameObject.FindGameObjectWithTag("Heart").GetComponent<TreeHeart>().cookedAmount > 1f ? 2 - GameObject.FindGameObjectWithTag("Heart").GetComponent<TreeHeart>().cookedAmount : GameObject.FindGameObjectWithTag("Heart").GetComponent<TreeHeart>().cookedAmount;
                 Debug.Log(gameResult);
-                result += gameResult;
+                result *= gameResult;
                 if (gameResult > .8f)
                 {
                     notes.Add("You baked the tree heart very well");
@@ -362,6 +361,9 @@ public class PotionMaker : MonoBehaviour
                 {
                     notes.Add("Your didn't quite bake the tree heart how you were supposed to");
                 }
+                GameObject.FindGameObjectWithTag("Heart").GetComponent<TreeHeart>().enabled = false;
+                StartCoroutine(Hide(fire.transform));
+                yield return new WaitForSeconds(1.5f);
             }
             else if (potionInstruction.instruction == instruction.Measure)
             {
@@ -370,18 +372,55 @@ public class PotionMaker : MonoBehaviour
                 GameObject measure = Instantiate(measurePrefab);
                 yield return new WaitUntil(() => buttonClick);//Disable and move to next instruction
                 buttonClick = false;
-                Destroy(measure);
-                float gameResult = 1f - GameObject.FindGameObjectWithTag("Heart").GetComponent<TreeHeart>().cookedAmount;
+                //Destroy(measure);
+                GameObject[] dusts = GameObject.FindGameObjectsWithTag("Stop Dust");//Ignore falling ones
+                int rocks = 0;
+                int charcoal = 0;
+                int sulfer = 0;
+                foreach (GameObject dust in dusts)
+                {
+                    if (dust.GetComponent<Dust>() != null)
+                    {
+                        if (dust.GetComponent<Dust>().ingredient == ingredient.GroundUpRock)
+                        {
+                            rocks++;
+                        }
+                        else if (dust.GetComponent<Dust>().ingredient == ingredient.Charcoal)
+                        {
+                            charcoal++;
+                        }
+                        else
+                        {
+                            sulfer++;
+                        }
+                        dust.transform.parent = measure.transform;
+                    }
+                }
+                int total = rocks + charcoal + sulfer;
+                Debug.Log("Rocks: " + rocks + ", Charcoal " + charcoal + ", Sulfer: " + sulfer);
+                float gameResult = Mathf.Sqrt( Mathf.Max( Mathf.Min( Mathf.Min( ((rocks*100f) / (total*75f)) > 1f ? 2f - ((rocks * 100f) / (total * 75f)) : ((rocks * 100f) / (total * 75f)), 
+                    ((charcoal * 100f) / (total * 15f)) > 1f ? 2f - ((charcoal * 100f) / (total * 15f)) : ((charcoal * 100f) / (total * 15f))), ((sulfer * 100f) / (total * 10f)) > 1f ? 2f - ((sulfer * 100f) / (total * 10f)) : ((sulfer * 100f) / (total * 10f))), 0f));
                 Debug.Log(gameResult);
-                result += gameResult;
+                result *= gameResult;
                 if (gameResult > .8f)
                 {
-                    notes.Add("You baked the tree heart very well");
+                    notes.Add("You measured the ingredients into a good ratio");
                 }
                 else if (gameResult < .5f)
                 {
-                    notes.Add("Your didn't quite bake the tree heart how you were supposed to");
+                    notes.Add("You didn't quite measure the ingredients well enough");
                 }
+                dusts = GameObject.FindGameObjectsWithTag("Falling Dust");
+                foreach (GameObject dust in dusts)
+                {
+                    dust.transform.parent = measure.transform;
+                }
+                foreach (Bottle bottle in Bottle.bottles)
+                {
+                    bottle.enabled = false;
+                }
+                StartCoroutine(Hide(measure.transform));
+                yield return new WaitForSeconds(1.5f);
             }
             //yield return new WaitUntil(() => buttonClick);//Disable and move to next instruction
             //buttonClick = false;
@@ -389,11 +428,60 @@ public class PotionMaker : MonoBehaviour
         }
 
         //Result
-        float timeResult = timer / 60f;
+        button.SetActive(false);
+        resultMenu.SetActive(true);
+        ShowInstructions();
+        timerOn = false;
+        timerResultText.text = "Time: " + ((int)timer) + "s";
+        float timeResult = Mathf.Min(10f / timer, .5f) + 1f;
         Debug.Log("Result: " + result + ", Time: " + timeResult + ", Final: " + (result * timeResult));
-        result *= timeResult;
-        buttonText.text = "Done";
-        Debug.Log("Done");
+        int star = (int)Mathf.Min(result * 12f, 10f);
+        Debug.Log("Star: " + star);
+        for (int i = 0; i < star; i++)
+        {
+            resultPotionText.text = "x" + ((int)((i + 1) / 10f * UpgradeStations.potionAmount));
+            for (int j = 0; j < 4; j++)
+            {
+                stars[i / 2].sprite = starSprites[((i % 2) * 4) + j];
+                yield return new WaitForSeconds(.08f);
+            }
+        }
+        yield return new WaitForSeconds(.5f);
+        if (star != 10)
+        {
+            Color color = timerResultText.color;
+            float tempTimer = 0f;
+            while (tempTimer < 1f)
+            {
+                timerResultText.color = new Color(Mathf.Min(color.r - tempTimer, 0f), Mathf.Min(color.g - tempTimer, 0f), Mathf.Min(color.b - tempTimer, 0f), 1f - tempTimer);
+                timerResultText.transform.localScale = Vector3.one * (1 + tempTimer);
+                timerResultText.rectTransform.anchoredPosition = new Vector2(-150f * tempTimer - 150f, -100f * tempTimer - 25f);
+                tempTimer += Time.deltaTime / 1.5f;
+                yield return new WaitForFixedUpdate();
+            }
+            timerResultText.gameObject.SetActive(false);
+            result *= timeResult;
+            int temp = star;
+            star = (int)Mathf.Min(result * 12f, 10f);
+            Debug.Log("Star: " + star);
+            for (int i = temp; i < star; i++)
+            {
+                resultPotionText.text = "x" + ((int)((i + 1) / 10f * UpgradeStations.potionAmount));
+                for (int j = 0; j < 4; j++)
+                {
+                    stars[i / 2].sprite = starSprites[((i % 2) * 4) + j];
+                    yield return new WaitForSeconds(.08f);
+                }
+            }
+            yield return new WaitForSeconds(.5f);
+        }
+        notesText.text = notes.Count > 0 ? notes[Random.Range(0, notes.Count)] : "Average all around";
+        Player.inventoryProgress[goal == ItemType.Red ? 0 : goal == ItemType.Yellow ? 1 : goal == ItemType.Blue ? 2 : 3] += (ushort)(star / 10f * UpgradeStations.potionAmount);
+    }
+
+    public void Back()
+    {
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().LoadFromPotion();
     }
 
     public bool AllInPot()
@@ -412,6 +500,68 @@ public class PotionMaker : MonoBehaviour
     public void NextButton()
     {
         buttonClick = true;
+    }
+
+    public void ShowInstructions()
+    {
+        string startText = "";
+        foreach (PotionInstruction potionInstruction in potionInstructions)
+        {
+            if (potionInstruction.instruction == instruction.Ground)
+            {
+                startText += "-Ground up the ";
+                /*for (int i = 0; i < potionInstruction.ingredients.Length - 1; i++)
+                {
+                    startText += ingredientString[potionInstruction.ingredients[i]].ToLower() + " & ";
+                }*/
+                startText += ingredientString[potionInstruction.ingredients[potionInstruction.ingredients.Length - 1]].ToLower() + "\n";
+            }
+            else if (potionInstruction.instruction == instruction.Extract)
+            {
+                startText += "-Extract seeds from the seed skin apple\n";// + ingredientString[potionInstruction.ingredients[0]].ToLower();
+            }
+            else if (potionInstruction.instruction == instruction.Stir)
+            {
+                startText += "-Stir the pot to mix the ingredients together\n";
+                /*for (int i = 0; i < potionInstruction.ingredients.Length - 1; i++)
+                {
+                    startText += ingredientString[potionInstruction.ingredients[i]].ToLower() + " & ";
+                }
+                startText += ingredientString[potionInstruction.ingredients[potionInstruction.ingredients.Length - 1]].ToLower() + " in the pot\n";*/
+            }
+            else if (potionInstruction.instruction == instruction.AddIngredient)
+            {
+                startText += "-Add the ingredients to the pot\n";
+                /*for (int i = 0; i < potionInstruction.ingredients.Length - 1; i++)
+                {
+                    startText += ingredientString[potionInstruction.ingredients[i]].ToLower() + ", ";
+                }
+                startText += ingredientString[potionInstruction.ingredients[potionInstruction.ingredients.Length - 1]].ToLower() + "to the pot\n";*/
+            }
+            else if (potionInstruction.instruction == instruction.Fire)
+            {
+                startText += "-Bake the tree heart until maximum juiciness\n";// + ingredientString[potionInstruction.ingredients[0]].ToLower();
+            }
+            else if (potionInstruction.instruction == instruction.Measure)
+            {
+                startText += "-Measure the ingredients to a 75:15:10 ratio\n";// + ingredientString[potionInstruction.ingredients[0]].ToLower();
+            }
+        }
+        instrcutions.text = startText;
+    }
+
+    IEnumerator Hide(Transform scene)
+    {
+        raycast.SetActive(true);
+        float timer = 0f;
+        while(timer < 1.5f)
+        {
+            scene.position +=  new Vector3(200f * Mathf.Pow(timer, 3f) * Time.deltaTime, 0f);
+            timer += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+        Destroy(scene.gameObject);
+        raycast.SetActive(false);
     }
 }
 

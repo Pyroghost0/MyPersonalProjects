@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 4022387854131105497}
   - component: {fileID: 8949299351043403087}
   - component: {fileID: 236003714456490199}
-  - component: {fileID: 6009169390151482766}
   m_Layer: 7
   m_Name: Apple Seeds
   m_TagString: Ingredient
@@ -4906,6 +4905,7 @@ MonoBehaviour:
   ingredientGreen: 0.33333334
   ingredientBlue: 0
   ingredientType: 2
+  inWater: 0
   ingredientCollider: {fileID: 236003714456490199}
   ingredientRenderer: {fileID: 4463546437846994777}
   particleSystem: {fileID: 1726992868135403397}
@@ -4955,16 +4955,3 @@ PolygonCollider2D:
       - {x: 0.40234375, y: 0.29296875}
       - {x: 0.29296875, y: 0.40234375}
       - {x: 0.15234375, y: 0.47265625}
---- !u!114 &6009169390151482766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1541107597812885784}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ed3d9c71d6bb5c4abdca7ad061a9105, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  alphaCutoff: 0.5

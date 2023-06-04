@@ -11,27 +11,49 @@ public class Door : MonoBehaviour
 {
     public string loadScene;
     public bool dungeonDoor;
+    public bool canOpen = true;
 
     //Turns off door
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && !collision.isTrigger)
+        if (collision.CompareTag("Player") && !collision.isTrigger && canOpen)
         {
-            if (dungeonDoor && loadScene == "Dungeon")
+            if (dungeonDoor)
             {
-                if (!dungeonDoor || collision.GetComponent<Player>().hasKey)
+                //if (loadScene == "Dungeon")
+                if (loadScene != "Game")
                 {
-                    collision.GetComponent<Player>().key.SetActive(false);
-                    collision.GetComponent<Player>().hasKey = false;
+                    if (collision.GetComponent<Player>().hasKey)
+                    {
+                        collision.GetComponent<Player>().key.SetActive(false);
+                        collision.GetComponent<Player>().hasKey = false;
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
+                /*else if (loadScene == "Boss")
+                {
+                    if (collision.GetComponent<Player>().hasKey)
+                    {
+                        collision.GetComponent<Player>().key.SetActive(false);
+                        collision.GetComponent<Player>().hasKey = false;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }*/
                 else
                 {
-                    return;
+                    GameController.fromDungeon = true;
                 }
             }
-            else if (dungeonDoor)
+            else if (Player.floatTime == 1200f)
             {
-                GameController.fromDungeon = true;
+                Player.floatTime = 0f;
+                Player.inventoryProgress[21] = Player.inventoryProgress[21] / 4 % 4 == 2 ? Player.inventoryProgress[21] : (ushort)(Player.inventoryProgress[21] + 4);
             }
             GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().LoadScene(loadScene);
         }

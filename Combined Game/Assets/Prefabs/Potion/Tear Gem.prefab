@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 1308240009364819605}
   - component: {fileID: 1308240009364819607}
   - component: {fileID: 1308240009364819602}
-  - component: {fileID: 1308240009364819606}
   - component: {fileID: 1308240009364819609}
+  - component: {fileID: 7050083330415390152}
   m_Layer: 7
   m_Name: Tear Gem
   m_TagString: Ingredient
@@ -4889,22 +4889,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!58 &1308240009364819606
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1308240009364819600}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.65
 --- !u!114 &1308240009364819609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4921,7 +4905,77 @@ MonoBehaviour:
   ingredientGreen: 0
   ingredientBlue: 1
   ingredientType: 8
-  ingredientCollider: {fileID: 1308240009364819606}
+  inWater: 0
+  ingredientCollider: {fileID: 7050083330415390152}
   ingredientRenderer: {fileID: 1308240009364819604}
   particleSystem: {fileID: 1308240009364819605}
   rigidbody: {fileID: 1308240009364819607}
+--- !u!60 &7050083330415390152
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1308240009364819600}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 8, y: 8}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.25, y: 0.5}
+      - {x: 0.25, y: 0.625}
+      - {x: 0.1875, y: 0.625}
+      - {x: 0.1875, y: 0.75}
+      - {x: 0.125, y: 0.75}
+      - {x: 0.125, y: 0.8125}
+      - {x: 0.0625, y: 0.8125}
+      - {x: 0.0625, y: 0.9375}
+      - {x: -0.0625, y: 0.9375}
+      - {x: -0.0625, y: 0.8125}
+      - {x: -0.125, y: 0.8125}
+      - {x: -0.125, y: 0.75}
+      - {x: -0.1875, y: 0.75}
+      - {x: -0.1875, y: 0.625}
+      - {x: -0.25, y: 0.625}
+      - {x: -0.25, y: 0.5}
+      - {x: -0.3125, y: 0.5}
+      - {x: -0.3125, y: 0.3125}
+      - {x: -0.375, y: 0.3125}
+      - {x: -0.375, y: 0.125}
+      - {x: -0.4375, y: 0.125}
+      - {x: -0.4375, y: -0.0625}
+      - {x: -0.5, y: -0.0625}
+      - {x: -0.5, y: -0.375}
+      - {x: -0.4375, y: -0.375}
+      - {x: -0.4375, y: -0.5}
+      - {x: -0.375, y: -0.5}
+      - {x: -0.375, y: -0.5625}
+      - {x: -0.25, y: -0.5625}
+      - {x: -0.25, y: -0.625}
+      - {x: 0.25, y: -0.625}
+      - {x: 0.25, y: -0.5625}
+      - {x: 0.375, y: -0.5625}
+      - {x: 0.375, y: -0.5}
+      - {x: 0.4375, y: -0.5}
+      - {x: 0.4375, y: -0.375}
+      - {x: 0.5, y: -0.375}
+      - {x: 0.5, y: -0.0625}
+      - {x: 0.4375, y: -0.0625}
+      - {x: 0.4375, y: 0.125}
+      - {x: 0.375, y: 0.125}
+      - {x: 0.375, y: 0.3125}
+      - {x: 0.3125, y: 0.3125}
+      - {x: 0.3125, y: 0.5}

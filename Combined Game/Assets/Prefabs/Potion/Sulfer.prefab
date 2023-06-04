@@ -4902,7 +4902,7 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.1, y: -0.1}
   serializedVersion: 2
   m_Radius: 0.65
 --- !u!114 &9028414826078608652
@@ -4921,6 +4921,7 @@ MonoBehaviour:
   ingredientGreen: 0.6666667
   ingredientBlue: 1
   ingredientType: 11
+  inWater: 0
   ingredientCollider: {fileID: 9028414826078608643}
   ingredientRenderer: {fileID: 9028414826078608641}
   particleSystem: {fileID: 9028414826078608640}

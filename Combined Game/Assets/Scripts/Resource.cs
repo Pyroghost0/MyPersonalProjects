@@ -12,6 +12,8 @@ public enum MiningType
 
 public class Resource : MonoBehaviour, InteractableObject
 {
+    public GameObject parentObject;
+    public TerrainType terrainType;
     public ItemType[] possibleItems;
     public float[] itemChance = { 1f };
     public GameObject itemPrefab;
@@ -19,6 +21,8 @@ public class Resource : MonoBehaviour, InteractableObject
     public MiningType miningType;
     public float totalGatherTime = 2f;
     private float gatherTime;
+    public Transform bar;
+    public Vector3 upBarPosition = new Vector3(0f, .5f);
     public SpriteRenderer spriteRenderer;
     public SpriteRenderer gatherBarAmount;
     public GameObject gatherBar;
@@ -37,6 +41,49 @@ public class Resource : MonoBehaviour, InteractableObject
     void Start()
     {
         gatherTime = totalGatherTime;
+        if (terrainType == TerrainType.BigResource)
+        {
+            transform.position += new Vector3(Random.Range(-.05f, .05f), Random.Range(-.05f, .05f));
+        }
+        else if (terrainType == TerrainType.CoveredResource)
+        {
+            int i = -1;
+            int j = -1;
+            while (i < 2)
+            {
+                bool found = false;
+                while (j < 2)
+                {
+                    if (row + i < 0 || row + i >= TerrainGenerator.terrain.GetLength(0) || column + j < 0 || column + j >= TerrainGenerator.terrain.GetLength(1))
+                    {
+                        j++;
+                    }
+                    else if (TerrainGenerator.terrain[row + i, column+ j] == TerrainType.BigResource)
+                    {
+                        found = true;
+                        break;
+                    }
+                    else
+                    {
+                        j++;
+                    }
+                }
+                if (found)
+                {
+                    break;
+                }
+                else
+                {
+                    j = -1;
+                }
+                i++;
+            }
+            transform.position += new Vector3(Random.Range(-.25f, .25f) + (.4f * i), Random.Range(-.25f, .25f) + (.2f * j) + .25f);
+        }
+        else
+        {
+            transform.position += new Vector3(Random.Range(-.2f, .2f), Random.Range(-.25f, .25f));
+        }
         spriteRenderer.sortingOrder = -(int)(transform.position.y * 10f);
     }
 
@@ -52,6 +99,10 @@ public class Resource : MonoBehaviour, InteractableObject
 
     IEnumerator GatherCoroutine()
     {
+        if (transform.position.y - Player.instance.transform.position.y > 0f)
+        {
+            bar.localPosition = upBarPosition;
+        }
         gatherBar.SetActive(true);
         while (gatherTime > 0f)
         {
@@ -72,7 +123,8 @@ public class Resource : MonoBehaviour, InteractableObject
         {
             TerrainGenerator.instance.RemoveResource(row, column);
         }
-        Destroy(gameObject);
+        Player.instance.animator.SetTrigger("Stop");
+        Destroy(parentObject);
     }
 
     public void Cancel()

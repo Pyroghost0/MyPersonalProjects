@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 9179711357121497349}
   - component: {fileID: 7087255868740478366}
   - component: {fileID: 8334931463618990600}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body
-  m_TagString: Item
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73,9 +73,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 348748385
+  m_SortingLayer: 1
+  m_SortingOrder: -1
   m_Sprite: {fileID: 81630044, guid: a040d67b0206bd2498739d5330acb75f, type: 3}
   m_Color: {r: 0.8745098, g: 0.8745098, b: 0.8745098, a: 1}
   m_FlipX: 0
@@ -100,6 +100,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smokePrefab: {fileID: 1069178560773174767, guid: 7c8997300bc5c514698cf9b92643d9e1, type: 3}
+  spriteRenderer: {fileID: 9179711357121497346}
+  enemyColor: 0
+  sprites:
+  - {fileID: 81630044, guid: a040d67b0206bd2498739d5330acb75f, type: 3}
+  - {fileID: 1017569860, guid: a040d67b0206bd2498739d5330acb75f, type: 3}
+  - {fileID: -2041146862, guid: a040d67b0206bd2498739d5330acb75f, type: 3}
+  - {fileID: 1492160527, guid: a040d67b0206bd2498739d5330acb75f, type: 3}
+  - {fileID: 2089294487, guid: a040d67b0206bd2498739d5330acb75f, type: 3}
+  - {fileID: -1030666530, guid: a040d67b0206bd2498739d5330acb75f, type: 3}
+  - {fileID: 1937691022, guid: a040d67b0206bd2498739d5330acb75f, type: 3}
+  - {fileID: -1059208885, guid: a040d67b0206bd2498739d5330acb75f, type: 3}
+  - {fileID: 1261211638, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: -157135645, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: 1627618855, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: -804246269, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: -1398511483, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: -2066767872, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: -1229792023, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: -1966068542, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: -1237771412, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
+  - {fileID: -2001434756, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
+  - {fileID: -2056088581, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
+  - {fileID: -759976738, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
+  - {fileID: -1011197796, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
+  - {fileID: 1709447179, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
+  - {fileID: -516940491, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
+  - {fileID: -328695578, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
 --- !u!58 &7087255868740478366
 CircleCollider2D:
   m_ObjectHideFlags: 0

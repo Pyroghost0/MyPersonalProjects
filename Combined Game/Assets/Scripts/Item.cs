@@ -50,6 +50,11 @@ public class Item : MonoBehaviour
     private float timer = 0f;
     private bool pickedUp = false;
 
+    void Start()
+    {
+        spriteRenderer.sortingOrder = -(int)(transform.position.y * 10f);
+    }
+
     //Floats
     void Update()
     {
@@ -94,17 +99,27 @@ public class Item : MonoBehaviour
     //Goes to player and shrinks
     protected IEnumerator CollectionAnimation()
     {
+        spriteRenderer.sortingOrder += 100;
         pickedUp = true;
         transform.SetParent(GameObject.FindGameObjectWithTag("Player").transform);
-        Vector3 distance = transform.localPosition * -2f;
+        Vector3 distance = transform.localPosition * -1.5f;
         float startScale = transform.localScale.x;
         timer = 0f;
-        while (timer < .5f)
+        while (timer < .75f)
         {
-            transform.localScale = Vector3.one * startScale * ((.5f - timer) / .5f);
+            transform.localScale = Vector3.one * startScale * ((.75f - timer) / .75f);
             yield return new WaitForFixedUpdate();
             timer+=Time.deltaTime;
             transform.position += distance * Time.deltaTime;
+        }
+        Player.inventoryProgress[(int)itemType]++;
+        if ((int)itemType <= 5)
+        {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().UpdateItemAmount();
+        }
+        else if ((int)itemType >= 2)
+        {
+            PlayerInventory.instance.UpdateItem((int)itemType);
         }
         Destroy(gameObject);
     }

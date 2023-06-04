@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 1013875896394949983}
   - component: {fileID: 3493970683648683013}
   - component: {fileID: 3465562925879964959}
-  - component: {fileID: 9218245826960171073}
   - component: {fileID: 3558370982165867248}
+  - component: {fileID: 8388349499453223708}
   m_Layer: 7
   m_Name: Cooked Heart
   m_TagString: Ingredient
@@ -4816,7 +4816,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!199 &3465562925879964959
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -4889,22 +4889,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!58 &9218245826960171073
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7294948577385509790}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.65
 --- !u!114 &3558370982165867248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4921,7 +4905,79 @@ MonoBehaviour:
   ingredientGreen: 0
   ingredientBlue: 0.16666667
   ingredientType: 3
-  ingredientCollider: {fileID: 9218245826960171073}
+  inWater: 0
+  ingredientCollider: {fileID: 8388349499453223708}
   ingredientRenderer: {fileID: 5687654083165540353}
   particleSystem: {fileID: 1013875896394949983}
   rigidbody: {fileID: 3493970683648683013}
+--- !u!60 &8388349499453223708
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7294948577385509790}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 8, y: 8}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.6875, y: 0.1875}
+      - {x: 0.6875, y: 0.25}
+      - {x: 0.75, y: 0.25}
+      - {x: 0.75, y: 0.625}
+      - {x: 0.6875, y: 0.625}
+      - {x: 0.6875, y: 0.6875}
+      - {x: 0.4375, y: 0.6875}
+      - {x: 0.4375, y: 0.75}
+      - {x: -0.125, y: 0.75}
+      - {x: -0.125, y: 0.6875}
+      - {x: -0.4375, y: 0.6875}
+      - {x: -0.4375, y: 0.625}
+      - {x: -0.5625, y: 0.625}
+      - {x: -0.5625, y: 0.5625}
+      - {x: -0.625, y: 0.5625}
+      - {x: -0.625, y: 0.4375}
+      - {x: -0.6875, y: 0.4375}
+      - {x: -0.6875, y: 0.1875}
+      - {x: -0.625, y: 0.1875}
+      - {x: -0.625, y: 0.125}
+      - {x: -0.6875, y: 0.125}
+      - {x: -0.6875, y: -0.1875}
+      - {x: -0.625, y: -0.1875}
+      - {x: -0.625, y: -0.3125}
+      - {x: -0.5625, y: -0.3125}
+      - {x: -0.5625, y: -0.5625}
+      - {x: -0.5, y: -0.5625}
+      - {x: -0.5, y: -0.625}
+      - {x: 0.125, y: -0.625}
+      - {x: 0.125, y: -0.75}
+      - {x: 0.25, y: -0.75}
+      - {x: 0.25, y: -0.6875}
+      - {x: 0.625, y: -0.6875}
+      - {x: 0.625, y: -0.625}
+      - {x: 0.6875, y: -0.625}
+      - {x: 0.6875, y: -0.5625}
+      - {x: 0.75, y: -0.5625}
+      - {x: 0.75, y: -0.375}
+      - {x: 0.6875, y: -0.375}
+      - {x: 0.6875, y: -0.3125}
+      - {x: 0.75, y: -0.3125}
+      - {x: 0.75, y: -0.1875}
+      - {x: 0.8125, y: -0.1875}
+      - {x: 0.8125, y: 0.0625}
+      - {x: 0.75, y: 0.0625}
+      - {x: 0.75, y: 0.1875}

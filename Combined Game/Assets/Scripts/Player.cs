@@ -11,10 +11,12 @@ using TMPro;
 
 public class Player : MonoBehaviour
 {
+    public const float timeMultiplier = 3f;
     public GameObject bulletPrefab;
     public GameObject key;
     public float speed = 2.2f;
     public static int health = 5;
+    public static int maxHealth = 5;
     public bool hasKey = false;
     public Animator animator;
     public static float bulletCooldownTime = .6f;
@@ -29,11 +31,11 @@ public class Player : MonoBehaviour
 
     public static float[] gatherEfficiency = { 1f, 1f, 1f };
 
-    //0-15 = inventory, 16 = day, 17 = upgrade stations, 18 = cracked walls, 19 = desk upgrades, 20 = health upgaredes, 21 = fire status, 22 = dugeonLevel (health reset to 100% due to fairity)
-    public static ushort[] inventoryProgress = new ushort[23];
+    //0-15 = inventory, 16 = day, 17 = upgrade stations, 18 = cracked walls, 19 = desk upgrades, 20 = health upgaredes, 21 = fire status, 22 = dugeonLevel (health reset to 100% due to fairity), 23 = volume settings
+    public static ushort[] inventoryProgress = new ushort[24];
     //public Sprite[] itemSprites;
     //public Image inventorySprite;
-    public static int select = 1;
+    public static int select = 0;
     public GameObject bomb;
     public GameObject red;
     public GameObject yellow;
@@ -48,9 +50,22 @@ public class Player : MonoBehaviour
     public bool inHouse = false;
     public bool buildMode = false;
     public GameObject buildUI;
+
+    public bool buttonClick = false;
+    public TextMeshProUGUI[] itemTexts;
+    public Image[] items;
+    public Image healthImage;
+    public Transform clock;
+    public static float floatTime;
+    public static ushort dayTime;
+    public TextMeshProUGUI dayTimeText;
+
     void Start()
     {
         instance = this;
+        Select(select);
+        UpdateTime();
+        UpdateItemAmount();
     }
 
     //Updates movement and attacks
@@ -64,19 +79,19 @@ public class Player : MonoBehaviour
             //Inventory Selection
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                select = 1;
+                Select(0);
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha1))
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                select = 2;
+                Select(1);
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha1))
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                select = 3;
+                Select(2);
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha1))
+            else if (Input.GetKeyDown(KeyCode.Alpha4))
             {
-                select = 4;
+                Select(3);
             }
 
             if (inHouse)
@@ -135,6 +150,15 @@ public class Player : MonoBehaviour
             }
             else
             {
+                //Time
+                floatTime += Time.deltaTime * timeMultiplier;
+                if (floatTime >= 1200f)
+                {
+                    floatTime = 1200f;
+                    Debug.Log("Change");
+                }
+                UpdateTime();
+
                 //Movement and interact
                 if (!knockback)
                 {
@@ -174,9 +198,10 @@ public class Player : MonoBehaviour
                                 interaction.Interact();
                                 if (best.GetComponent<Resource>() != null)
                                 {
+                                    animator.SetFloat("X", 0f);
+                                    animator.SetFloat("Y", 0f);
+                                    animator.SetInteger("Direction", Mathf.Abs(best.position.x - transform.position.x) > Mathf.Abs(best.position.y - transform.position.y) ? (int)Mathf.Sign(best.position.x - transform.position.x) * 2 : (int)Mathf.Sign(best.position.y - transform.position.y));
                                     animator.SetTrigger(best.GetComponent<Resource>().miningType.ToString());
-                                    animator.SetFloat("X", 0);
-                                    animator.SetFloat("Y", 0);
                                     rigidbody.velocity = Vector2.zero;
                                 }
                             }
@@ -189,7 +214,7 @@ public class Player : MonoBehaviour
                 }
 
                 //Shooting
-                if (Input.GetKey(KeyCode.Mouse0) && !bulletCooldown)
+                if (Input.GetKey(KeyCode.Mouse0) && !bulletCooldown && !buttonClick)
                 {
                     if (interaction != null)
                     {
@@ -209,25 +234,29 @@ public class Player : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Mouse1))// && inventory != ItemType.Empty)
                 {
                     GameObject spawned = null;
-                    if (select == 1 && inventoryProgress[3] > 0)
+                    if (select == 0 && inventoryProgress[3] > 0)
                     {
                         inventoryProgress[3]--;
                         spawned = red;
+                        itemTexts[0].text = "x" + inventoryProgress[3];
                     }
-                    else if (select == 2 && inventoryProgress[4] > 0)
+                    else if (select == 1 && inventoryProgress[4] > 0)
                     {
                         inventoryProgress[4]--;
                         spawned = yellow;
+                        itemTexts[1].text = "x" + inventoryProgress[4];
                     }
-                    else if (select == 3 && inventoryProgress[5] > 0)
+                    else if (select == 2 && inventoryProgress[5] > 0)
                     {
                         inventoryProgress[5]--;
                         spawned = blue;
+                        itemTexts[2].text = "x" + inventoryProgress[5];
                     }
-                    else if (select == 4 && inventoryProgress[2] > 0)
+                    else if (select == 3 && inventoryProgress[2] > 0)
                     {
                         inventoryProgress[2]--;
                         spawned = bomb;
+                        itemTexts[3].text = "x" + inventoryProgress[2];
                     }
 
                     if (spawned != null)
@@ -252,9 +281,60 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void UpdateItemAmount()
+    {
+        itemTexts[0].text = "x" + inventoryProgress[3];
+        itemTexts[1].text = "x" + inventoryProgress[4];
+        itemTexts[2].text = "x" + inventoryProgress[5];
+        itemTexts[3].text = "x" + inventoryProgress[2];
+    }
+
+    public void UpdateTime()
+    {
+        dayTime = (ushort)floatTime;
+        //dayTimeText.text = (dayTime % 720 / 60 == 0 ? 12 : dayTime % 720 / 60).ToString() + ":" + (dayTime % 60 / 10 == 0 ? "0" + dayTime % 60 : dayTime % 60) + (dayTime / 720 == 0 ? "AM" : "PM");
+        dayTimeText.text = (dayTime % 720 / 60 == 0 ? 12 : dayTime % 720 / 60).ToString() + ":" + (dayTime % 60 / 15 == 0 ? "00" : dayTime % 60 / 15 * 15) + (dayTime / 720 == 0 ? "AM" : "PM");
+        clock.rotation = Quaternion.Euler(0f, 0f, (floatTime-240f) / 4f);
+    }
+
+    /*public void ButtonSelect(int num)
+    {
+        Debug.Log(1);
+        Select(num);
+        StartCoroutine(ButtonCancel());
+    }
+
+    IEnumerator ButtonCancel()
+    {
+        Debug.Log(2);
+        buttonClick = true;
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        Debug.Log(buttonClick);
+        buttonClick = false;
+    }*/
+
+    public void Select(int num)
+    {
+        select = num;
+        for (int i = 0; i < 4; i++)
+        {
+            items[i].color = i == num ? Color.white : Color.grey;
+        }
+    }
+
     public void UpdateHealth(int difference)
     {
         health += difference;
+        if (health <= 0){
+            health = 0;
+            Debug.Log("Died");
+        }
+        else if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
+        healthImage.fillAmount = ((float)health) / maxHealth;
         //Check possibility
         //update UI
     }
@@ -286,7 +366,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && !knockback && !invincible)//!attacking
         {
-            health--;
+            UpdateHealth(-1);
             //healthText.text = "Health: " + health;
             if (health > 0)
             {

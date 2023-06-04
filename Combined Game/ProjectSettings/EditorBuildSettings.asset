@@ -20,4 +20,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Potion.unity
     guid: 8cab81e6b9b5b5a40a2b8601361cdfe7
+  - enabled: 1
+    path: Assets/Scenes/Dungeon.unity
+    guid: a805959b7bfe97f4fbcf1b64bb8adb17
+  - enabled: 1
+    path: Assets/Scenes/Boss.unity
+    guid: 95524f3d393e11d4ab97bb58d421f6c2
   m_configObjects: {}

@@ -96,6 +96,8 @@ public class TerrainGenerator : MonoBehaviour
                 terrain[i, j] = TerrainType.Unavailable;
             }
         }
+        terrain[24, 29] = TerrainType.Unavailable;
+        terrain[25, 29] = TerrainType.Unavailable;
 
         //Dungeon
         for (int i = 40; i < 47; i++)
@@ -105,6 +107,9 @@ public class TerrainGenerator : MonoBehaviour
                 terrain[i, j] = TerrainType.Unavailable;
             }
         }
+        terrain[42, 5] = TerrainType.Unavailable;
+        terrain[43, 5] = TerrainType.Unavailable;
+        terrain[44, 5] = TerrainType.Unavailable;
 
         //Ruins
         for (int i = 4; i < 10; i++)
@@ -149,7 +154,7 @@ public class TerrainGenerator : MonoBehaviour
                             {
                                 if (CheckIfClear(i, j))
                                 {
-                                    Instantiate(prefabs[k], new Vector3(startX + i, startY + j), transform.rotation).GetComponent<Resource>().SetRowColumn(i, j);
+                                    Instantiate(prefabs[k], new Vector3(startX + i, startY + j), transform.rotation).transform.GetChild(0).GetComponent<Resource>().SetRowColumn(i, j);
                                     for (int startI = i-1; startI < i+2; startI++)
                                     {
                                         for (int startJ = j-1; startJ < j+2; startJ++)
@@ -167,7 +172,7 @@ public class TerrainGenerator : MonoBehaviour
                             }
                             else
                             {
-                                Instantiate(prefabs[k], new Vector3(startX + i, startY + j), transform.rotation).GetComponent<Resource>().SetRowColumn(i, j);
+                                Instantiate(prefabs[k], new Vector3(startX + i, startY + j), transform.rotation).transform.GetChild(0).GetComponent<Resource>().SetRowColumn(i, j);
                                 terrain[i, j] = TerrainType.SmallResource;
                                 resourceTypes[i, j] = k;
                                 break;
@@ -188,7 +193,7 @@ public class TerrainGenerator : MonoBehaviour
                     for (int k = 0; k < coveredResourcePrefabs.Length; k++)
 #pragma warning restore CS0162 // Unreachable code detected
                     {
-                        Instantiate(coveredResourcePrefabs[k], new Vector3(startX + i, startY + j), transform.rotation).GetComponent<Resource>().SetRowColumn(i, j);
+                        Instantiate(coveredResourcePrefabs[k], new Vector3(startX + i, startY + j), transform.rotation).transform.GetChild(0).GetComponent<Resource>().SetRowColumn(i, j);
                         terrain[i, j] = TerrainType.CoveredResource;
                         resourceTypes[i, j] = (short)(k + prefabs.Length);
                         break;

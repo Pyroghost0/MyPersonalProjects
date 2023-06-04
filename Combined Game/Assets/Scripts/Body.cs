@@ -10,12 +10,28 @@ using UnityEngine;
 public class Body : MonoBehaviour
 {
     public GameObject smokePrefab;
+    public SpriteRenderer spriteRenderer;
+    public EnemyColor enemyColor;
+    public Sprite[] sprites;
     private bool doubleDeath = false;
+
+    IEnumerator Start()
+    {
+        for (int i = 0; i < sprites.Length; i++)
+        {
+            if (spriteRenderer.sprite == sprites[i])
+            {
+                enemyColor = (EnemyColor)(i / 8);
+            }
+        }
+        yield return new WaitForSeconds(60f);
+        DestroyBody();
+    }
 
     //Sets body to head settings
     public void SetHead(Sprite sprite)
     {
-        GetComponent<SpriteRenderer>().sprite = sprite;
+        spriteRenderer.sprite = sprite;
         GetComponent<Rigidbody2D>().mass = .5f;
         GetComponent<CircleCollider2D>().radius = .25f;
     }
@@ -25,10 +41,17 @@ public class Body : MonoBehaviour
     {
         if (collision.CompareTag("Bullet") && !doubleDeath)
         {
-            doubleDeath = true;
-            Instantiate(smokePrefab, transform.position, transform.rotation);
             Destroy(collision.gameObject);
-            Destroy(gameObject);
+            DestroyBody();
         }
+    }
+
+    public void DestroyBody()
+    {
+        doubleDeath = true;
+#pragma warning disable CS0618 // Type or member is obsolete
+        Instantiate(smokePrefab, transform.position, transform.rotation).GetComponent<ParticleSystem>().startColor = enemyColor == EnemyColor.Red ? new Color(0.2641509f, 0.1240628f, 0.05401868f) : enemyColor == EnemyColor.Yellow ? new Color(0.2627451f, 0.1336386f, 0.05490196f) : new Color(0.2175974f, 0.05490196f, 0.2627451f);
+#pragma warning restore CS0618 // Type or member is obsolete
+        Destroy(gameObject);
     }
 }

@@ -7,17 +7,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3389424537211074880, guid: 501068a1c87e2634083de9afaf624492, type: 3}
+      propertyPath: terrainType
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3389424537211074880, guid: 501068a1c87e2634083de9afaf624492, type: 3}
+      propertyPath: possibleItems.Array.data[0]
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277251327658157725, guid: 501068a1c87e2634083de9afaf624492, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f37a42fa6e4497c4ea4b6f4630841699, type: 3}
+    - target: {fileID: 4654453494567002955, guid: 501068a1c87e2634083de9afaf624492, type: 3}
+      propertyPath: m_Radius
+      value: 0.16881149
+      objectReference: {fileID: 0}
+    - target: {fileID: 4654453494567002955, guid: 501068a1c87e2634083de9afaf624492, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.325
+      objectReference: {fileID: 0}
+    - target: {fileID: 4654453494567002955, guid: 501068a1c87e2634083de9afaf624492, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6308291705190874200, guid: 501068a1c87e2634083de9afaf624492, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: f37a42fa6e4497c4ea4b6f4630841699, type: 3}
     - target: {fileID: 6308291705190874200, guid: 501068a1c87e2634083de9afaf624492, type: 3}
       propertyPath: m_SortingLayer
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6308291705190874200, guid: 501068a1c87e2634083de9afaf624492, type: 3}
       propertyPath: m_SortingLayerID
-      value: 888705381
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6308291705190874201, guid: 501068a1c87e2634083de9afaf624492, type: 3}
       propertyPath: m_RootOrder
@@ -76,6 +100,14 @@ PrefabInstance:
       value: Voidshroom Variant
       objectReference: {fileID: 0}
     - target: {fileID: 6308291705190874278, guid: 501068a1c87e2634083de9afaf624492, type: 3}
+      propertyPath: terrainType
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6308291705190874278, guid: 501068a1c87e2634083de9afaf624492, type: 3}
+      propertyPath: spriteRenderer
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6308291705190874278, guid: 501068a1c87e2634083de9afaf624492, type: 3}
       propertyPath: totalGatherTime
       value: 0.1
       objectReference: {fileID: 0}
@@ -83,5 +115,19 @@ PrefabInstance:
       propertyPath: possibleItems.Array.data[0]
       value: 11
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8213877351265504798, guid: 501068a1c87e2634083de9afaf624492, type: 3}
+      propertyPath: m_Radius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8213877351265504798, guid: 501068a1c87e2634083de9afaf624492, type: 3}
+      propertyPath: m_Offset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8213877351265504798, guid: 501068a1c87e2634083de9afaf624492, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6308291705190874202, guid: 501068a1c87e2634083de9afaf624492, type: 3}
+    - {fileID: 8213877351265504798, guid: 501068a1c87e2634083de9afaf624492, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 501068a1c87e2634083de9afaf624492, type: 3}

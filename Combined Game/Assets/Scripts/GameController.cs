@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -23,17 +24,46 @@ public class GameController : MonoBehaviour
     public static bool paused = false;
     public static bool fromMainMenu = false;
     public static bool fromDungeon = false;
+    public static bool fromPotion = false;
+    public Cinemachine.CinemachineVirtualCamera cinemachineVirtualCamera;
     //public static bool doneLoading = false;
 
     public GameObject tutorialScreen;
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI explainationText;
+    public static int musicValue { get { return Player.inventoryProgress[23] % 101; } set { Player.inventoryProgress[23] += (ushort)(value - (Player.inventoryProgress[23] % 101)); } }
+    public static int effectsValue { get { return Player.inventoryProgress[23] / 101; } set { Player.inventoryProgress[23] = (ushort)((value*101) + (Player.inventoryProgress[23] % 101)); } }
     public GameObject[] upgradeStations;
+    public GameObject[] enemyPrefabs;
+    public Slider musicSlider;
+    public Slider effectsSlider;
+    public TextMeshProUGUI musicSliderText;
+    public TextMeshProUGUI effectsSliderText;
+    public AudioMixer musicMixer;
+    public AudioMixer effectsMixer;
 
     //On start set timescale
     void Start()
     {
-        StartCoroutine(FadeLoad());
+        musicSlider.value = musicValue;
+        effectsSlider.value = effectsValue;
+        MusicSlider();
+        EffectsSlider();
+        Application.targetFrameRate = 60;
+        if (SceneManager.GetActiveScene().name == "Potion")
+        {
+            Time.timeScale = 1f;
+        }
+        else if (fromPotion)
+        {
+            fromPotion = false;
+            GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(-3.4f, 1.75f);
+            upgradeStations[0].GetComponent<UpgradeStations>().Interact();
+        }
+        else
+        {
+            StartCoroutine(FadeLoad());
+        }
     }
 
     IEnumerator FadeLoad()
@@ -42,28 +72,41 @@ public class GameController : MonoBehaviour
         {
             yield return new WaitUntil(() => MainMenuManager.doneLoading);
             loadingImage.gameObject.SetActive(true);
-            if (Data.Exists())
+            if (SceneManager.GetActiveScene().name == "Game")
             {
-                TerrainGenerator.instance.Load();
+                if (Data.Exists())
+                {
+                    TerrainGenerator.instance.Load();
+                }
+                else
+                {
+                    TerrainGenerator.instance.GenerateTerrain(50);
+                }
             }
-            else
+            if (Player.floatTime == 0f)
             {
-                TerrainGenerator.instance.GenerateTerrain(50);
+                StartCoroutine(EnemyCoroutine());
             }
             AsyncOperation ao = SceneManager.UnloadSceneAsync("Main Menu");
             yield return new WaitUntil(() => ao.isDone);
+            fromMainMenu = false;
         }
         else if (fromDungeon)
         {
             TerrainGenerator.instance.Load();
             loadingImage.gameObject.SetActive(true);
             GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(18.5f, -23.5f, 0f);
+            cinemachineVirtualCamera.ForceCameraPosition(GameObject.FindGameObjectWithTag("Player").transform.position, transform.rotation);
             fromDungeon = false;
         }
         else
         {
             if (SceneManager.GetActiveScene().name == "Game")
             {
+                if (Player.floatTime == 0f)
+                {
+                    StartCoroutine(EnemyCoroutine());
+                }
                 TerrainGenerator.instance.Load();
             }
             //yield return new WaitUntil(() => doneLoading);
@@ -77,6 +120,10 @@ public class GameController : MonoBehaviour
             loadingImage.color = new Color(0f, 0f, 0f, 1f - timer);
             yield return new WaitForEndOfFrame();
             timer += Time.unscaledDeltaTime;
+        }
+        if (SceneManager.GetActiveScene().name == "Game" && (Player.floatTime == 0f || Player.floatTime == 240f))
+        {
+            StartCoroutine(DayCoroutine());
         }
         Resume();
         loadingImage.gameObject.SetActive(false);
@@ -118,6 +165,39 @@ public class GameController : MonoBehaviour
                 Pause();
             }
         }
+    }
+
+    IEnumerator EnemyCoroutine()
+    {
+        GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
+        foreach (GameObject door in doors)
+        {
+            door.GetComponent<Door>().canOpen = false;
+        }
+        Transform player = GameObject.FindGameObjectWithTag("Player").transform;
+        while (Player.floatTime < 240f)
+        {
+            float rotation = Random.Range(0f, 360f);
+            Instantiate(enemyPrefabs[0], player.position + new Vector3(Mathf.Sin(rotation) * 10f, Mathf.Cos(rotation) * 10f), transform.rotation).GetComponent<Enemy>().enemyColor = (EnemyColor)Random.Range(0, 2);
+            yield return new WaitForSeconds(Random.Range(5f, 5f));
+        }
+        ushort day = (ushort)(Player.inventoryProgress[16] / 4);
+        Player.inventoryProgress[16] = (ushort)(day * 4);
+        foreach (GameObject door in doors)
+        {
+            door.GetComponent<Door>().canOpen = true;
+        }
+        StartCoroutine(DayCoroutine());
+    }
+
+    IEnumerator DayCoroutine()
+    {
+        yield break;
+    }
+
+    IEnumerator DayLightCoroutine()
+    {
+        yield break;
     }
 
     public void Pause()
@@ -196,6 +276,27 @@ public class GameController : MonoBehaviour
         Player.inventoryProgress[17] += (ushort)Mathf.Pow(2, type);
         upgradeStations[type].SetActive(true);
         upgradeStations[type].GetComponent<UpgradeStations>().Build();
+    }
+
+    public void LoadFromPotion()
+    {
+        Time.timeScale = 0f;
+        fromPotion = true;
+        SceneManager.LoadScene("House");
+    }
+
+    public void MusicSlider()
+    {
+        musicSliderText.text = musicSlider.value.ToString();
+        musicValue = (int)musicSlider.value;
+        musicMixer.SetFloat("Volume", (Mathf.Log10(musicSlider.value + 1f) * 50f) - 80f);
+    }
+
+    public void EffectsSlider()
+    {
+        effectsSliderText.text = effectsSlider.value.ToString();
+        effectsValue = (int)effectsSlider.value;
+        effectsMixer.SetFloat("Volume", (Mathf.Log10(effectsSlider.value + 1f) * 50f) - 80f);
     }
 
     //Respawns idol after item picked up

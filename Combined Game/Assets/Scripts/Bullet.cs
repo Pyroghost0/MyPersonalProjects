@@ -16,7 +16,7 @@ public class Bullet : MonoBehaviour
     //Destroyed from contact
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Door") || collision.gameObject.CompareTag("Cracked Wall") || collision.gameObject.CompareTag("InteractableObject"))
+        if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Door") || collision.gameObject.CompareTag("Cracked Wall") || (collision.gameObject.CompareTag("InteractableObject") && !collision.isTrigger))
         {
             Destroy(gameObject);
         }

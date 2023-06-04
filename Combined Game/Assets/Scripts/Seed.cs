@@ -59,7 +59,7 @@ public class Seed : MonoBehaviour
                 //mouse.position = position;
                 if (!seedCollider.IsTouching(mouseCollider))
                 {
-                    rigidbody.AddForce((seedCollider.ClosestPoint(position) - ((Vector2)transform.position)) * 30f);
+                    rigidbody.AddForce((seedCollider.ClosestPoint(position) - ((Vector2)transform.position)) * 75f);
                 }
             }
         }

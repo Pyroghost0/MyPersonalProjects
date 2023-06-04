@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 676712206658243289}
   - component: {fileID: 676712206658243288}
   - component: {fileID: 676712206658243295}
-  - component: {fileID: 676712206658243294}
   - component: {fileID: 676712206658243292}
   - component: {fileID: 6675428409688534136}
+  - component: {fileID: 2516095933078954290}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: Arrow
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,22 +101,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 676712206658243292}
---- !u!70 &676712206658243294
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 676712206658243291}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.01}
-  m_Size: {x: 0.1, y: 0.22}
-  m_Direction: 0
 --- !u!50 &676712206658243292
 Rigidbody2D:
   serializedVersion: 4
@@ -180,7 +164,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.1
+  m_Time: 0.15
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -210,8 +194,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.7843138, g: 0.6431373, b: 0.16862746, a: 1}
-      key1: {r: 0, g: 0, b: 0, a: 0}
+      key0: {r: 1, g: 1, b: 1, a: 0.2509804}
+      key1: {r: 0, g: 0, b: 0, a: 0.1254902}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -227,8 +211,8 @@ TrailRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 65535
-      atime2: 0
+      atime1: 49151
+      atime2: 65535
       atime3: 0
       atime4: 0
       atime5: 0
@@ -236,7 +220,7 @@ TrailRenderer:
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
+      m_NumAlphaKeys: 3
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
@@ -246,3 +230,38 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!60 &2516095933078954290
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 676712206658243291}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.2}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.00615062, y: 0.24224646}
+      - {x: -0.03665717, y: 0.1627127}
+      - {x: -0.03923843, y: 0.11601361}
+      - {x: -0.0076133385, y: 0.116256416}
+      - {x: -0.0081586875, y: -0.14892614}
+      - {x: 0.008047506, y: -0.15071675}
+      - {x: 0.0085803345, y: 0.11650427}
+      - {x: 0.039527453, y: 0.11805731}
+      - {x: 0.036226526, y: 0.16379374}
+      - {x: 0.0069484953, y: 0.24234737}

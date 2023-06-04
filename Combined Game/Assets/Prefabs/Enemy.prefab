@@ -74,8 +74,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 888705381
-  m_SortingLayer: -1
+  m_SortingLayerID: 348748385
+  m_SortingLayer: 1
   m_SortingOrder: 998
   m_Sprite: {fileID: -297396092, guid: ab4b368f5c317fe4d8684f7ae462e2fa, type: 3}
   m_Color: {r: 0.8745098, g: 0.8745098, b: 0.8745098, a: 1}
@@ -104,6 +104,7 @@ MonoBehaviour:
   health: 3
   smoke: {fileID: 1069178560773174767, guid: 7c8997300bc5c514698cf9b92643d9e1, type: 3}
   speed: 1.5
+  slowedSpeed: 0.75
   followDistance: 10
   knockback: 0
   spawner: {fileID: 0}
@@ -118,6 +119,22 @@ MonoBehaviour:
   - {fileID: -1030666530, guid: a040d67b0206bd2498739d5330acb75f, type: 3}
   - {fileID: 1937691022, guid: a040d67b0206bd2498739d5330acb75f, type: 3}
   - {fileID: -1059208885, guid: a040d67b0206bd2498739d5330acb75f, type: 3}
+  - {fileID: 1261211638, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: -157135645, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: 1627618855, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: -804246269, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: -1398511483, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: -2066767872, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: -1229792023, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: -1966068542, guid: 2a8201e314c4f254a81982fb10419ce0, type: 3}
+  - {fileID: -1237771412, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
+  - {fileID: -2001434756, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
+  - {fileID: -2056088581, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
+  - {fileID: -759976738, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
+  - {fileID: -1011197796, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
+  - {fileID: 1709447179, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
+  - {fileID: -516940491, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
+  - {fileID: -328695578, guid: aa16e3bb2d0a0f146aa1e3c0b96fad63, type: 3}
   enemySprites:
   - {fileID: -946743639, guid: ab4b368f5c317fe4d8684f7ae462e2fa, type: 3}
   - {fileID: -297396092, guid: ab4b368f5c317fe4d8684f7ae462e2fa, type: 3}
@@ -131,8 +148,33 @@ MonoBehaviour:
   - {fileID: -786416051, guid: ab4b368f5c317fe4d8684f7ae462e2fa, type: 3}
   - {fileID: 2041256853, guid: ab4b368f5c317fe4d8684f7ae462e2fa, type: 3}
   - {fileID: -784312498, guid: ab4b368f5c317fe4d8684f7ae462e2fa, type: 3}
+  - {fileID: -2068954566, guid: 26162d87ba7e1d2449310a38328ed8ad, type: 3}
+  - {fileID: 313000307, guid: 26162d87ba7e1d2449310a38328ed8ad, type: 3}
+  - {fileID: -992413186, guid: 26162d87ba7e1d2449310a38328ed8ad, type: 3}
+  - {fileID: 1678802279, guid: 26162d87ba7e1d2449310a38328ed8ad, type: 3}
+  - {fileID: -310333235, guid: 26162d87ba7e1d2449310a38328ed8ad, type: 3}
+  - {fileID: 776787276, guid: 26162d87ba7e1d2449310a38328ed8ad, type: 3}
+  - {fileID: -1400046726, guid: 26162d87ba7e1d2449310a38328ed8ad, type: 3}
+  - {fileID: -423947223, guid: 26162d87ba7e1d2449310a38328ed8ad, type: 3}
+  - {fileID: 1323070033, guid: 26162d87ba7e1d2449310a38328ed8ad, type: 3}
+  - {fileID: 530938253, guid: 26162d87ba7e1d2449310a38328ed8ad, type: 3}
+  - {fileID: 248147353, guid: 26162d87ba7e1d2449310a38328ed8ad, type: 3}
+  - {fileID: -290069925, guid: 26162d87ba7e1d2449310a38328ed8ad, type: 3}
+  - {fileID: 1578963386, guid: e2772c823f6ad37408383e88a0371e75, type: 3}
+  - {fileID: -301204026, guid: e2772c823f6ad37408383e88a0371e75, type: 3}
+  - {fileID: -1518308001, guid: e2772c823f6ad37408383e88a0371e75, type: 3}
+  - {fileID: 1493779873, guid: e2772c823f6ad37408383e88a0371e75, type: 3}
+  - {fileID: 272342457, guid: e2772c823f6ad37408383e88a0371e75, type: 3}
+  - {fileID: -1451293472, guid: e2772c823f6ad37408383e88a0371e75, type: 3}
+  - {fileID: 1317154038, guid: e2772c823f6ad37408383e88a0371e75, type: 3}
+  - {fileID: -605376629, guid: e2772c823f6ad37408383e88a0371e75, type: 3}
+  - {fileID: 302432737, guid: e2772c823f6ad37408383e88a0371e75, type: 3}
+  - {fileID: -241503801, guid: e2772c823f6ad37408383e88a0371e75, type: 3}
+  - {fileID: 254734506, guid: e2772c823f6ad37408383e88a0371e75, type: 3}
+  - {fileID: -1341397629, guid: e2772c823f6ad37408383e88a0371e75, type: 3}
   bodyPrefab: {fileID: 9179711357121497348, guid: 5948bc0a6fb6b3646ad971341b1fa9a2, type: 3}
   itemPrefab: {fileID: 8194134474968318817, guid: 2e971dfd50279a24bb348cd2f93435dd, type: 3}
+  enemyColor: 0
 --- !u!50 &8194134474968318877
 Rigidbody2D:
   serializedVersion: 4

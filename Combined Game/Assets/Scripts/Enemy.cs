@@ -7,6 +7,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EnemyColor
+{
+    Red = 0,
+    Yellow = 1,
+    Blue = 2
+}
+
 public class Enemy : MonoBehaviour
 {
     public Transform target;
@@ -15,7 +22,9 @@ public class Enemy : MonoBehaviour
     public GameObject smoke;
     //public Vector3 initPos;
     public float speed = 3f;
+    public float slowedSpeed = 1.5f;
     public float followDistance = 10f;
+    private bool slowed = false;
     public bool knockback = false;
     //public bool invincible = false;
     public Spawner spawner;
@@ -28,10 +37,21 @@ public class Enemy : MonoBehaviour
     public Sprite[] enemySprites;
     public GameObject bodyPrefab;
     public GameObject itemPrefab;
+    public EnemyColor enemyColor;
+
+    public 
 
     //Sets up variables
     void Start()
     {
+        if (enemyColor == EnemyColor.Yellow)
+        {
+            animator.SetTrigger("Yellow");
+        }
+        else if (enemyColor == EnemyColor.Blue)
+        {
+            animator.SetTrigger("Blue");
+        }
         target = GameObject.FindGameObjectWithTag("Player").transform;
         //initPos = transform.position;
     }
@@ -43,7 +63,7 @@ public class Enemy : MonoBehaviour
         {
             if ((target.position - transform.position).magnitude < followDistance)
             {
-                rigidbody.velocity = ((target.position - transform.position).normalized) * speed;
+                rigidbody.velocity = ((target.position - transform.position).normalized) * (slowed ? slowedSpeed : speed);
             }
             else
             {
@@ -64,29 +84,32 @@ public class Enemy : MonoBehaviour
             health--;
             if (health <= 0)
             {
-                spawner.EnemyDeath();
+                if (spawner != null)
+                {
+                    spawner.EnemyDeath();
+                }
 
                 //Body
                 Sprite enemySprite = GetComponent<SpriteRenderer>().sprite;
-                if (enemySprite == enemySprites[0] || enemySprite == enemySprites[1] || enemySprite == enemySprites[2])
+                if (enemySprite == enemySprites[((int)enemyColor)*12+0] || enemySprite == enemySprites[((int)enemyColor)*12+1] || enemySprite == enemySprites[((int)enemyColor)*12+2])
                 {
-                    Instantiate(bodyPrefab, transform.position + new Vector3(0f, .125f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[0];
-                    Instantiate(bodyPrefab, transform.position + new Vector3(0f, -.2f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[1]);
+                    Instantiate(bodyPrefab, transform.position + new Vector3(0f, .125f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[((int)enemyColor)*8+0];
+                    Instantiate(bodyPrefab, transform.position + new Vector3(0f, -.2f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[((int)enemyColor)*8+1]);
                 }
-                else if (enemySprite == enemySprites[3] || enemySprite == enemySprites[4] || enemySprite == enemySprites[5])
+                else if (enemySprite == enemySprites[((int)enemyColor)*12+3] || enemySprite == enemySprites[((int)enemyColor)*12+4] || enemySprite == enemySprites[((int)enemyColor)*12+5])
                 {
-                    Instantiate(bodyPrefab, transform.position + new Vector3(.16f, 0f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[2];
-                    Instantiate(bodyPrefab, transform.position + new Vector3(-.24f, 0f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[3]);
+                    Instantiate(bodyPrefab, transform.position + new Vector3(.16f, 0f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[((int)enemyColor)*8+2];
+                    Instantiate(bodyPrefab, transform.position + new Vector3(-.24f, 0f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[((int)enemyColor)*8+3]);
                 }
-                else if (enemySprite == enemySprites[6] || enemySprite == enemySprites[7] || enemySprite == enemySprites[8])
+                else if (enemySprite == enemySprites[((int)enemyColor)*12+6] || enemySprite == enemySprites[((int)enemyColor)*12+7] || enemySprite == enemySprites[((int)enemyColor)*12+8])
                 {
-                    Instantiate(bodyPrefab, transform.position + new Vector3(0f, -.13f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[4];
-                    Instantiate(bodyPrefab, transform.position + new Vector3(0f, .25f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[5]);
+                    Instantiate(bodyPrefab, transform.position + new Vector3(0f, -.13f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[((int)enemyColor)*8+4];
+                    Instantiate(bodyPrefab, transform.position + new Vector3(0f, .25f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[((int)enemyColor)*8+5]);
                 }
-                else// if (enemySprite == enemySprites[9] || enemySprite == enemySprites[10] || enemySprite == enemySprites[11])
+                else// if (enemySprite == enemySprites[((int)enemyColor)*12+9] || enemySprite == enemySprites[((int)enemyColor)*12+10] || enemySprite == enemySprites[((int)enemyColor)*12+11])
                 {
-                    Instantiate(bodyPrefab, transform.position + new Vector3(-.16f, 0f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[6];
-                    Instantiate(bodyPrefab, transform.position + new Vector3(.24f, 0f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[7]);
+                    Instantiate(bodyPrefab, transform.position + new Vector3(-.16f, 0f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[((int)enemyColor)*8+6];
+                    Instantiate(bodyPrefab, transform.position + new Vector3(.24f, 0f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[((int)enemyColor)*8+7]);
                 }
 
                 //Item
@@ -108,27 +131,43 @@ public class Enemy : MonoBehaviour
 
             //Body
             Sprite enemySprite = GetComponent<SpriteRenderer>().sprite;
-            if (enemySprite == enemySprites[0] || enemySprite == enemySprites[1] || enemySprite == enemySprites[2])
+            if (enemySprite == enemySprites[((int)enemyColor)*12+0] || enemySprite == enemySprites[((int)enemyColor)*12+1] || enemySprite == enemySprites[((int)enemyColor)*12+2])
             {
-                Instantiate(bodyPrefab, transform.position + new Vector3(0f, .125f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[0];
-                Instantiate(bodyPrefab, transform.position + new Vector3(0f, -.2f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[1]);
+                Instantiate(bodyPrefab, transform.position + new Vector3(0f, .125f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[((int)enemyColor)*8+0];
+                Instantiate(bodyPrefab, transform.position + new Vector3(0f, -.2f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[((int)enemyColor)*8+1]);
             }
-            else if (enemySprite == enemySprites[3] || enemySprite == enemySprites[4] || enemySprite == enemySprites[5])
+            else if (enemySprite == enemySprites[((int)enemyColor)*12+3] || enemySprite == enemySprites[((int)enemyColor)*12+4] || enemySprite == enemySprites[((int)enemyColor)*12+5])
             {
-                Instantiate(bodyPrefab, transform.position + new Vector3(.16f, 0f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[2];
-                Instantiate(bodyPrefab, transform.position + new Vector3(-.24f, 0f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[3]);
+                Instantiate(bodyPrefab, transform.position + new Vector3(.16f, 0f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[((int)enemyColor)*8+2];
+                Instantiate(bodyPrefab, transform.position + new Vector3(-.24f, 0f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[((int)enemyColor)*8+3]);
             }
-            else if (enemySprite == enemySprites[6] || enemySprite == enemySprites[7] || enemySprite == enemySprites[8])
+            else if (enemySprite == enemySprites[((int)enemyColor)*12+6] || enemySprite == enemySprites[((int)enemyColor)*12+7] || enemySprite == enemySprites[((int)enemyColor)*12+8])
             {
-                Instantiate(bodyPrefab, transform.position + new Vector3(0f, -.13f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[4];
-                Instantiate(bodyPrefab, transform.position + new Vector3(0f, .25f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[5]);
+                Instantiate(bodyPrefab, transform.position + new Vector3(0f, -.13f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[((int)enemyColor)*8+4];
+                Instantiate(bodyPrefab, transform.position + new Vector3(0f, .25f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[((int)enemyColor)*8+5]);
             }
-            else// if (enemySprite == enemySprites[9] || enemySprite == enemySprites[10] || enemySprite == enemySprites[11])
+            else// if (enemySprite == enemySprites[((int)enemyColor)*12+9] || enemySprite == enemySprites[((int)enemyColor)*12+10] || enemySprite == enemySprites[((int)enemyColor)*12+11])
             {
-                Instantiate(bodyPrefab, transform.position + new Vector3(-.16f, 0f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[6];
-                Instantiate(bodyPrefab, transform.position + new Vector3(.24f, 0f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[7]);
+                Instantiate(bodyPrefab, transform.position + new Vector3(-.16f, 0f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[((int)enemyColor)*8+6];
+                Instantiate(bodyPrefab, transform.position + new Vector3(.24f, 0f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[((int)enemyColor)*8+7]);
             }
             Destroy(gameObject);
+        }
+    }
+
+    public void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Slow Enemy"))
+        {
+            slowed = true;
+        }
+    }
+
+    public void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Slow Enemy"))
+        {
+            slowed = false;
         }
     }
 

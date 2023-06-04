@@ -117,10 +117,10 @@ MonoBehaviour:
   itemSprites:
   - {fileID: 21300000, guid: 161760f3d32a6dd4698cde6d1bcca5bd, type: 3}
   - {fileID: 21300000, guid: 5772baa9513472d4db75aa6fd4f83279, type: 3}
-  - {fileID: 21300000, guid: d4d0f582f9890b54fb5a8b99c0fd1283, type: 3}
-  - {fileID: 21300000, guid: c09ecb7f0bf752a4dbe0feeda27901b9, type: 3}
-  - {fileID: 21300000, guid: 32a1e6bb544596d4d92bc373884fe949, type: 3}
-  - {fileID: 21300000, guid: 937c5101d0fbc904bafaf68bea926166, type: 3}
+  - {fileID: 21300000, guid: 677a16f794487d54691593c03087ac1d, type: 3}
+  - {fileID: 21300000, guid: c38c492c8cbb03e40899bc8351a153ec, type: 3}
+  - {fileID: 21300000, guid: 043e6ad91585e1841ac57f6cb1a3a052, type: 3}
+  - {fileID: 21300000, guid: 835a45940bdc0f44ab8b5ad4b54c6936, type: 3}
   - {fileID: 21300000, guid: 537e57eb8d6a5c04e8fcc32f0f4ede0d, type: 3}
   - {fileID: 21300000, guid: 7f81c51fa2dc5f844baaa1c13f9eab08, type: 3}
   - {fileID: 21300000, guid: e73773550f2dec1458628d2ba71dcafd, type: 3}

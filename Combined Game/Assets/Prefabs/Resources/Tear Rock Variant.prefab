@@ -7,9 +7,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 562032100410371501, guid: 55e8100fec7686d4e93952b53937ae02, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 716816415225394097, guid: 55e8100fec7686d4e93952b53937ae02, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: de0439521db8a524fb2da9fb3bc5ccec, type: 3}
+    - target: {fileID: 2134946434384473196, guid: 55e8100fec7686d4e93952b53937ae02, type: 3}
+      propertyPath: miningType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134946434384473196, guid: 55e8100fec7686d4e93952b53937ae02, type: 3}
+      propertyPath: itemChance.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134946434384473196, guid: 55e8100fec7686d4e93952b53937ae02, type: 3}
+      propertyPath: itemChance.Array.data[1]
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134946434384473196, guid: 55e8100fec7686d4e93952b53937ae02, type: 3}
+      propertyPath: possibleItems.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134946434384473196, guid: 55e8100fec7686d4e93952b53937ae02, type: 3}
+      propertyPath: possibleItems.Array.data[0]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134946434384473196, guid: 55e8100fec7686d4e93952b53937ae02, type: 3}
+      propertyPath: possibleItems.Array.data[1]
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7287651248704956785, guid: 55e8100fec7686d4e93952b53937ae02, type: 3}
       propertyPath: m_Name
-      value: Tear Rock
+      value: Tear Rock Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7287651248704956789, guid: 55e8100fec7686d4e93952b53937ae02, type: 3}
       propertyPath: m_RootOrder
@@ -81,3 +113,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55e8100fec7686d4e93952b53937ae02, type: 3}
+--- !u!1 &5016951916751682807 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7067699797854203112, guid: 55e8100fec7686d4e93952b53937ae02, type: 3}
+  m_PrefabInstance: {fileID: 2849169613055447071}
+  m_PrefabAsset: {fileID: 0}
+--- !u!70 &2607468256661699847
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5016951916751682807}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.02053222, y: -0.12524667}
+  m_Size: {x: 0.35893553, y: 0.44950658}
+  m_Direction: 0

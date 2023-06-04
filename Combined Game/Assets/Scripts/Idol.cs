@@ -9,12 +9,14 @@ using UnityEngine;
 
 public class Idol : MonoBehaviour
 {
+    public SpriteRenderer spriteRenderer;
     public ItemType itemType;
     public GameObject item;
 
     void Start()
     {
-        if (itemType != ItemType.Free)
+        spriteRenderer.sortingOrder = -(int)(transform.position.y * 10f);
+        if (itemType == ItemType.Free)
         {
             itemType = (ItemType)Random.Range(2, 16);
         }

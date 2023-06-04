@@ -18,17 +18,20 @@ public enum StationType {
 
 public class UpgradeStations : MonoBehaviour, InteractableObject
 {
+    public const float timeDiff = 600f;
     public StationType stationType;
     public SpriteRenderer spriteRenderer;
     public GameObject build;
     public GameObject popup;
     public string title;
     [TextArea(4, 10)] public string explaination;//Min 4 lines, max 10 lines
-    public ItemAmount itemAmount;
+    public UpgradeItems buildAmount;
+    public TextMeshProUGUI buildText;
     public UpgradeItems[] upgradeItems;
     public Transform[] inventory;
     public Button[] buttons;
     public Image fireProgress;
+    private Coroutine fireCoroutine;
     public static short potionAmount = 5;
 
     /*#if UNITY_EDITOR
@@ -95,6 +98,7 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
             if ((Player.inventoryProgress[17] / 1) % 2 == 0)
             {
                 gameObject.SetActive(false);
+                UpdateBuildButton();
             }
             else
             {
@@ -106,6 +110,8 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
             if ((Player.inventoryProgress[17] / 2) % 2 == 0)
             {
                 gameObject.SetActive(false);
+                string text = "";
+                UpdateBuildButton();
             }
             else
             {
@@ -117,6 +123,7 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
             if ((Player.inventoryProgress[17] / 4) % 2 == 0)
             {
                 gameObject.SetActive(false);
+                UpdateBuildButton();
             }
             else
             {
@@ -142,8 +149,35 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
             if (Player.inventoryProgress[21] % 2 == 1)
             {
                 GetComponent<Animator>().SetBool("Fire", true);
+                fireCoroutine = StartCoroutine(FireOff());
             }
         }
+    }
+
+    public void UpdateBuildButton()
+    {
+        string text = "";
+        for (int j = 0; j < buildAmount.itemAmount.Length; j++)
+        {
+            text += "x" + buildAmount.itemAmount[j].amount + " " + PlayerInventory.itemName[buildAmount.itemAmount[j].itemType] + (j + 1 < buildAmount.itemAmount.Length ? "\n" : "");
+        }
+        buildText.text = text; 
+        for (int i = 0; i < buildAmount.itemAmount.Length; i++)
+        {
+            if (buildAmount.itemAmount[i].amount > Player.inventoryProgress[(int)buildAmount.itemAmount[i].itemType])
+            {
+                build.GetComponent<Button>().interactable = false;
+            }
+        }
+    }
+
+    IEnumerator FireOff()
+    {
+        // Time Passed = (Player.floatTime - ((Player.inventoryProgress[21] / 16) - (((Player.inventoryProgress[21] / 4) % 4) * 1440f)))
+        Debug.Log(Player.floatTime - ((Player.inventoryProgress[21] / 16) - (((Player.inventoryProgress[21] / 4) % 4) * 1440f)));
+        yield return new WaitForSeconds(Mathf.Max( (timeDiff - (Player.floatTime - ((Player.inventoryProgress[21] / 16) - (((Player.inventoryProgress[21] / 4) % 4) * 1440f)))), 0f) / Player.timeMultiplier);
+        Debug.Log("Fire off");
+        GetComponent<Animator>().SetBool("Fire", false);
     }
 
     public void Inventory()
@@ -185,51 +219,62 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
                 {
                     buttons[i].interactable = HasResources(i);
                     string text = "";
-                    for (int j = 0; j < upgradeItems[i].itemAmount.Length; j++)
+                    if (upgradeItems[i].itemAmount.Length > 0)
                     {
-                        text+="x" + upgradeItems[i].itemAmount[j].amount + " " + upgradeItems[i].itemAmount[j].itemType.ToString() + (j+1 < upgradeItems[i].itemAmount.Length ? "\n" : "");
+                        if (upgradeItems[i].itemAmount[0].itemType == ItemType.Free)
+                        {
+                            text = "Free";
+                        }
+                        else
+                        {
+                            for (int j = 0; j < upgradeItems[i].itemAmount.Length; j++)
+                            {
+                                text += "x" + upgradeItems[i].itemAmount[j].amount + " " + PlayerInventory.itemName[upgradeItems[i].itemAmount[j].itemType] + (j + 1 < upgradeItems[i].itemAmount.Length ? "\n" : "");
+                            }
+                        }
                     }
                     buttons[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = text;
                 }
                 if (stationType == StationType.Heal)
                 {
-                    buttons[0].interactable = !Player.healed;
-                    buttons[1].interactable = !Player.healed;
-                    buttons[2].interactable = !Player.healed;
-                    buttons[3].interactable = !Player.healed;
+                    buttons[0].interactable = buttons[0].interactable && !Player.healed;
+                    buttons[1].interactable = buttons[1].interactable && !Player.healed;
+                    buttons[2].interactable = buttons[2].interactable && !Player.healed;
+                    buttons[3].interactable = buttons[3].interactable && !Player.healed;
                 }
                 else if (stationType == StationType.Damage)
                 {
-                    buttons[0].interactable = (Player.inventoryProgress[19] / 1) % 2 == 0;
-                    buttons[1].interactable = (Player.inventoryProgress[19] / 2) % 2 == 0;
-                    buttons[2].interactable = (Player.inventoryProgress[19] / 4) % 2 == 0;
-                    buttons[3].interactable = (Player.inventoryProgress[19] / 8) % 2 == 0;
+                    buttons[0].interactable = buttons[0].interactable && (Player.inventoryProgress[19] / 1) % 2 == 0;
+                    buttons[1].interactable = buttons[1].interactable && (Player.inventoryProgress[19] / 2) % 2 == 0;
+                    buttons[2].interactable = buttons[2].interactable && (Player.inventoryProgress[19] / 4) % 2 == 0;
+                    buttons[3].interactable = buttons[3].interactable && (Player.inventoryProgress[19] / 8) % 2 == 0;
                 }
                 else if (stationType == StationType.Defence)
                 {
-                    buttons[0].interactable = (Player.inventoryProgress[20] / 1) % 2 == 0;
-                    buttons[1].interactable = (Player.inventoryProgress[20] / 2) % 2 == 0;
-                    buttons[2].interactable = (Player.inventoryProgress[20] / 4) % 2 == 0;
-                    buttons[3].interactable = (Player.inventoryProgress[20] / 8) % 2 == 0;
+                    buttons[0].interactable = buttons[0].interactable && (Player.inventoryProgress[20] / 1) % 2 == 0;
+                    buttons[1].interactable = buttons[1].interactable && (Player.inventoryProgress[20] / 2) % 2 == 0;
+                    buttons[2].interactable = buttons[2].interactable && (Player.inventoryProgress[20] / 4) % 2 == 0;
+                    buttons[3].interactable = buttons[3].interactable && (Player.inventoryProgress[20] / 8) % 2 == 0;
                 }
                 else if (stationType == StationType.Fire)
                 {
                     //0 = [1] has [0] none, 1 = [0] small [1] big, 2-3 [0] today [1] yesterday, [3] 2+ days, 4-15 = time
                     if (Player.inventoryProgress[21] % 2 == 1)
                     {
+                        fireProgress.fillAmount = Mathf.Min((Player.floatTime - ((Player.inventoryProgress[21] / 16) - (((Player.inventoryProgress[21] / 4) % 4) * 1440f))), timeDiff) / timeDiff;
                         buttons[0].interactable = false;
-                        buttons[1].interactable = true;//!!!!!!!!!!!!!!!!!!!!!!
-                        buttons[2].interactable = true;//!!!!!!!!!!!!!!!!!!!!!!
+                        buttons[1].interactable = fireProgress.fillAmount == 1f;
+                        buttons[2].interactable = fireProgress.fillAmount != 1f;
                         buttons[3].interactable = false;
                     }
                     else
                     {
-                        buttons[0].interactable = true;
+                        fireProgress.fillAmount = 0f;
+                        //buttons[0].interactable = true;//Player.inventoryProgress[6] >= 3;
                         buttons[1].interactable = false;
                         buttons[2].interactable = false;
-                        buttons[3].interactable = true;
+                        //buttons[3].interactable = true;//Player.inventoryProgress[6] >= 10;
                     }
-                    //fireProgress.fillAmount = ;//!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 }
                 popup.SetActive(true);
                 Inventory();
@@ -267,10 +312,14 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
         if (true)
         {
             //Take resources
-            /*for (int i = 0; i < upgradeItems[num].itemAmount.Length; i++)
+            for (int i = 0; i < upgradeItems[num].itemAmount.Length; i++)
             {
-                Player.inventoryProgress[(int)upgradeItems[num].itemAmount[i].itemType] -= (short)upgradeItems[num].itemAmount[i].amount;
-            }*/
+                Player.inventoryProgress[(int)upgradeItems[num].itemAmount[i].itemType] -= (ushort)upgradeItems[num].itemAmount[i].amount;
+                if (upgradeItems[num].itemAmount[i].itemType != ItemType.Free)
+                {
+                    PlayerInventory.instance.UpdateItem((int)upgradeItems[num].itemAmount[i].itemType);
+                }
+            }
 
             if (stationType == StationType.Potion)
             {
@@ -315,22 +364,23 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
             {
                 if (num == 0)
                 {
-                    Player.inventoryProgress[21] = (1);// + (time * 16) 
+                    Player.inventoryProgress[21] = (ushort)(1 + (Player.dayTime * 16)); 
                     buttons[0].interactable = false;
                     buttons[1].interactable = false;
                     buttons[2].interactable = true;
                     buttons[3].interactable = false;
                     GetComponent<Animator>().SetBool("Fire", true);
+                    fireCoroutine = StartCoroutine(FireOff());
                 }
                 else if (num == 1)
                 {
+                    fireProgress.fillAmount = 0f;
                     Player.inventoryProgress[15] += (Player.inventoryProgress[21] / 2) % 2 == 1 ? (ushort)10 : (ushort)3;
                     buttons[0].interactable = true;
                     buttons[1].interactable = false;
                     buttons[2].interactable = false;
                     buttons[3].interactable = true;
                     Player.inventoryProgress[21] = 0;
-                    //GetComponent<Animator>().SetBool("Fire", true);//!!!!!!!!!!!!! turn off when at 0
                 }
                 else if (num == 2)
                 {
@@ -341,15 +391,17 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
                     buttons[2].interactable = false;
                     buttons[3].interactable = true;
                     GetComponent<Animator>().SetBool("Fire", false);
+                    StopCoroutine(fireCoroutine);
                 }
                 else //if (num == 3)
                 {
-                    Player.inventoryProgress[21] = (3);// + (time * 16) 
+                    Player.inventoryProgress[21] = (ushort)(3 + (Player.dayTime * 16));
                     buttons[0].interactable = false;
                     buttons[1].interactable = false;
                     buttons[2].interactable = true;
                     buttons[3].interactable = false;
                     GetComponent<Animator>().SetBool("Fire", true);
+                    fireCoroutine = StartCoroutine(FireOff());
                 }
             }
             Inventory();

@@ -68,7 +68,7 @@ public class Laddle : MonoBehaviour
                 else
                 {
                     rigidbody.drag = 15f;
-                    rigidbody.AddForce((laddleCenterCollider.ClosestPoint(mouse.position) - ((Vector2)laddleCenter.position)) * 1000f);
+                    rigidbody.AddForce((laddleCenterCollider.ClosestPoint(mouse.position) - ((Vector2)laddleCenter.position)) * 1500f);
                 }
             }
             else
