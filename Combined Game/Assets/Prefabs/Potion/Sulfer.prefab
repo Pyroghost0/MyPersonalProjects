@@ -4919,7 +4919,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredientRed: 0.33333334
   ingredientGreen: 0.6666667
-  ingredientBlue: 1
+  ingredientBlue: 0.1
   ingredientType: 11
   inWater: 0
   ingredientCollider: {fileID: 9028414826078608643}

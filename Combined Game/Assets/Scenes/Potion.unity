@@ -560,6 +560,19 @@ MonoBehaviour:
   buttonText: {fileID: 1111933006}
   timerText: {fileID: 776131863}
   ingredientOrder: 
+  mortarIngredientPrefabs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 5339904052860364199, guid: 429c57d8ba400e843988241b5f5dbbe0, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 3619506658003491782, guid: f05f2ae23b9a4cf44ab02c7d4d40501b, type: 3}
+  - {fileID: 0}
+  - {fileID: 4931173967713496621, guid: 01aff24d9897a93409088a57a598e446, type: 3}
   mortarAndPestalPrefab: {fileID: 6204881754759906083, guid: 89c5a4e9121e8a14eb81c3abde5f9e19, type: 3}
   applePrefab: {fileID: 2454733253548593659, guid: 8405a0cb1f369b849a6c0d841cf17dbb, type: 3}
   potPrefab: {fileID: 691716964171619729, guid: cf334d70d20463c4196c6dc0eb21f246, type: 3}
@@ -989,6 +1002,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3301553517338371325, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852042979321643080, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -1603,7 +1620,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1123998765}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.25, y: 3.75, z: 0}
+  m_LocalPosition: {x: 1.65, y: 3.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2269,7 +2286,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1563748111}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 2.25, z: 0}
+  m_LocalPosition: {x: -0.5, y: 1.85, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

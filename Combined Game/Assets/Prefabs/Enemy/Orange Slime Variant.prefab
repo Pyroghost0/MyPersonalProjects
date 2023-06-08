@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6767401296445347759
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3029748855905157019, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -746395909, guid: f50e25a40e7389a47abf9a51bd7ba195, type: 3}
+    - target: {fileID: 4489204848865728853, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: enemyColor
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489204848865728853, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 7855729127963492518, guid: a133ba68750594a4dba35be31b80dbb2, type: 3}
+    - target: {fileID: 4632123693511229060, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4632123693511229060, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4632123693511229060, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4632123693511229060, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4632123693511229060, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4632123693511229060, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4632123693511229060, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4632123693511229060, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4632123693511229060, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4632123693511229060, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4632123693511229060, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5047666330758916664, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: m_Name
+      value: Orange Slime
+      objectReference: {fileID: 0}
+    - target: {fileID: 5639948871712260121, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+      propertyPath: m_SpriteLibraryAsset
+      value: 
+      objectReference: {fileID: 7108339969198208228, guid: afceb74160aadbb4badb3b4bc38a5651, type: 3}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}

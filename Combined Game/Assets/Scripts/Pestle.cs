@@ -9,71 +9,63 @@ using UnityEngine;
 
 public class Pestle : MonoBehaviour
 {
-#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
-    private Camera camera;
-    public Rigidbody2D rigidbody;
-#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+    private bool holding = false;
     public Collider2D pestleCollider;
     public Collider2D mouseCollider;
+    public Collider2D holdCollider;
     public Transform mouse;
-    private bool holding = false;
-
-    void Start()
-    {
-        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-    }
+    public Transform hold;
+    public Transform lookPos;
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
+    public Rigidbody2D rigidbody;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
 
     // Update is called once per frame
     void Update()
     {
         if (Time.timeScale == 1f)
         {
-            Vector2 position = camera.ScreenToWorldPoint(Input.mousePosition);
-            mouse.position = position;
+            //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, 0f, Mathf.Atan2((center.position - laddleCenter.position).y, (center.position - laddleCenter.position).x) * 57.2958f + 90f), Time.deltaTime * 20f);
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 if (pestleCollider.IsTouching(mouseCollider))
                 {
-                    holding = true;
                     rigidbody.gravityScale = 0f;
+                    holding = true;
+                    hold.position = mouse.position;
+                    hold.localPosition = new Vector2(0f, hold.localPosition.y);
                 }
             }
-            else if(Input.GetKeyUp(KeyCode.Mouse0))
+            else if (Input.GetKeyUp(KeyCode.Mouse0))
             {
                 holding = false;
-                rigidbody.gravityScale = 1f;
             }
 
             //Movement
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, 0f, Mathf.Atan2(lookPos.position.y - transform.position.y, lookPos.position.x - transform.position.x) * 57.2958f + 90f), Time.deltaTime * 10f);
             if (holding)
             {
-                if (pestleCollider.IsTouching(mouseCollider))
+                //rigidbody.angularVelocity += Time.deltaTime;// (Mathf.Atan2(lookPos.position.y - transform.position.y, lookPos.position.x - transform.position.x) * 57.2958f + 90f) * Time.deltaTime * 10f;
+                if (holdCollider.IsTouching(mouseCollider))
                 {
-                    rigidbody.drag = 50f;
-                    /*Vector2 init = rigidbody.velocity.normalized;
-                    rigidbody.AddForce(-rigidbody.velocity.normalized * 1000f * Time.deltaTime);
-                    Debug.Log(rigidbody.velocity.normalized == init);
-                    if ((rigidbody.velocity.normalized - init).magnitude > .1f)
-                    {
-                        Debug.Log("Zeroing");
-                        rigidbody.velocity = Vector2.zero;
-                    }*/
+                    rigidbody.drag = 75f;
                 }
                 else
                 {
-                    rigidbody.drag = 10f;
-                    rigidbody.AddForce((pestleCollider.ClosestPoint(position) - ((Vector2)transform.position)) * 300f);
+                    rigidbody.drag = 15f;
+                    rigidbody.AddForce((holdCollider.ClosestPoint(mouse.position) - ((Vector2)hold.position)) * 1500f);
                 }
             }
             else
             {
-                rigidbody.drag = 0f;
+                rigidbody.gravityScale = 10f;
+                //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, 0f, Mathf.Atan2((center.position - transform.position).y, (center.position - transform.position).x) * 57.2958f + 90f), Time.deltaTime * 3f);
             }
         }
         else
         {
+            rigidbody.gravityScale = 10f;
             holding = false;
-            rigidbody.gravityScale = 1f;
         }
     }
 }

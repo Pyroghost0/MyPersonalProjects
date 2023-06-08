@@ -12355,7 +12355,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1209711178444170285, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3291072527502162585, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
       propertyPath: m_RootOrder
@@ -12481,6 +12481,10 @@ PrefabInstance:
       propertyPath: inHouse
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4502598890859479182, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5034106901611684533, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -12489,9 +12493,17 @@ PrefabInstance:
       propertyPath: m_BoundingShape2D
       value: 
       objectReference: {fileID: 993211829}
+    - target: {fileID: 5605315057052700158, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6816857519914080119, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
       propertyPath: m_Name
       value: Basic Scene
+      objectReference: {fileID: 0}
+    - target: {fileID: 7107173561187740946, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
@@ -18727,7 +18739,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -200, y: 75}
+  m_AnchoredPosition: {x: -200, y: 50}
   m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1616980584
@@ -18776,7 +18788,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 592990558}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: CancelBuild
+        m_MethodName: BuildMode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -20747,7 +20759,7 @@ RectTransform:
   - {fileID: 770997955}
   - {fileID: 1616980583}
   m_Father: {fileID: 1088156490}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -23409,7 +23421,7 @@ RectTransform:
   - {fileID: 1233369136}
   - {fileID: 1506952962}
   m_Father: {fileID: 1088156490}
-  m_RootOrder: 9
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -23887,7 +23899,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 551279209792266163, guid: fc80c4856b5a66a42be9c81db020d6c4, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 551279209792266163, guid: fc80c4856b5a66a42be9c81db020d6c4, type: 3}
       propertyPath: m_AnchorMax.x

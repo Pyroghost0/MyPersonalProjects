@@ -15,7 +15,7 @@ public class PotIngredient : MonoBehaviour
     public float ingredientRed = 1f;
     public float ingredientGreen = 0f;
     public float ingredientBlue = 0f;
-    private float size = 1f;
+    [HideInInspector] public float size = 1f;
     public ingredient ingredientType;
     //private bool used = false;
     public bool inWater = false;
@@ -123,7 +123,7 @@ public class PotIngredient : MonoBehaviour
 
         GameObject.FindGameObjectWithTag("Potion Maker").GetComponent<PotionMaker>().ingredientOrder.Add(ingredientType);
         ingredientRenderer.sortingOrder = 5;
-        gameObject.layer = 6;
+        gameObject.layer = 0;
         float timer = 0f;
         while (timer < .5f)
         {
@@ -137,16 +137,17 @@ public class PotIngredient : MonoBehaviour
         particleSystem.Play();
         while (!used)
         {
-            rigidbody.AddForce((new Vector2(transform.position.y - waterRenderer.transform.position.y, waterRenderer.transform.position.x - transform.position.x).normalized *1.5f) + ((Vector2)(waterRenderer.transform.position - transform.position).normalized));
             float temp = size;
-            float amount = Mathf.Clamp(rigidbody.velocity.magnitude - 2.5f, 0f, 20f) * Time.deltaTime / 60f;
+            float amount = Mathf.Clamp(rigidbody.velocity.magnitude - 2.75f, 0f, 20f) * Time.deltaTime / 35f;
+            rigidbody.AddForce(((new Vector2(transform.position.y - waterRenderer.transform.position.y, waterRenderer.transform.position.x - transform.position.x).normalized *.5f) + ((Vector2)(waterRenderer.transform.position - transform.position).normalized) * .2f) * 
+                Vector2.Distance(transform.position, waterRenderer.transform.position));
             size -= amount;
             if (size > 0f)
             {
 #pragma warning disable CS0618 // Type or member is obsolete
                 particleSystem.startColor = new Color(ingredientRed, ingredientGreen, ingredientBlue, size / 4f);
 #pragma warning restore CS0618 // Type or member is obsolete
-                transform.localScale = Vector3.one * size;
+                transform.localScale = Vector3.one * Mathf.Sqrt(size);
                 rigidbody.mass = size;
                 potRed += ingredientRed * amount;
                 potGreen += ingredientGreen * amount;
@@ -157,10 +158,10 @@ public class PotIngredient : MonoBehaviour
                 potRed += ingredientRed * temp;
                 potGreen += ingredientGreen * temp;
                 potBlue += ingredientBlue * temp;
-                //Destroy(gameObject);
-                particleSystem.Stop();
-                ingredientRenderer.enabled = false;
-                used = true;
+                Destroy(gameObject);
+                //particleSystem.Stop();
+                //ingredientRenderer.enabled = false;
+                //used = true;
                 //Debug.Log("Used");
             }
             waterRenderer.color = potRed > potGreen && potRed > potBlue ? new Color(1f, potGreen / potRed, potBlue / potRed) : potGreen > potBlue ? new Color(potRed / potGreen, 1f, potBlue / potGreen) : new Color(potRed / potBlue, potGreen / potBlue, 1f);

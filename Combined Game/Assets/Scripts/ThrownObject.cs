@@ -15,7 +15,10 @@ public class ThrownObject : MonoBehaviour
     public Vector3 target;
     public Vector3 velocity;
     public float time;
-
+    public float delayTime = 1f;
+    public float destroyTime = 2f;
+    public bool slime = false;
+    public SpriteRenderer spriteRenderer;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,9 +44,22 @@ public class ThrownObject : MonoBehaviour
         GetComponent<SpriteRenderer>().enabled = false;
         explosionParticle.SetActive(true);
         explosionCollider.SetActive(true);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(delayTime);
         explosionCollider.SetActive(false);
-        yield return new WaitForSeconds(2f);
+        if (slime)
+        {
+            timer = 0f;
+            while (timer < destroyTime)
+            {
+                spriteRenderer.color = new Color(1f, 1f, 1f, 1f - (timer / destroyTime));
+                yield return new WaitForFixedUpdate();
+                timer += Time.deltaTime;
+            }
+        }
+        else
+        {
+            yield return new WaitForSeconds(destroyTime);
+        }
         //explosionParticle.SetActive(false);
         Destroy(gameObject);
     }

@@ -24,7 +24,8 @@ public enum ItemType
     IceFlower = 12,
     Orangeberry = 13,
     TearGem = 14,
-    Charcoal = 15
+    Charcoal = 15,
+    Pickaxe
 }
 
 public class Item : MonoBehaviour
@@ -81,6 +82,11 @@ public class Item : MonoBehaviour
                 pickedUp = true;
                 collision.GetComponent<Player>().key.SetActive(true);
                 collision.GetComponent<Player>().hasKey = true;
+                GameObject[] goals = GameObject.FindGameObjectsWithTag("Goal");
+                foreach (GameObject goal in goals)
+                {
+                    goal.transform.GetChild(0).gameObject.SetActive(true);
+                }
                 StartCoroutine(CollectionAnimation());
             }
             else// if (itemType == ItemType.Bomb)

@@ -103,6 +103,10 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
             else
             {
                 build.SetActive(false);
+                if ((Player.inventoryProgress[17] / 2) % 2 != 0 && (Player.inventoryProgress[17] / 4) % 2 != 0)
+                {
+                    Player.instance.buildButton.SetActive(false);
+                }
             }
         }
         else if (stationType == StationType.Heal)
@@ -110,7 +114,6 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
             if ((Player.inventoryProgress[17] / 2) % 2 == 0)
             {
                 gameObject.SetActive(false);
-                string text = "";
                 UpdateBuildButton();
             }
             else
@@ -190,7 +193,11 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
 
     public void Build()
     {
-        Player.instance.CancelBuild();
+        Player.instance.BuildMode();
+        if (Player.inventoryProgress[17] % 2 != 0 && (Player.inventoryProgress[17] / 2) % 2 != 0 && (Player.inventoryProgress[17] / 4) % 2 != 0)
+        {
+            Player.instance.buildButton.SetActive(false);
+        }
         build.SetActive(false);
         GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().Tutorial(title, explaination);
     }

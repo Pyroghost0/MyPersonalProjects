@@ -45,6 +45,8 @@ public class GameController : MonoBehaviour
     //On start set timescale
     void Start()
     {
+        musicValue = 50;
+        effectsValue = 50;
         musicSlider.value = musicValue;
         effectsSlider.value = effectsValue;
         MusicSlider();
@@ -178,7 +180,7 @@ public class GameController : MonoBehaviour
         while (Player.floatTime < 240f)
         {
             float rotation = Random.Range(0f, 360f);
-            Instantiate(enemyPrefabs[0], player.position + new Vector3(Mathf.Sin(rotation) * 10f, Mathf.Cos(rotation) * 10f), transform.rotation).GetComponent<Enemy>().enemyColor = (EnemyColor)Random.Range(0, 2);
+            //Instantiate(enemyPrefabs[0], player.position + new Vector3(Mathf.Sin(rotation) * 10f, Mathf.Cos(rotation) * 10f), transform.rotation).GetComponent<Enemy>().enemyColor = (EnemyColor)Random.Range(0, 2);
             yield return new WaitForSeconds(Random.Range(5f, 5f));
         }
         ushort day = (ushort)(Player.inventoryProgress[16] / 4);
@@ -247,6 +249,7 @@ public class GameController : MonoBehaviour
     //Switches to main menu screen
     public void MainMenu()
     {
+        Destroy(TerrainGenerator.instance);
         StartCoroutine(AppearLoad("Main Menu"));
     }
 

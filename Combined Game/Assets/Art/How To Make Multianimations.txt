@@ -1,0 +1,5 @@
+1) Create Sprite Library Asset & Add Sprites To Fields
+2) Create Animated Object With Sprite Library & Sprite Resolver
+3) Inside The Animation, Add Sprite Resolver Property (Right-Click On The Entire Thing)
+4) Remove Last Row & Record & Inside Resolver Select Sprites While Moving Keyframes (Last One Is 1st)
+5) Select All & Right-Click: Broken & Right-Click: Both Tangents->Constant

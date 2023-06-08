@@ -27,6 +27,7 @@ TagManager:
   - Slow Enemy
   - Falling Dust
   - Stop Dust
+  - Slime
   layers:
   - Default
   - TransparentFX
@@ -39,11 +40,11 @@ TagManager:
   - Unaffact Enemy
   - Enemy
   - Unaffect Same
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Unaffect Bottle
+  - Unaffect Wall
+  - Falling
+  - Fallen
+  - Mortar
   - 
   - 
   - 

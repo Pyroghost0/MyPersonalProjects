@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1884799618598165252
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2764963590087443753, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1640473851, guid: bf3c0cc1e9c0a5e42a76f8b22126f30f, type: 3}
+    - target: {fileID: 8587536837933914975, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8587536837933914975, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8587536837933914975, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8587536837933914975, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8587536837933914975, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8587536837933914975, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8587536837933914975, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8587536837933914975, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8587536837933914975, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8587536837933914975, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8587536837933914975, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8587536837933915040, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1729791934, guid: f50e25a40e7389a47abf9a51bd7ba195, type: 3}
+    - target: {fileID: 8587536837933915042, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
+      propertyPath: m_Name
+      value: Orange Slime Projectile
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}

@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: -1
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: d964358e19fe25f4e83f66b7debbb516, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -98,7 +98,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 065d8503118b1dc4bb0b01d68436dd4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 8194134474968318817, guid: dc42215c1a5439c4e9b6cb4dca5cb3ff, type: 3}
+  enemies:
+  - {fileID: 3532386934295535309, guid: 3ae632afb9e791143817f532d7e4ab73, type: 3}
+  - {fileID: 5047666330758916664, guid: 2d492323d3cbd76449a0a5da95ede12b, type: 3}
+  - {fileID: 8437800738327696689, guid: 0e004d4e73f33ed4da4ee5ae89a44ef6, type: 3}
   spawnPoint: {fileID: 8326623044696495003}
   numEnemies: 0
   maxEnemies: 2

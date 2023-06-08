@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     public bool invincible = false;
     public bool knockback = false;
     public SpriteRenderer spriteRenderer;
+    public Collider2D solidCollider;
 #pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     public Camera camera;
     public Rigidbody2D rigidbody;
@@ -48,6 +49,7 @@ public class Player : MonoBehaviour
 
     public static bool healed = false;
     public bool inHouse = false;
+    public GameObject buildButton;
     public bool buildMode = false;
     public GameObject buildUI;
 
@@ -59,6 +61,10 @@ public class Player : MonoBehaviour
     public static float floatTime;
     public static ushort dayTime;
     public TextMeshProUGUI dayTimeText;
+
+    public AudioSource gatherSound;
+    public AudioSource chopSound;
+    public AudioSource miningSound;
 
     void Start()
     {
@@ -96,19 +102,6 @@ public class Player : MonoBehaviour
 
             if (inHouse)
             {
-                if (Input.GetKeyDown(KeyCode.B))
-                {
-                    buildMode = !buildMode;
-                    buildUI.SetActive(buildMode);
-                    Time.timeScale = buildMode ? 0f : 1f;
-                    if (buildMode)
-                    {
-                        transform.position = new Vector3(-.5f, -.25f);
-                        animator.SetFloat("X", 0f);
-                        animator.SetFloat("Y", 0f);
-                        rigidbody.velocity = Vector2.zero;
-                    }
-                }
                 if (!buildMode)
                 {
                     //Movement and interact
@@ -176,10 +169,7 @@ public class Player : MonoBehaviour
                         }
                         rigidbody.velocity = new Vector2(x, y) * speed;
                     }
-                    else
-                    {
-                        
-                    }
+
                     if (Input.GetKeyDown(KeyCode.Space))
                     {
                         if (interaction == null)
@@ -385,8 +375,26 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Slime") && collision.IsTouching(solidCollider) && !invincible)//!attacking
+        {
+            UpdateHealth(-1);
+            //healthText.text = "Health: " + health;
+            if (health > 0)
+            {
+                //StopAllCoroutines();
+                StartCoroutine(IFrames());
+            }
+            else
+            {
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().EndGame(false);
+            }
+        }
+    }
+
     //Knockback
-    IEnumerator Knockback(Vector3 dir, int power)
+    public IEnumerator Knockback(Vector3 dir, int power)
     {
         knockback = true;
         if (interaction != null)
@@ -431,11 +439,19 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void CancelBuild()
+    public void BuildMode()
     {
-        buildMode = false;
-        Time.timeScale = 1f;
-        buildUI.SetActive(false);
+        buildMode = !buildMode;
+        buildUI.SetActive(buildMode);
+        buildButton.SetActive(!buildMode);
+        Time.timeScale = buildMode ? 0f : 1f;
+        if (buildMode)
+        {
+            transform.position = new Vector3(-.5f, -.25f);
+            animator.SetFloat("X", 0f);
+            animator.SetFloat("Y", 0f);
+            rigidbody.velocity = Vector2.zero;
+        }
     }
 
     //Attacks with a charge

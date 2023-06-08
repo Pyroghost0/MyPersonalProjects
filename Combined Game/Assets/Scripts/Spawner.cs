@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject enemy;
+    public GameObject[] enemies;
     public GameObject spawnPoint;
     public int numEnemies = 0;
     public int maxEnemies = 5;
@@ -82,7 +82,7 @@ public class Spawner : MonoBehaviour
         else
         {*/
         totalSpawned++;
-            GameObject enemySpawned = Instantiate(enemy, spawnPoint.transform.position + new Vector3(Random.Range(-ranSpawnRange, ranSpawnRange), Random.Range(-ranSpawnRange, ranSpawnRange), 0f), enemy.transform.rotation);
+            GameObject enemySpawned = Instantiate(enemies[Random.Range(0, enemies.Length)], spawnPoint.transform.position + new Vector3(Random.Range(-ranSpawnRange, ranSpawnRange), Random.Range(-ranSpawnRange, ranSpawnRange), 0f), transform.rotation);
             enemySpawned.GetComponent<Enemy>().spawner = this;
             numEnemies++;
         //}

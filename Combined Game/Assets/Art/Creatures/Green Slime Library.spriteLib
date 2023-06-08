@@ -1,0 +1,154 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e6fedc2472449cead18ef23b5cb30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Library:
+  - m_Name: Bounce
+    m_Hash: 93385071
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Green Slime_0
+      m_Hash: 434273569
+      m_Sprite: {fileID: 467646775, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 467646775, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_1
+      m_Hash: 786779575
+      m_Sprite: {fileID: 1607561194, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1607561194, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_5
+      m_Hash: 696813998
+      m_Sprite: {fileID: 704048356, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 704048356, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_6
+      m_Hash: 813815828
+      m_Sprite: {fileID: -1478679111, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1478679111, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_10
+      m_Hash: 565189699
+      m_Sprite: {fileID: -1808456217, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1808456217, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_11
+      m_Hash: 381103317
+      m_Sprite: {fileID: 889610986, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 889610986, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Entry
+      m_Hash: 719368820
+      m_Sprite: {fileID: 748885072, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 748885072, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Entry_0
+      m_Hash: 874506106
+      m_Sprite: {fileID: -232126120, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -232126120, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 8
+  - m_Name: Shoot
+    m_Hash: 830854074
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Green Slime_2
+      m_Hash: 938220557
+      m_Sprite: {fileID: -1383852900, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1383852900, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_3
+      m_Hash: 15412379
+      m_Sprite: {fileID: -1162203210, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1162203210, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_4
+      m_Hash: 512735544
+      m_Sprite: {fileID: -1706035948, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1706035948, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_7
+      m_Hash: 126281858
+      m_Sprite: {fileID: 783504002, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 783504002, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_8
+      m_Hash: 389674259
+      m_Sprite: {fileID: -2033031540, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -2033031540, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_9
+      m_Hash: 540984709
+      m_Sprite: {fileID: 1105135346, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1105135346, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_12
+      m_Hash: 264142191
+      m_Sprite: {fileID: -2140413809, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -2140413809, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_13
+      m_Hash: 951668217
+      m_Sprite: {fileID: -1649774327, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1649774327, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_14
+      m_Hash: 652073050
+      m_Sprite: {fileID: -1539310182, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1539310182, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_17
+      m_Hash: 1070893536
+      m_Sprite: {fileID: 439076200, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 439076200, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_18
+      m_Hash: 795579505
+      m_Sprite: {fileID: -1583156551, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1583156551, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_19
+      m_Hash: 409773287
+      m_Sprite: {fileID: -228110315, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -228110315, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 12
+  - m_Name: Death
+    m_Hash: 646380074
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Green Slime_20
+      m_Hash: 178081664
+      m_Sprite: {fileID: -1792606197, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1792606197, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_21
+      m_Hash: 1033535254
+      m_Sprite: {fileID: 1093700949, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1093700949, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_22
+      m_Hash: 613625516
+      m_Sprite: {fileID: 463250346, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 463250346, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    - m_Name: Green Slime_23
+      m_Hash: 328474170
+      m_Sprite: {fileID: 2056396342, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 2056396342, guid: d6efbd8235fa8df44b41830c46dda9f7, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 4
+  m_PrimaryLibraryGUID: 

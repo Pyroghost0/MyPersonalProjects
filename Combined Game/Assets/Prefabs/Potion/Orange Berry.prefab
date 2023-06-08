@@ -4920,7 +4920,8 @@ MonoBehaviour:
   ingredientRed: 0.6666667
   ingredientGreen: 0.33333334
   ingredientBlue: 0
-  ingredientType: 4
+  ingredientType: 0
+  inWater: 0
   ingredientCollider: {fileID: 6220234330507270605}
   ingredientRenderer: {fileID: 6220234330507270607}
   particleSystem: {fileID: 6220234330507270606}

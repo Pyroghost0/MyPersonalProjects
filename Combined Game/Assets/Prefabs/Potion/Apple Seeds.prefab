@@ -4901,10 +4901,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e0dbebc26b18c4195a80e95657aa49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredientRed: 0.6666667
-  ingredientGreen: 0.33333334
-  ingredientBlue: 0
-  ingredientType: 2
+  ingredientRed: 0.4
+  ingredientGreen: 0.5
+  ingredientBlue: 0.1
+  ingredientType: 5
   inWater: 0
   ingredientCollider: {fileID: 236003714456490199}
   ingredientRenderer: {fileID: 4463546437846994777}

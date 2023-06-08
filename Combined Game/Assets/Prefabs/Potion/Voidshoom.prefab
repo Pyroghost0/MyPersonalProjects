@@ -4901,10 +4901,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e0dbebc26b18c4195a80e95657aa49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredientRed: 0.3655914
-  ingredientGreen: 0.26881722
-  ingredientBlue: 0.3655914
-  ingredientType: 5
+  ingredientRed: -0.25
+  ingredientGreen: -0.25
+  ingredientBlue: -0.25
+  ingredientType: 1
+  inWater: 0
   ingredientCollider: {fileID: 8327840111635032648}
   ingredientRenderer: {fileID: 7392474892847661289}
   particleSystem: {fileID: 7392474892847661288}

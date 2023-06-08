@@ -61,6 +61,7 @@ public class PotionMaker : MonoBehaviour
     public TextMeshProUGUI timerText;
     //public TextMeshProUGUI resultText;
     public List<ingredient> ingredientOrder;
+    public GameObject[] mortarIngredientPrefabs;
     public GameObject mortarAndPestalPrefab;
     public GameObject applePrefab;
     public GameObject potPrefab;
@@ -98,6 +99,8 @@ public class PotionMaker : MonoBehaviour
     {
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Y) || Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown(KeyCode.E));
         goal = Input.GetKeyDown(KeyCode.R) ? ItemType.Red : Input.GetKeyDown(KeyCode.Y) ? ItemType.Yellow : Input.GetKeyDown(KeyCode.B) ? ItemType.Blue : ItemType.Bomb;
+        instrcutions.text = "Make a " + (goal == ItemType.Red ? "red potion" : goal == ItemType.Yellow ? "yellow potion" : goal == ItemType.Blue ? "blue potion" : "bomb");
+        yield return new WaitUntil(() => Input.GetKey(KeyCode.Space));
         MakePotion();
     }
 
@@ -121,14 +124,14 @@ public class PotionMaker : MonoBehaviour
         {
             ingredient[] ingredientList = { ingredient.GroundUpIceFlower, ingredient.Voidshroom, ingredient.TearGem };
             potionInstructions = new[] { new PotionInstruction(instruction.Ground, ingredient.IceFlower, 2f),
-        new PotionInstruction(instruction.AddIngredient, ingredientList), new PotionInstruction(instruction.Stir, ingredientList, 3f) };
+        new PotionInstruction(instruction.AddIngredient, ingredientList), new PotionInstruction(instruction.Stir, ingredientList, 2f) };
             resultPotion.sprite = resultPotionSprites[2];
         }
         else// if (goal == ItemType.Bomb)
         {
             ingredient[] ingredientList = { ingredient.GroundUpRock, ingredient.Charcoal, ingredient.GroundUpSulfer };
-            potionInstructions = new[] { new PotionInstruction(instruction.Ground, ingredient.Rock, 2f),
-        new PotionInstruction(instruction.Ground, ingredient.Sulfer, 2f), new PotionInstruction(instruction.Measure, ingredientList) };
+            potionInstructions = new[] { new PotionInstruction(instruction.Ground, ingredient.Rock, 3f),
+        new PotionInstruction(instruction.Ground, ingredient.Sulfer, 3f), new PotionInstruction(instruction.Measure, ingredientList) };
             resultPotion.sprite = resultPotionSprites[3];
         }
         StartCoroutine(MakePotionCoroutine());
@@ -162,9 +165,12 @@ public class PotionMaker : MonoBehaviour
                 newText += potionInstruction.idealResult == 1f ? " into big chunks." : potionInstruction.idealResult == 2f ? " into medium chunks." : " into a powder.";
                 instrcutions.text = newText + "\n\nPress the \"Next\" button when you are done.";
                 GameObject mortarAndPestal = Instantiate(mortarAndPestalPrefab);
+                Instantiate(mortarIngredientPrefabs[(int)potionInstruction.ingredients[0]]).transform.parent = mortarAndPestal.transform;
                 yield return new WaitUntil(() => buttonClick);//Disable and move to next instruction
                 buttonClick = false;
-                float gameResult = 1f - Mathf.Abs(potionInstruction.idealResult - (GameObject.FindGameObjectsWithTag("Ingredient").Length / 10f));
+                Debug.Log(MortarIngredient.total);
+                Debug.Log(MortarIngredient.fullTotal);
+                float gameResult = Mathf.Max(1f - Mathf.Abs(potionInstruction.idealResult - (MortarIngredient.total * 3f / MortarIngredient.fullTotal)), 0f); ;
                 Debug.Log(gameResult);
                 result *= gameResult;
                 if (gameResult > .8f)
@@ -177,7 +183,17 @@ public class PotionMaker : MonoBehaviour
                     //notes.Add("Your grounding could use some work in step " + step);
                     notes.Add("When grounding the " + potionInstruction.ingredients[0] + ", you didn't make it the right size");
                 }
-                Destroy(mortarAndPestal);
+                //Destroy(mortarAndPestal);
+                GameObject[] powders = GameObject.FindGameObjectsWithTag("Falling Dust");
+                foreach (GameObject powder in powders)
+                {
+                    powder.transform.parent = mortarAndPestal.transform;
+                }
+                GameObject.FindGameObjectWithTag("Pestle").GetComponent<Pestle>().enabled = false;
+                GameObject.FindGameObjectWithTag("Pestle").GetComponent<Collider2D>().enabled = false;
+                GameObject.FindGameObjectWithTag("Pestle").GetComponent<Rigidbody2D>().simulated = false;
+                StartCoroutine(Hide(mortarAndPestal.transform));
+                yield return new WaitForSeconds(1.5f);
             }
             else if (potionInstruction.instruction == instruction.Extract)
             {
@@ -251,31 +267,36 @@ public class PotionMaker : MonoBehaviour
                     newText += ingredientString[potionInstruction.ingredients[i]].ToLower() + " & ";
                 }
                 newText += ingredientString[potionInstruction.ingredients[potionInstruction.ingredients.Length - 1]].ToLower();
-                newText += potionInstruction.idealResult == 1f ? " until lightly mixed." : potionInstruction.idealResult == 2f ? " until moderately mixed together." : " until entirely mixed together.";
+                newText += potionInstruction.idealResult == 1f ? " until lightly mixed together." : potionInstruction.idealResult == 2f ? " until mostly mixed together." : " until entirely mixed together.";
                 instrcutions.text = newText + "\n\nPress the \"Next\" button when you are done.";
                 float initAmount = PotIngredient.potBlue + PotIngredient.potGreen + PotIngredient.potRed;
                 //GameObject mortarAndPestal = Instantiate(mortarAndPestalPrefab);
                 yield return new WaitUntil(() => buttonClick);//Disable and move to next instruction
                 buttonClick = false;
                 //float gameResult = 1f - Mathf.Abs(potionInstruction.idealResult - (GameObject.FindGameObjectsWithTag("Ingredient").Length / 10f));
-                float gameResult = 1f - Mathf.Abs(potionInstruction.idealResult - ((PotIngredient.potBlue + PotIngredient.potGreen + PotIngredient.potRed) - initAmount) / potionInstruction.ingredients.Length) / 3f;
-                gameResult = .75f;
-                Debug.Log("FIIIIIIIIIIIIIIIIX");
-                //Debug.Log(gameResult);
+                float gameResult = 0;
+                GameObject[] ingredients = GameObject.FindGameObjectsWithTag("Ingredient");
+                for (int i = 0; i < 3; i++)
+                {
+                    gameResult += i < ingredients.Length ? 1f - ingredients[i].GetComponent<PotIngredient>().size : 1f;
+                    //Debug.Log(ingredients[i].name + ": "+ ingredients[i].GetComponent<PotIngredient>().size );
+                    //Debug.Log(i < ingredients.Length ? 1f - ingredients[i].GetComponent<PotIngredient>().size : 1f);
+                }
+                gameResult = Mathf.Max(1f - Mathf.Abs(potionInstruction.idealResult - gameResult), 0f);
+                Debug.Log(gameResult);
                 result *= gameResult;
                 if (gameResult > .8f)
                 {
                     //notes.Add("Your strring in " + step + " was well done");
-                    notes.Add("Your strring was well done");
+                    notes.Add("You stirred how you were supposed to");
                 }
                 else if (gameResult < .2f)
                 {
                     //notes.Add("You didn't quite stir well enough in step " + step);
-                    notes.Add("You didn't quite stir well enough");
+                    notes.Add("You didn't quite stir the ingredients right");
                 }
                 GameObject.FindGameObjectWithTag("Laddle").GetComponent<Laddle>().enabled = false;
                 StartCoroutine(Hide(GameObject.FindGameObjectWithTag("Pot Water").transform.parent));
-                GameObject[] ingredients = GameObject.FindGameObjectsWithTag("Ingredient");
                 foreach (GameObject ingredient in ingredients)
                 {
                     ingredient.GetComponent<ParticleSystem>().Stop();
@@ -305,6 +326,24 @@ public class PotionMaker : MonoBehaviour
                 if (!activePot)
                 {
                     activePot = true;
+                    if (goal == ItemType.Red)
+                    {
+                        PotIngredient.potRed = .5f;
+                        PotIngredient.potGreen = .125f;
+                        PotIngredient.potBlue = .5f;
+                    }
+                    else if (goal == ItemType.Yellow)
+                    {
+                        PotIngredient.potRed = .5f;
+                        PotIngredient.potGreen = .25f;
+                        PotIngredient.potBlue = .25f;
+                    }
+                    else if (goal == ItemType.Blue)
+                    {
+                        PotIngredient.potRed = .125f;
+                        PotIngredient.potGreen = .5f;
+                        PotIngredient.potBlue = .5f;
+                    }
                     Instantiate(potPrefab);
                 }
                 //ingredientOrder = new List<ingredient>();
@@ -428,6 +467,10 @@ public class PotionMaker : MonoBehaviour
         }
 
         //Result
+        if (goal == ItemType.Bomb)
+        {
+            result *= 2f / 3f;
+        }
         button.SetActive(false);
         resultMenu.SetActive(true);
         ShowInstructions();
