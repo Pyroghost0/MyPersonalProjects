@@ -104,7 +104,7 @@ MonoBehaviour:
   health: 3
   smoke: {fileID: 1069178560773174767, guid: 7c8997300bc5c514698cf9b92643d9e1, type: 3}
   speed: 1.5
-  slowedSpeed: 0.75
+  slowedSpeed: 1.15
   knockback: 0
   spawner: {fileID: 0}
   animator: {fileID: 4034365304240081599}

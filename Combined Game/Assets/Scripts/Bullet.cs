@@ -15,7 +15,7 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        transform.position += (Vector3)rigidbody.velocity.normalized;
+        transform.position += (Vector3)rigidbody.velocity.normalized * .75f;
     }
 
     //Destroyed from contact

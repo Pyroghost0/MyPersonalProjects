@@ -102,6 +102,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1702380933200133609}
   itemType: 0
   item: {fileID: 8194134474968318817, guid: 2e971dfd50279a24bb348cd2f93435dd, type: 3}
+  soundPrefab: {fileID: 1154731290592742682, guid: 2bd4dc3f9641822479d7c7cc6699f425, type: 3}
 --- !u!60 &1702380933200133612
 PolygonCollider2D:
   m_ObjectHideFlags: 0

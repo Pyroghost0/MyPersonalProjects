@@ -22,10 +22,10 @@ public class Boss : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Player.inventoryProgress[2] = 5;
-        Player.inventoryProgress[3] = 5;
-        Player.inventoryProgress[4] = 5;
-        Player.inventoryProgress[5] = 5;
+        //Player.inventoryProgress[2] = 5;
+        //Player.inventoryProgress[3] = 5;
+        //Player.inventoryProgress[4] = 5;
+        //Player.inventoryProgress[5] = 5;
 
         spawnedPots = new GameObject[potSpawnLocations.Length];
         StartCoroutine(Phase());

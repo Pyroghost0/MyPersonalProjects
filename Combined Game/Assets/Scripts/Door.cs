@@ -25,8 +25,8 @@ public class Door : MonoBehaviour
                 {
                     if (collision.GetComponent<Player>().hasKey)
                     {
-                        collision.GetComponent<Player>().key.SetActive(false);
-                        collision.GetComponent<Player>().hasKey = false;
+                        //collision.GetComponent<Player>().key.SetActive(false);
+                        //collision.GetComponent<Player>().hasKey = false;
                     }
                     else
                     {
@@ -47,14 +47,25 @@ public class Door : MonoBehaviour
                 }*/
                 else
                 {
-                    GameController.fromDungeon = true;
+                    if (collision.GetComponent<Player>().hasKey)
+                    {
+                        GameController.fromDungeon = true;
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
             }
             else if (Player.floatTime == 1200f)
             {
+                Player.healed = false;
                 Player.floatTime = 0f;
                 Player.inventoryProgress[21] = Player.inventoryProgress[21] / 4 % 4 == 2 ? Player.inventoryProgress[21] : (ushort)(Player.inventoryProgress[21] + 4);
+                Player.inventoryProgress[16]++;
+                Data.Save(TerrainGenerator.resourceTypes, Player.inventoryProgress);
             }
+            Player.instance.doorSound.Play();
             GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().LoadScene(loadScene);
         }
     }

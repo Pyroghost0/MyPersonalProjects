@@ -12,6 +12,7 @@ public class Idol : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public ItemType itemType;
     public GameObject item;
+    public GameObject soundPrefab;
 
     void Start()
     {
@@ -26,6 +27,7 @@ public class Idol : MonoBehaviour
     {
         if (collision.CompareTag("Bullet") || collision.CompareTag("Explosion"))
         {
+            Instantiate(soundPrefab, transform.position, transform.rotation);
             Instantiate(item, transform.position, transform.rotation).GetComponent<Item>().itemType = itemType;
             if (collision.CompareTag("Bullet"))
             {

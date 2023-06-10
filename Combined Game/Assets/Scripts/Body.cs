@@ -44,6 +44,29 @@ public class Body : MonoBehaviour
             Destroy(collision.gameObject);
             DestroyBody();
         }
+        else if (collision.CompareTag("Explosion") && !doubleDeath)
+        {
+            if (collision.transform.parent.GetComponent<ThrownObject>().objectType == ItemType.Bomb)
+            {
+                doubleDeath = true;
+                Destroy(gameObject);
+            }
+            else if (collision.transform.parent.GetComponent<ThrownObject>().objectType == ItemType.Red && enemyColor == EnemyColor.Red)
+            {
+                doubleDeath = true;
+                Destroy(gameObject);
+            }
+            else if (collision.transform.parent.GetComponent<ThrownObject>().objectType == ItemType.Yellow && enemyColor == EnemyColor.Yellow)
+            {
+                doubleDeath = true;
+                Destroy(gameObject);
+            }
+            else if (collision.transform.parent.GetComponent<ThrownObject>().objectType == ItemType.Blue && enemyColor == EnemyColor.Blue)
+            {
+                doubleDeath = true;
+                Destroy(gameObject);
+            }
+        }
     }
 
     public void DestroyBody()

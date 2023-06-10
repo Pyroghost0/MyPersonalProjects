@@ -28,19 +28,29 @@ public class GameController : MonoBehaviour
     public Cinemachine.CinemachineVirtualCamera cinemachineVirtualCamera;
     //public static bool doneLoading = false;
 
+    public GameObject tiredScreen;
     public GameObject tutorialScreen;
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI explainationText;
+    public TextMeshProUGUI dayText;
+    public TextMeshProUGUI savingText;
+    public RectTransform dayTextTransform;
+    public RectTransform savingTextTransform;
+
     public static int musicValue { get { return Player.inventoryProgress[23] % 101; } set { Player.inventoryProgress[23] += (ushort)(value - (Player.inventoryProgress[23] % 101)); } }
     public static int effectsValue { get { return Player.inventoryProgress[23] / 101; } set { Player.inventoryProgress[23] = (ushort)((value*101) + (Player.inventoryProgress[23] % 101)); } }
     public GameObject[] upgradeStations;
     public GameObject[] enemyPrefabs;
+    public GameObject pickaxeSlimePrefab;
     public Slider musicSlider;
     public Slider effectsSlider;
     public TextMeshProUGUI musicSliderText;
     public TextMeshProUGUI effectsSliderText;
     public AudioMixer musicMixer;
     public AudioMixer effectsMixer;
+
+    public AudioSource longButtonSound;
+    public AudioSource shortButtonSound;
 
     //On start set timescale
     void Start()
@@ -59,6 +69,7 @@ public class GameController : MonoBehaviour
         else if (fromPotion)
         {
             fromPotion = false;
+            shortButtonSound.Play();
             GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(-3.4f, 1.75f);
             upgradeStations[0].GetComponent<UpgradeStations>().Interact();
         }
@@ -72,22 +83,21 @@ public class GameController : MonoBehaviour
     {
         if (fromMainMenu)
         {
-            yield return new WaitUntil(() => MainMenuManager.doneLoading);
             loadingImage.gameObject.SetActive(true);
-            if (SceneManager.GetActiveScene().name == "Game")
+            loadingImage.color = Color.black;
+            yield return new WaitUntil(() => MainMenuManager.doneLoading);
+            yield return new WaitForEndOfFrame();
+            if (SceneManager.GetSceneByName("Game").IsValid())
             {
-                if (Data.Exists())
+                if (Player.floatTime == 0f)
                 {
-                    TerrainGenerator.instance.Load();
+                    TerrainGenerator.instance.GenerateTerrain(35);
+                    StartCoroutine(EnemyCoroutine());
                 }
-                else
+                else if (Player.inventoryProgress[16] == 0)
                 {
-                    TerrainGenerator.instance.GenerateTerrain(50);
+                    Debug.Log("Tutorial");
                 }
-            }
-            if (Player.floatTime == 0f)
-            {
-                StartCoroutine(EnemyCoroutine());
             }
             AsyncOperation ao = SceneManager.UnloadSceneAsync("Main Menu");
             yield return new WaitUntil(() => ao.isDone);
@@ -105,11 +115,24 @@ public class GameController : MonoBehaviour
         {
             if (SceneManager.GetActiveScene().name == "Game")
             {
+                if (TerrainGenerator.instance != null)
+                {
+                    TerrainGenerator.parent = SceneManager.GetSceneByName("Game").GetRootGameObjects()[0].transform;
+                    TerrainGenerator.instance.Load();
+                }
+                else
+                {
+                    yield return new WaitForEndOfFrame();//Wait for it to generate if load to house
+                }
                 if (Player.floatTime == 0f)
                 {
+                    TerrainGenerator.instance.GenerateTerrain(35);
                     StartCoroutine(EnemyCoroutine());
                 }
-                TerrainGenerator.instance.Load();
+            }
+            else if (Player.floatTime == 1200f)
+            {
+                StartCoroutine(SavingCoroutine());
             }
             //yield return new WaitUntil(() => doneLoading);
             loadingImage.gameObject.SetActive(true);
@@ -127,7 +150,7 @@ public class GameController : MonoBehaviour
         {
             StartCoroutine(DayCoroutine());
         }
-        Resume();
+        Resume(false);
         loadingImage.gameObject.SetActive(false);
     }
 
@@ -160,7 +183,7 @@ public class GameController : MonoBehaviour
         {
             if (paused)
             {
-                Resume();
+                Resume(false);
             }
             else
             {
@@ -171,20 +194,38 @@ public class GameController : MonoBehaviour
 
     IEnumerator EnemyCoroutine()
     {
+        if (House.isMade)
+        {
+            StartCoroutine(SavingCoroutine());
+        }
         GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
         foreach (GameObject door in doors)
         {
             door.GetComponent<Door>().canOpen = false;
         }
         Transform player = GameObject.FindGameObjectWithTag("Player").transform;
+        ushort day = (ushort)(Player.inventoryProgress[16] / 4);
+        bool spawnedPickaxe = Player.hasPickaxe;
         while (Player.floatTime < 240f)
         {
             float rotation = Random.Range(0f, 360f);
-            //Instantiate(enemyPrefabs[0], player.position + new Vector3(Mathf.Sin(rotation) * 10f, Mathf.Cos(rotation) * 10f), transform.rotation).GetComponent<Enemy>().enemyColor = (EnemyColor)Random.Range(0, 2);
-            yield return new WaitForSeconds(Random.Range(5f, 5f));
+            if (spawnedPickaxe || Player.floatTime < 120f)
+            {
+                Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], player.position + new Vector3(Mathf.Sin(rotation) * 10f, Mathf.Cos(rotation) * 10f), transform.rotation);
+            }
+            else
+            {
+                spawnedPickaxe = true;
+                Instantiate(pickaxeSlimePrefab, player.position + new Vector3(Mathf.Sin(rotation) * 10f, Mathf.Cos(rotation) * 10f), transform.rotation);
+            }
+            yield return new WaitForSeconds(Mathf.Min(Random.Range(3f * Mathf.Pow(1.5f, -1.5f*day)+1f, 5f * Mathf.Pow(1.5f, -day)+2f), (240f - Player.floatTime) / Player.timeMultiplier));
         }
-        ushort day = (ushort)(Player.inventoryProgress[16] / 4);
-        Player.inventoryProgress[16] = (ushort)(day * 4);
+        Player.inventoryProgress[16] = (ushort)((day+1) * 4);
+        if (House.isMade)
+        {
+            Data.Save(TerrainGenerator.resourceTypes, Player.inventoryProgress);
+            StartCoroutine(SavingCoroutine());
+        }
         foreach (GameObject door in doors)
         {
             door.GetComponent<Door>().canOpen = true;
@@ -194,7 +235,54 @@ public class GameController : MonoBehaviour
 
     IEnumerator DayCoroutine()
     {
-        yield break;
+        dayText.gameObject.SetActive(true);
+        dayText.text = (Player.floatTime != 0f ? "Day " : "Night ")+ (Player.inventoryProgress[16] / 4 + 1);
+        float timer = 0f;
+        while (timer < 1f)
+        {
+            dayTextTransform.anchoredPosition = new Vector2(0f, Mathf.Sin(timer * .5f * Mathf.PI) * -50f);
+            dayText.alpha = timer;
+            timer += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+        timer = 0f;
+        dayTextTransform.anchoredPosition = new Vector2(0f, -50f);
+        dayText.alpha = 1f;
+        yield return new WaitForSeconds(2f);
+        while (timer < 1f)
+        {
+            dayTextTransform.anchoredPosition = new Vector2(0f, -50f + (Mathf.Sin(timer * .5f * Mathf.PI) * 50f));
+            dayText.alpha = 1f - timer;
+            timer += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+        dayText.gameObject.SetActive(false);
+    }
+
+    IEnumerator SavingCoroutine()
+    {
+        yield return new WaitForSeconds(2f);
+        savingText.gameObject.SetActive(true);
+        float timer = 0f;
+        while (timer < 1f)
+        {
+            savingTextTransform.anchoredPosition = new Vector2(-320f,-50f + (Mathf.Sin(timer * .5f * Mathf.PI) * 50f));
+            savingText.alpha = timer;
+            timer += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+        timer = 0f;
+        savingTextTransform.anchoredPosition = new Vector2(-320f, 0f);
+        savingText.alpha = 1f;
+        yield return new WaitForSeconds(2f);
+        while (timer < 1f)
+        {
+            savingTextTransform.anchoredPosition = new Vector2(-320f, Mathf.Sin(timer * .5f * Mathf.PI) * -50f);
+            savingText.alpha = 1f - timer;
+            timer += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+        savingText.gameObject.SetActive(false);
     }
 
     IEnumerator DayLightCoroutine()
@@ -211,8 +299,12 @@ public class GameController : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    public void Resume()
+    public void Resume(bool clicked = true)
     {
+        if (clicked)
+        {
+            shortButtonSound.Play();
+        }
         paused = false;
         //Player.isPaused = false;
         pauseScreen.SetActive(false);
@@ -224,8 +316,12 @@ public class GameController : MonoBehaviour
 
     public void Retry()
     {
-        Player.healed = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        shortButtonSound.Play();
+        ushort volume = Player.inventoryProgress[23];
+        Player.inventoryProgress = Data.Exists() ? Data.Progress() : new ushort[24];
+        Player.inventoryProgress[23] = volume;
+        MainMenuManager.UpdatePlayer();
+        LoadScene("Game");//Can't die in house
     }
 
     //Sets up end game screen
@@ -249,7 +345,13 @@ public class GameController : MonoBehaviour
     //Switches to main menu screen
     public void MainMenu()
     {
-        Destroy(TerrainGenerator.instance);
+        shortButtonSound.Play();
+        if (TerrainGenerator.instance != null)
+        {
+            TerrainGenerator.terrain = null;
+            TerrainGenerator.resourceTypes = null;
+            Destroy(TerrainGenerator.instance.gameObject);
+        }
         StartCoroutine(AppearLoad("Main Menu"));
     }
 
@@ -268,14 +370,36 @@ public class GameController : MonoBehaviour
         Time.timeScale = 0f;
     }
 
+    public void Tired()
+    {
+        Player.inventoryProgress[16]++;
+        Data.Save(TerrainGenerator.resourceTypes, Player.inventoryProgress);
+        tiredScreen.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void ContinueTired()
+    {
+        shortButtonSound.Play();
+        StartCoroutine(AppearLoad("House"));
+    }
+
+    public void StartDayCoroutineDueToNewDay()
+    {
+        StartCoroutine(EnemyCoroutine());
+        StartCoroutine(DayCoroutine());
+    }
+
     public void ExitTutorialScreen()
     {
+        shortButtonSound.Play();
         tutorialScreen.SetActive(false);
         Time.timeScale = 1f;
     }
 
     public void Build(int type)
     {
+        longButtonSound.Play();
         Player.inventoryProgress[17] += (ushort)Mathf.Pow(2, type);
         upgradeStations[type].SetActive(true);
         upgradeStations[type].GetComponent<UpgradeStations>().Build();

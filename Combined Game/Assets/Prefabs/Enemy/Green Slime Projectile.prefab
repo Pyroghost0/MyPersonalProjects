@@ -351,7 +351,7 @@ MonoBehaviour:
   target: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
   time: 0
-  delayTime: 3
+  delayTime: 4
   destroyTime: 1
   slime: 1
   spriteRenderer: {fileID: 2764963590087443753}

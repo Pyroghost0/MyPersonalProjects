@@ -12,6 +12,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3389424537211074880, guid: 501068a1c87e2634083de9afaf624492, type: 3}
+      propertyPath: totalGatherTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3389424537211074880, guid: 501068a1c87e2634083de9afaf624492, type: 3}
       propertyPath: possibleItems.Array.data[0]
       value: 11
       objectReference: {fileID: 0}

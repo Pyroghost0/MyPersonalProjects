@@ -131,6 +131,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f102ad683c1fbf2428bea512af17cf47, type: 3}
   - {fileID: 21300000, guid: 82d3cdeb9ea70fa4982b0e5ca2cd6c34, type: 3}
   - {fileID: 21300000, guid: 209e19a469384bf43ad3bf150ded829c, type: 3}
+  - {fileID: -1456993298, guid: e2f1a5916c190604ebcd14646f47cfd7, type: 3}
   spriteRenderer: {fileID: 8194134474968318819}
   floatCycleTime: 0.8
   floatCycleDistence: 0.2

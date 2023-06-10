@@ -99,6 +99,18 @@ public class Resource : MonoBehaviour, InteractableObject
 
     IEnumerator GatherCoroutine()
     {
+        for (int i = 0; i < Player.instance.gatherSounds.Length; i++)
+        {
+            if (i == (int)miningType)
+            {
+                Player.instance.gatherSounds[i].loop = true;
+                Player.instance.gatherSounds[i].Play();
+            }
+            else
+            {
+                Player.instance.gatherSounds[i].Stop();
+            }
+        }
         if (transform.position.y - Player.instance.transform.position.y > 0f)
         {
             bar.localPosition = upBarPosition;
@@ -124,12 +136,14 @@ public class Resource : MonoBehaviour, InteractableObject
             TerrainGenerator.instance.RemoveResource(row, column);
         }
         Player.instance.animator.SetTrigger("Stop");
+        Player.instance.gatherSounds[(int)miningType].loop = false;
         Destroy(parentObject);
     }
 
     public void Cancel()
     {
         StopCoroutine(gatherCoroutine);
+        Player.instance.gatherSounds[(int)miningType].Stop();
         Player.instance.interaction = null;
         Player.instance.animator.SetTrigger("Stop");
         gatherBar.SetActive(false);

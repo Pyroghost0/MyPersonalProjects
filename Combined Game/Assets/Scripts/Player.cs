@@ -11,12 +11,12 @@ using TMPro;
 
 public class Player : MonoBehaviour
 {
-    public const float timeMultiplier = 3f;
+    public const float timeMultiplier = 4f;
     public GameObject bulletPrefab;
     public GameObject key;
     public float speed = 2.2f;
-    public static int health = 5;
-    public static int maxHealth = 5;
+    public static int health = 4;
+    public static int maxHealth = 4;
     public bool hasKey = false;
     public Animator animator;
     public static float bulletCooldownTime = .6f;
@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
 
     public static float[] gatherEfficiency = { 1f, 1f, 1f };
 
-    //0-15 = inventory, 16 = day, 17 = upgrade stations, 18 = cracked walls, 19 = desk upgrades, 20 = health upgaredes, 21 = fire status, 22 = dugeonLevel (health reset to 100% due to fairity), 23 = volume settings
+    //0-15 = inventory, 16 = day, 17 = upgrade stations, 18 = cracked walls & Pickaxe, 19 = desk upgrades, 20 = health upgaredes, 21 = fire status, 22 = dugeonLevel (health reset to 100% due to fairity), 23 = volume settings
     public static ushort[] inventoryProgress = new ushort[24];
     //public Sprite[] itemSprites;
     //public Image inventorySprite;
@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
     public List<Transform> objectsInRadius = new List<Transform>();
 
     public static Player instance;
-    //public static bool isPaused = false;
+    public static bool hasPickaxe = true;
     public InteractableObject interaction;
 
     public static bool healed = false;
@@ -52,24 +52,28 @@ public class Player : MonoBehaviour
     public GameObject buildButton;
     public bool buildMode = false;
     public GameObject buildUI;
+    public UpgradeStations[] upgradeStations;
 
     public bool buttonClick = false;
     public TextMeshProUGUI[] itemTexts;
     public Image[] items;
+    public RectTransform[] healthTransforms;
     public Image healthImage;
     public Transform clock;
     public static float floatTime;
     public static ushort dayTime;
     public TextMeshProUGUI dayTimeText;
 
-    public AudioSource gatherSound;
-    public AudioSource chopSound;
-    public AudioSource miningSound;
+    public AudioSource[] gatherSounds;
+    public AudioSource doorSound;
+    public AudioSource arrowSound;
+    public AudioSource hurtSound;
 
     void Start()
     {
         instance = this;
         Select(select);
+        UpdateHealth(0);
         UpdateTime();
         UpdateItemAmount();
     }
@@ -98,6 +102,21 @@ public class Player : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.Alpha4))
             {
                 Select(3);
+            }
+
+            if (Input.GetKey(KeyCode.Alpha9) && Input.GetKey(KeyCode.Alpha0))
+            {
+                for (int i = 0; i < 16; i++)
+                {
+                    inventoryProgress[i] = 999;
+                }
+                hasPickaxe = true;
+                inventoryProgress[17] += 8;
+                PlayerInventory.instance.UpdateTexts();
+            }
+            else if (Input.GetKeyDown(KeyCode.Return) && Input.GetKey(KeyCode.Alpha0))
+            {
+                floatTime += 60f;
             }
 
             if (inHouse)
@@ -145,10 +164,19 @@ public class Player : MonoBehaviour
             {
                 //Time
                 floatTime += Time.deltaTime * timeMultiplier;
-                if (floatTime >= 1200f)
+                if (floatTime >= 1200f && House.isMade)
                 {
-                    floatTime = 1200f;
-                    Debug.Log("Change");
+                    if (floatTime >= 1200f && House.isMade)
+                    {
+                        floatTime = 1200f;
+                        GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().Tired();
+                    }
+                    else if (floatTime >= 1440)
+                    {
+                        floatTime -= 1440f;
+                        inventoryProgress[21] = Player.inventoryProgress[21] / 4 % 4 == 2 ? Player.inventoryProgress[21] : (ushort)(Player.inventoryProgress[21] + 4);
+                        GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().StartDayCoroutineDueToNewDay();
+                    }
                 }
                 UpdateTime();
 
@@ -184,15 +212,18 @@ public class Player : MonoBehaviour
                                         best = objectsInRadius[i];
                                     }
                                 }
-                                interaction = best.GetComponent<InteractableObject>();
-                                interaction.Interact();
-                                if (best.GetComponent<Resource>() != null)
+                                if (hasPickaxe || best.GetComponent<Resource>() == null || best.GetComponent<Resource>().miningType != MiningType.Mine)
                                 {
-                                    animator.SetFloat("X", 0f);
-                                    animator.SetFloat("Y", 0f);
-                                    animator.SetInteger("Direction", Mathf.Abs(best.position.x - transform.position.x) > Mathf.Abs(best.position.y - transform.position.y) ? (int)Mathf.Sign(best.position.x - transform.position.x) * 2 : (int)Mathf.Sign(best.position.y - transform.position.y));
-                                    animator.SetTrigger(best.GetComponent<Resource>().miningType.ToString());
-                                    rigidbody.velocity = Vector2.zero;
+                                    interaction = best.GetComponent<InteractableObject>();
+                                    interaction.Interact();
+                                    if (best.GetComponent<Resource>() != null)
+                                    {
+                                        animator.SetFloat("X", 0f);
+                                        animator.SetFloat("Y", 0f);
+                                        animator.SetInteger("Direction", Mathf.Abs(best.position.x - transform.position.x) > Mathf.Abs(best.position.y - transform.position.y) ? (int)Mathf.Sign(best.position.x - transform.position.x) * 2 : (int)Mathf.Sign(best.position.y - transform.position.y));
+                                        animator.SetTrigger(best.GetComponent<Resource>().miningType.ToString());
+                                        rigidbody.velocity = Vector2.zero;
+                                    }
                                 }
                             }
                         }
@@ -324,6 +355,10 @@ public class Player : MonoBehaviour
         {
             health = maxHealth;
         }
+        foreach (RectTransform mask in healthTransforms)
+        {
+            mask.sizeDelta = new Vector2(maxHealth * 11.25f, 10f);
+        }
         healthImage.fillAmount = ((float)health) / maxHealth;
         //Check possibility
         //update UI
@@ -332,6 +367,7 @@ public class Player : MonoBehaviour
     //Cooldown fpr shooting the gun
     IEnumerator Cooldown()
     {
+        arrowSound.Play();
         bulletCooldown = true;
         yield return new WaitForSeconds(bulletCooldownTime);
         bulletCooldown = false;
@@ -340,6 +376,7 @@ public class Player : MonoBehaviour
     //Invincible for time
     IEnumerator IFrames()
     {
+        hurtSound.Play();
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         invincible = true;
         for (int i = 0; i < 6; i++)
@@ -441,12 +478,20 @@ public class Player : MonoBehaviour
 
     public void BuildMode()
     {
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().shortButtonSound.Play();
         buildMode = !buildMode;
         buildUI.SetActive(buildMode);
         buildButton.SetActive(!buildMode);
         Time.timeScale = buildMode ? 0f : 1f;
         if (buildMode)
         {
+            foreach (UpgradeStations upgradeStation in upgradeStations)
+            {
+                if (!upgradeStation.gameObject.activeSelf)
+                {
+                    upgradeStation.UpdateBuildButton();
+                }
+            }
             transform.position = new Vector3(-.5f, -.25f);
             animator.SetFloat("X", 0f);
             animator.SetFloat("Y", 0f);

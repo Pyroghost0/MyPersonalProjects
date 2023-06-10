@@ -73,7 +73,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3389424537211074880, guid: 501068a1c87e2634083de9afaf624492, type: 3}
       propertyPath: itemChance.Array.data[1]
-      value: 0.25
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 3389424537211074880, guid: 501068a1c87e2634083de9afaf624492, type: 3}
       propertyPath: possibleItems.Array.size

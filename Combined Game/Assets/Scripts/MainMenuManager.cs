@@ -15,6 +15,8 @@ public class MainMenuManager : MonoBehaviour
     public AudioMixer effsctsMixer;
     public static bool doneLoading = false;
 
+    public AudioSource longButtonSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,17 +28,21 @@ public class MainMenuManager : MonoBehaviour
             effsctsMixer.SetFloat("Volume", (Mathf.Log10(GameController.effectsValue + 1f) * 50f) - 80f);
             continueButton.interactable = true;
         }
+        else
+        {
+            continueButton.interactable = false;
+        }
         StartCoroutine(FadeLoad());
     }
 
-    private void Update()
+    /*private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
             Time.timeScale = 1f;
             SceneManager.LoadScene("Potion");
         }
-    }
+    }*/
 
     IEnumerator FadeLoad()
     {
@@ -66,11 +72,10 @@ public class MainMenuManager : MonoBehaviour
 
     IEnumerator AppearLoad()
     {
-        Player.floatTime = Player.inventoryProgress[16] % 4 == 0 ? 240f : Player.inventoryProgress[16] % 4 == 1 ? 1200f : 0f;
+        longButtonSound.Play();
+        UpdatePlayer();
         eventSystem.SetActive(false);
         doneLoading = false;
-        GameController.fromMainMenu = true;
-        AsyncOperation ao = SceneManager.LoadSceneAsync("Game", LoadSceneMode.Additive);
         loadingImage.gameObject.SetActive(true);
         float timer = 0f;
         while (timer < 1f)
@@ -80,9 +85,25 @@ public class MainMenuManager : MonoBehaviour
             timer += Time.unscaledDeltaTime;
         }
         loadingImage.color = Color.black;
-        MainMenuManager.doneLoading = true;
+        GameController.fromMainMenu = true;
+        AsyncOperation ao = SceneManager.LoadSceneAsync(Player.floatTime != 1200f ? "Game" : "House", LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao.isDone);
+        doneLoading = true;
         canvas.SetActive(false);
+    }
+
+    public static void UpdatePlayer()
+    {
+        Debug.Log(Player.inventoryProgress);
+        Player.maxHealth = 4 + (Player.inventoryProgress[20] % 2) + (Player.inventoryProgress[20] / 2 % 2) + (Player.inventoryProgress[20] / 4 % 2) + (Player.inventoryProgress[20] / 8 % 2);
+        Player.health = Player.maxHealth;
+        Player.healed = false;
+        Player.hasPickaxe = Player.inventoryProgress[18] / 16 == 1;
+        Player.bulletCooldownTime = (Player.inventoryProgress[19] / 1) % 2 == 1 ? .45f : .6f;
+        Player.gatherEfficiency[1] = (Player.inventoryProgress[19] / 4) % 2 == 1 ? 2f : 1f;
+        Player.gatherEfficiency[2] = (Player.inventoryProgress[19] / 8) % 2 == 1 ? 2f : 1f;
+        Player.floatTime = Player.inventoryProgress[16] % 4 == 0 ? 240f : Player.inventoryProgress[16] % 4 == 1 ? 1200f : 0f;
+        UpgradeStations.potionAmount = (short)((Player.inventoryProgress[19] / 2) % 2 == 1 ? 8 : 5);
     }
 
     public void NewGame()
@@ -106,10 +127,6 @@ public class MainMenuManager : MonoBehaviour
     public void Continue()
     {
         Player.inventoryProgress = Data.Progress();
-        Player.floatTime = Player.inventoryProgress[16] / 4 == 0 ? 240f : Player.inventoryProgress[16] / 4 == 1 ? 1200f : 0f;
-        //Has Pickaxe
-        //Apply efficiency upgrades
-
         TerrainGenerator.regenerate = true;
         StartCoroutine(AppearLoad());
     }

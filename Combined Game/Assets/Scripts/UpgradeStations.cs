@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 //using UnityEditor;
@@ -18,7 +19,7 @@ public enum StationType {
 
 public class UpgradeStations : MonoBehaviour, InteractableObject
 {
-    public const float timeDiff = 600f;
+    public const float timeDiff = 480f;
     public StationType stationType;
     public SpriteRenderer spriteRenderer;
     public GameObject build;
@@ -33,6 +34,8 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
     public Image fireProgress;
     private Coroutine fireCoroutine;
     public static short potionAmount = 5;
+
+    public AudioSource audioSource;
 
     /*#if UNITY_EDITOR
 
@@ -98,7 +101,6 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
             if ((Player.inventoryProgress[17] / 1) % 2 == 0)
             {
                 gameObject.SetActive(false);
-                UpdateBuildButton();
             }
             else
             {
@@ -114,7 +116,6 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
             if ((Player.inventoryProgress[17] / 2) % 2 == 0)
             {
                 gameObject.SetActive(false);
-                UpdateBuildButton();
             }
             else
             {
@@ -126,7 +127,6 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
             if ((Player.inventoryProgress[17] / 4) % 2 == 0)
             {
                 gameObject.SetActive(false);
-                UpdateBuildButton();
             }
             else
             {
@@ -164,7 +164,8 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
         {
             text += "x" + buildAmount.itemAmount[j].amount + " " + PlayerInventory.itemName[buildAmount.itemAmount[j].itemType] + (j + 1 < buildAmount.itemAmount.Length ? "\n" : "");
         }
-        buildText.text = text; 
+        buildText.text = text;
+        build.GetComponent<Button>().interactable = true;
         for (int i = 0; i < buildAmount.itemAmount.Length; i++)
         {
             if (buildAmount.itemAmount[i].amount > Player.inventoryProgress[(int)buildAmount.itemAmount[i].itemType])
@@ -177,9 +178,11 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
     IEnumerator FireOff()
     {
         // Time Passed = (Player.floatTime - ((Player.inventoryProgress[21] / 16) - (((Player.inventoryProgress[21] / 4) % 4) * 1440f)))
-        Debug.Log(Player.floatTime - ((Player.inventoryProgress[21] / 16) - (((Player.inventoryProgress[21] / 4) % 4) * 1440f)));
+        //Debug.Log(Player.floatTime - ((Player.inventoryProgress[21] / 16) - (((Player.inventoryProgress[21] / 4) % 4) * 1440f)));
+        audioSource.Play();
         yield return new WaitForSeconds(Mathf.Max( (timeDiff - (Player.floatTime - ((Player.inventoryProgress[21] / 16) - (((Player.inventoryProgress[21] / 4) % 4) * 1440f)))), 0f) / Player.timeMultiplier);
         Debug.Log("Fire off");
+        audioSource.Stop();
         GetComponent<Animator>().SetBool("Fire", false);
     }
 
@@ -198,7 +201,12 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
         {
             Player.instance.buildButton.SetActive(false);
         }
+        for (int i = 0; i < buildAmount.itemAmount.Length; i++)
+        {
+            Player.inventoryProgress[(int)buildAmount.itemAmount[i].itemType] -= (ushort)buildAmount.itemAmount[i].amount;
+        }
         build.SetActive(false);
+        PlayerInventory.instance.UpdateTexts();
         GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().Tutorial(title, explaination);
     }
 
@@ -327,15 +335,21 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
                     PlayerInventory.instance.UpdateItem((int)upgradeItems[num].itemAmount[i].itemType);
                 }
             }
+            for (int i = 0; i < 4; i ++)
+            {
+                buttons[i].interactable = buttons[i].interactable && HasResources(i);
+            }
 
+            //Action
             if (stationType == StationType.Potion)
             {
                 PotionMaker.goal = num == 0 ? ItemType.Red : num == 1 ? ItemType.Yellow : num == 2 ? ItemType.Blue : ItemType.Bomb;
-                //GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().    Load
+                SceneManager.LoadScene("Potion");
             }
             else if (stationType == StationType.Heal)
             {
-                //GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().UpdateHealth((int)((max / 4f) * (num + 1)));
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().longButtonSound.Play();
+                Player.instance.UpdateHealth((int)((Player.maxHealth / 4f) * (num + 1f)));
                 Player.healed = true;
                 buttons[0].interactable = false;
                 buttons[1].interactable = false;
@@ -344,10 +358,12 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
             }
             else if (stationType == StationType.Damage)
             {
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().longButtonSound.Play();
+                buttons[num].interactable = false;
                 Player.inventoryProgress[19] += (ushort)Mathf.Pow(2f, num);
                 if (num == 0)
                 {
-                    Player.bulletCooldownTime = .4f;
+                    Player.bulletCooldownTime = .45f;
                 }
                 else if (num == 1)
                 {
@@ -355,22 +371,26 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
                 }
                 else if (num == 2)
                 {
-                    Player.gatherEfficiency[1] = 1.5f;
+                    Player.gatherEfficiency[1] = 2f;
                 }
                 else //if (num == 3)
                 {
-                    Player.gatherEfficiency[2] = 1.5f;
+                    Player.gatherEfficiency[2] = 2f;
                 }
             }
             else if (stationType == StationType.Defence)
             {
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().longButtonSound.Play();
+                buttons[num].interactable = false;
                 Player.inventoryProgress[20] += (ushort)Mathf.Pow(2f, num);
-                //GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().UpdateHealth(2);
+                Player.maxHealth++;
+                Player.instance.UpdateHealth(1);
             }
             else //if (stationType == StationType.Fire)
             {
                 if (num == 0)
                 {
+                    GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().shortButtonSound.Play();
                     Player.inventoryProgress[21] = (ushort)(1 + (Player.dayTime * 16)); 
                     buttons[0].interactable = false;
                     buttons[1].interactable = false;
@@ -381,17 +401,21 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
                 }
                 else if (num == 1)
                 {
+                    GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().longButtonSound.Play();
                     fireProgress.fillAmount = 0f;
                     Player.inventoryProgress[15] += (Player.inventoryProgress[21] / 2) % 2 == 1 ? (ushort)10 : (ushort)3;
-                    buttons[0].interactable = true;
+                    PlayerInventory.instance.UpdateItem(15);
+                    buttons[0].interactable = Player.inventoryProgress[6] >= 3;
                     buttons[1].interactable = false;
                     buttons[2].interactable = false;
-                    buttons[3].interactable = true;
+                    buttons[3].interactable = Player.inventoryProgress[6] >= 10;
                     Player.inventoryProgress[21] = 0;
                 }
                 else if (num == 2)
                 {
+                    GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().shortButtonSound.Play();
                     Player.inventoryProgress[6] += (Player.inventoryProgress[21] / 2) % 2 == 1 ? (ushort)10 : (ushort)3;
+                    PlayerInventory.instance.UpdateItem(6);
                     Player.inventoryProgress[21] = 6;
                     buttons[0].interactable = true;
                     buttons[1].interactable = false;
@@ -399,9 +423,11 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
                     buttons[3].interactable = true;
                     GetComponent<Animator>().SetBool("Fire", false);
                     StopCoroutine(fireCoroutine);
+                    audioSource.Stop();
                 }
                 else //if (num == 3)
                 {
+                    GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().shortButtonSound.Play();
                     Player.inventoryProgress[21] = (ushort)(3 + (Player.dayTime * 16));
                     buttons[0].interactable = false;
                     buttons[1].interactable = false;

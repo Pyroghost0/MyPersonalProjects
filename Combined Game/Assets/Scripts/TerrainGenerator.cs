@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum TerrainType
 {
-    Unavailable = 0b_1000,
+    Unavailable = 0b_1010,
     Covered = 0b_0001,
     Available = 0b_0000,
     BigResource = 0b_0011,
@@ -25,10 +25,12 @@ public class TerrainGenerator : MonoBehaviour
     private const float startX = -24.5f;
     private const float startY = -29.5f;
     public static bool regenerate = false;
+    public static Transform parent;
 
     // Start is called before the first frame update
     void Start()
     {
+        parent = UnityEngine.SceneManagement.SceneManager.GetSceneByName("Game").GetRootGameObjects()[0].transform;
         //Debug.Log(terrain.Length);//900
         if (instance == null)
         {
@@ -44,11 +46,17 @@ public class TerrainGenerator : MonoBehaviour
                         resourceTypes[i, j] = -1;
                     }
                 }
+                terrain = new TerrainType[50, 38];
                 GenerateUnavailableTerrain();
+                MustSpawnTrees(100);
+                GenerateTerrain(25);
+                GenerateTerrain(25);
+                GenerateTerrain(25);
             }
             else if (regenerate)
             {
                 resourceTypes = Data.Terrain();
+                terrain = new TerrainType[50, 38];
                 for (int i = 0; i < 50; i++)
                 {
                     for (int j = 0; j < 38; j++)
@@ -77,6 +85,7 @@ public class TerrainGenerator : MonoBehaviour
                     }
                 }
                 GenerateUnavailableTerrain();
+                Load();
                 regenerate = false;
             }
         }
@@ -136,6 +145,33 @@ public class TerrainGenerator : MonoBehaviour
         }
     }
 
+    public void MustSpawnTrees(int num)
+    {
+        int spawned = 0;
+        while (spawned <= num)
+        {
+            int i = Random.Range(0, 50);
+            int j = Random.Range(0, 38);
+            if (CheckIfClear(i, j))
+            {
+                Instantiate(prefabs[0], new Vector3(startX + i, startY + j), transform.rotation, parent).transform.GetChild(0).GetComponent<Resource>().SetRowColumn(i, j);
+                for (int startI = i - 1; startI < i + 2; startI++)
+                {
+                    for (int startJ = j - 1; startJ < j + 2; startJ++)
+                    {
+                        if (startI >= 0 && startI < terrain.GetLength(0) && startJ >= 0 && startJ < terrain.GetLength(1) && terrain[startI, startJ] != TerrainType.Unavailable)
+                        {
+                            terrain[startI, startJ] = TerrainType.Covered;
+                        }
+                    }
+                }
+                terrain[i, j] = TerrainType.BigResource;
+                resourceTypes[i, j] = 0;
+                spawned++;
+            }
+        }
+    }
+
     public void GenerateTerrain(int multiplier)
     {
         //for (int i = 0; i < terrain.Length; i++)
@@ -154,7 +190,7 @@ public class TerrainGenerator : MonoBehaviour
                             {
                                 if (CheckIfClear(i, j))
                                 {
-                                    Instantiate(prefabs[k], new Vector3(startX + i, startY + j), transform.rotation).transform.GetChild(0).GetComponent<Resource>().SetRowColumn(i, j);
+                                    Instantiate(prefabs[k], new Vector3(startX + i, startY + j), transform.rotation, parent).transform.GetChild(0).GetComponent<Resource>().SetRowColumn(i, j);
                                     for (int startI = i-1; startI < i+2; startI++)
                                     {
                                         for (int startJ = j-1; startJ < j+2; startJ++)
@@ -172,7 +208,7 @@ public class TerrainGenerator : MonoBehaviour
                             }
                             else
                             {
-                                Instantiate(prefabs[k], new Vector3(startX + i, startY + j), transform.rotation).transform.GetChild(0).GetComponent<Resource>().SetRowColumn(i, j);
+                                Instantiate(prefabs[k], new Vector3(startX + i, startY + j), transform.rotation, parent).transform.GetChild(0).GetComponent<Resource>().SetRowColumn(i, j);
                                 terrain[i, j] = TerrainType.SmallResource;
                                 resourceTypes[i, j] = k;
                                 break;
@@ -193,10 +229,13 @@ public class TerrainGenerator : MonoBehaviour
                     for (int k = 0; k < coveredResourcePrefabs.Length; k++)
 #pragma warning restore CS0162 // Unreachable code detected
                     {
-                        Instantiate(coveredResourcePrefabs[k], new Vector3(startX + i, startY + j), transform.rotation).transform.GetChild(0).GetComponent<Resource>().SetRowColumn(i, j);
-                        terrain[i, j] = TerrainType.CoveredResource;
-                        resourceTypes[i, j] = (short)(k + prefabs.Length);
-                        break;
+                        if (Random.value <= coveredRarity[k] * multiplier)
+                        {
+                            Instantiate(coveredResourcePrefabs[k], new Vector3(startX + i, startY + j), transform.rotation, parent).transform.GetChild(0).GetComponent<Resource>().SetRowColumn(i, j);
+                            terrain[i, j] = TerrainType.CoveredResource;
+                            resourceTypes[i, j] = (short)(k + prefabs.Length);
+                            break;
+                        }
                     }
                 }
             }
@@ -215,7 +254,7 @@ public class TerrainGenerator : MonoBehaviour
             {
                 if (resourceTypes[i, j] != -1)
                 {
-                    Instantiate(resourceTypes[i, j] < prefabTypes.Length ? prefabs[resourceTypes[i, j]] : coveredResourcePrefabs[resourceTypes[i, j] - prefabs.Length], new Vector3(startX + i, startY + j), transform.rotation).GetComponent<Resource>().SetRowColumn(i, j);
+                    Instantiate(resourceTypes[i, j] < prefabTypes.Length ? prefabs[resourceTypes[i, j]] : coveredResourcePrefabs[resourceTypes[i, j] - prefabs.Length], new Vector3(startX + i, startY + j), transform.rotation, parent).transform.GetChild(0).GetComponent<Resource>().SetRowColumn(i, j);
                 }
             }
         }

@@ -157,7 +157,7 @@ MonoBehaviour:
   health: 2
   speed: 1
   slowedSpeed: 0.75
-  shootDistance: 3.5
+  shootDistance: 4
   knockback: 0
   spawner: {fileID: 0}
   animator: {fileID: 3786856777442125003}

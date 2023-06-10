@@ -13,7 +13,7 @@ PrefabInstance:
       objectReference: {fileID: 7108339969198208228, guid: 6c2d84c1755c7fb4194bb8c8f7211d85, type: 3}
     - target: {fileID: 1872800029777062009, guid: fa8128c6203f6c840a755b309678d32b, type: 3}
       propertyPath: m_Name
-      value: Pickaxe Slime
+      value: Pickaxe Slime Variant
       objectReference: {fileID: 0}
     - target: {fileID: 2286130457555664069, guid: fa8128c6203f6c840a755b309678d32b, type: 3}
       propertyPath: m_RootOrder
@@ -63,6 +63,10 @@ PrefabInstance:
       propertyPath: pickaxeSlime
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7042979432847121172, guid: fa8128c6203f6c840a755b309678d32b, type: 3}
+      propertyPath: pickaxePrefab
+      value: 
+      objectReference: {fileID: 8194134474968318817, guid: 2e971dfd50279a24bb348cd2f93435dd, type: 3}
     - target: {fileID: 8501310608375365082, guid: fa8128c6203f6c840a755b309678d32b, type: 3}
       propertyPath: m_Sprite
       value: 

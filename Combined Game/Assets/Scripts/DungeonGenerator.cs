@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class DungeonGenerator : MonoBehaviour
 {
-    public static TerrainType[,] terrain = new TerrainType[15, 7];
+    public TerrainType[,] terrain = new TerrainType[15, 7];
     public GameObject[] prefabs;
     public float[] rarity;
+    public TextMeshProUGUI floorText;
+    public RectTransform floorTextTransform;
     private const float startX = -7.5f;
     private const float startY = -.5f;
 
@@ -23,14 +26,41 @@ public class DungeonGenerator : MonoBehaviour
         Player.inventoryProgress[22]++;
         MustSpawn(prefabs[0]);
         MustSpawn(prefabs[1]);
-        int numSpawners = (int)Random.Range(Mathf.Pow(Player.inventoryProgress[22], 1.06f), Mathf.Pow(Player.inventoryProgress[22], 1.09f)) -1;
+        int numSpawners = (int)Random.Range(7f * Mathf.Log10(Mathf.Pow(Player.inventoryProgress[22], .75f)) + 2.5f, 7f * Mathf.Log10(Player.inventoryProgress[22]) + 2.5f);
         for (int i = 0; i < numSpawners; i++)
         {
             MustSpawn(prefabs[2]);
         }
         //rarity[2] = Player.inventoryProgress[22];
         //Debug.Log(Player.inventoryProgress[22]);
-        GenerateTerrain(Mathf.Sqrt(Player.inventoryProgress[22]));
+        GenerateTerrain(Mathf.Sqrt(Mathf.Pow( Player.inventoryProgress[22], 1.15f  )));
+        StartCoroutine(DungeonFloorTextCoroutine());
+    }
+
+    IEnumerator DungeonFloorTextCoroutine()
+    {
+        floorText.gameObject.SetActive(true);
+        floorText.text = "Floor " + Player.inventoryProgress[22];
+        float timer = 0f;
+        while (timer < 1f)
+        {
+            floorTextTransform.anchoredPosition = new Vector2(0f, Mathf.Sin(timer * .5f * Mathf.PI) * -50f);
+            floorText.alpha = timer;
+            timer += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+        timer = 0f;
+        floorTextTransform.anchoredPosition = new Vector2(0f, -50f);
+        floorText.alpha = 1f;
+        yield return new WaitForSeconds(2f);
+        while (timer < 1f)
+        {
+            floorTextTransform.anchoredPosition = new Vector2(0f, -50f + (Mathf.Sin(timer * .5f * Mathf.PI) * 50f));
+            floorText.alpha = 1f - timer;
+            timer += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+        floorText.gameObject.SetActive(false);
     }
 
     public void MustSpawn(GameObject prefab)

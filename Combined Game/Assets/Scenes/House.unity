@@ -8941,14 +8941,14 @@ MonoBehaviour:
       amount: 5
   - itemAmount:
     - itemType: 15
-      amount: 5
+      amount: 3
     - itemType: 8
-      amount: 5
+      amount: 3
   - itemAmount:
     - itemType: 15
       amount: 5
     - itemType: 9
-      amount: 5
+      amount: 1
   inventory:
   - {fileID: 1699363900}
   - {fileID: 1643289408}
@@ -8970,6 +8970,7 @@ MonoBehaviour:
   - {fileID: 1566696139}
   - {fileID: 1233369137}
   fireProgress: {fileID: 0}
+  audioSource: {fileID: 0}
 --- !u!212 &834090085
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10016,32 +10017,32 @@ MonoBehaviour:
   upgradeItems:
   - itemAmount:
     - itemType: 11
-      amount: 5
+      amount: 10
     - itemType: 13
       amount: 5
     - itemType: 9
-      amount: 1
+      amount: 2
   - itemAmount:
     - itemType: 13
-      amount: 5
+      amount: 8
     - itemType: 8
       amount: 5
     - itemType: 10
-      amount: 1
+      amount: 2
   - itemAmount:
     - itemType: 11
-      amount: 5
+      amount: 10
     - itemType: 12
       amount: 5
     - itemType: 14
       amount: 1
   - itemAmount:
     - itemType: 7
-      amount: 5
+      amount: 8
     - itemType: 15
       amount: 5
     - itemType: 10
-      amount: 1
+      amount: 3
   inventory:
   - {fileID: 1320857213}
   - {fileID: 1340609857}
@@ -10063,6 +10064,7 @@ MonoBehaviour:
   - {fileID: 116733728}
   - {fileID: 1502571572}
   fireProgress: {fileID: 0}
+  audioSource: {fileID: 0}
 --- !u!212 &931008279
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -11938,7 +11940,7 @@ RectTransform:
   - {fileID: 1368838988}
   - {fileID: 876932920}
   m_Father: {fileID: 1088156490}
-  m_RootOrder: 8
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -12481,9 +12483,29 @@ PrefabInstance:
       propertyPath: inHouse
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3301553516656182098, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
+      propertyPath: upgradeStations.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3301553516656182098, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
+      propertyPath: upgradeStations.Array.data[0]
+      value: 
+      objectReference: {fileID: 931008278}
+    - target: {fileID: 3301553516656182098, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
+      propertyPath: upgradeStations.Array.data[1]
+      value: 
+      objectReference: {fileID: 834090084}
+    - target: {fileID: 3301553516656182098, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
+      propertyPath: upgradeStations.Array.data[2]
+      value: 
+      objectReference: {fileID: 1634966729}
     - target: {fileID: 4502598890859479182, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4502598890859479182, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -275
       objectReference: {fileID: 0}
     - target: {fileID: 5034106901611684533, guid: c4ef1fd9d0e07c14a86ded4c29aa63c4, type: 3}
       propertyPath: m_Enabled
@@ -18522,7 +18544,7 @@ RectTransform:
   - {fileID: 1971536555}
   - {fileID: 2132538822}
   m_Father: {fileID: 1088156490}
-  m_RootOrder: 7
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -18739,7 +18761,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -200, y: 50}
+  m_AnchoredPosition: {x: -275, y: 50}
   m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1616980584
@@ -19171,36 +19193,36 @@ MonoBehaviour:
       amount: 10
     - itemType: 12
       amount: 10
-    - itemType: 9
-      amount: 5
+    - itemType: 10
+      amount: 10
   buildText: {fileID: 1809622395}
   upgradeItems:
   - itemAmount:
     - itemType: 10
-      amount: 5
+      amount: 15
     - itemType: 15
-      amount: 5
+      amount: 15
     - itemType: 14
       amount: 1
   - itemAmount:
     - itemType: 7
-      amount: 5
+      amount: 15
     - itemType: 15
-      amount: 5
+      amount: 10
     - itemType: 14
       amount: 1
   - itemAmount:
     - itemType: 6
-      amount: 5
+      amount: 15
     - itemType: 9
-      amount: 5
+      amount: 4
     - itemType: 14
       amount: 1
   - itemAmount:
     - itemType: 7
-      amount: 5
+      amount: 15
     - itemType: 10
-      amount: 5
+      amount: 15
     - itemType: 14
       amount: 1
   inventory:
@@ -19224,6 +19246,7 @@ MonoBehaviour:
   - {fileID: 585913792}
   - {fileID: 1971536556}
   fireProgress: {fileID: 0}
+  audioSource: {fileID: 0}
 --- !u!212 &1634966730
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -20163,30 +20186,30 @@ MonoBehaviour:
   upgradeItems:
   - itemAmount:
     - itemType: 8
-      amount: 5
+      amount: 10
     - itemType: 12
-      amount: 5
+      amount: 10
     - itemType: 14
       amount: 1
   - itemAmount:
     - itemType: 9
-      amount: 5
+      amount: 4
     - itemType: 7
-      amount: 5
+      amount: 15
     - itemType: 14
       amount: 1
   - itemAmount:
     - itemType: 12
-      amount: 5
+      amount: 15
     - itemType: 15
-      amount: 5
+      amount: 15
     - itemType: 14
       amount: 1
   - itemAmount:
     - itemType: 10
-      amount: 5
+      amount: 15
     - itemType: 11
-      amount: 5
+      amount: 25
     - itemType: 14
       amount: 1
   inventory:
@@ -20210,6 +20233,7 @@ MonoBehaviour:
   - {fileID: 872585270}
   - {fileID: 1368838989}
   fireProgress: {fileID: 0}
+  audioSource: {fileID: 0}
 --- !u!212 &1718141828
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -23421,7 +23445,7 @@ RectTransform:
   - {fileID: 1233369136}
   - {fileID: 1506952962}
   m_Father: {fileID: 1088156490}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

@@ -97,10 +97,13 @@ public class PotionMaker : MonoBehaviour
 
     IEnumerator Start()
     {
-        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Y) || Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown(KeyCode.E));
-        goal = Input.GetKeyDown(KeyCode.R) ? ItemType.Red : Input.GetKeyDown(KeyCode.Y) ? ItemType.Yellow : Input.GetKeyDown(KeyCode.B) ? ItemType.Blue : ItemType.Bomb;
-        instrcutions.text = "Make a " + (goal == ItemType.Red ? "red potion" : goal == ItemType.Yellow ? "yellow potion" : goal == ItemType.Blue ? "blue potion" : "bomb");
-        yield return new WaitUntil(() => Input.GetKey(KeyCode.Space));
+        if (goal == ItemType.Free)
+        {
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Y) || Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown(KeyCode.E));
+            goal = Input.GetKeyDown(KeyCode.R) ? ItemType.Red : Input.GetKeyDown(KeyCode.Y) ? ItemType.Yellow : Input.GetKeyDown(KeyCode.B) ? ItemType.Blue : ItemType.Bomb;
+            //instrcutions.text = "Make a " + (goal == ItemType.Red ? "red potion" : goal == ItemType.Yellow ? "yellow potion" : goal == ItemType.Blue ? "blue potion" : "bomb");
+            //yield return new WaitUntil(() => Input.GetKey(KeyCode.Space));
+        }
         MakePotion();
     }
 
@@ -156,7 +159,7 @@ public class PotionMaker : MonoBehaviour
             step++;
             if (potionInstruction.instruction == instruction.Ground)
             {
-                string newText = "Ground up the ";
+                string newText = "Grind up the ";
                 for (int i = 0; i < potionInstruction.ingredients.Length-1; i++)
                 {
                     newText += ingredientString[potionInstruction.ingredients[i]].ToLower() + " & ";
@@ -519,7 +522,8 @@ public class PotionMaker : MonoBehaviour
             yield return new WaitForSeconds(.5f);
         }
         notesText.text = notes.Count > 0 ? notes[Random.Range(0, notes.Count)] : "Average all around";
-        Player.inventoryProgress[goal == ItemType.Red ? 0 : goal == ItemType.Yellow ? 1 : goal == ItemType.Blue ? 2 : 3] += (ushort)(star / 10f * UpgradeStations.potionAmount);
+        endButton.SetActive(true);
+        Player.inventoryProgress[goal == ItemType.Red ? 3 : goal == ItemType.Yellow ? 4 : goal == ItemType.Blue ? 5 : 2] += (ushort)(star / 10f * UpgradeStations.potionAmount);
     }
 
     public void Back()
@@ -542,6 +546,7 @@ public class PotionMaker : MonoBehaviour
 
     public void NextButton()
     {
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().shortButtonSound.Play();
         buttonClick = true;
     }
 
@@ -552,7 +557,7 @@ public class PotionMaker : MonoBehaviour
         {
             if (potionInstruction.instruction == instruction.Ground)
             {
-                startText += "-Ground up the ";
+                startText += "-Grind up the ";
                 /*for (int i = 0; i < potionInstruction.ingredients.Length - 1; i++)
                 {
                     startText += ingredientString[potionInstruction.ingredients[i]].ToLower() + " & ";

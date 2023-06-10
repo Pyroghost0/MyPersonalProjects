@@ -59,7 +59,7 @@ public class Slime : MonoBehaviour
             while ((target.position - transform.position).magnitude <= shootDistance)
             {
                 float timer = 0f;
-                while (timer < 1f)
+                while (timer < .66f)
                 {
                     if (!knockback)
                     {
@@ -81,11 +81,11 @@ public class Slime : MonoBehaviour
                 Vector2 delta = pos - transform.position;
                 float angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
                 GameObject thrownObject = Instantiate(projectilePrefab, transform.position, Quaternion.Euler(0f, 0f, angle - 90f));
-                thrownObject.GetComponent<ThrownObject>().time = (delta.magnitude + 1f) / 2f;
+                thrownObject.GetComponent<ThrownObject>().time = (delta.magnitude + 1f) / 3.75f;
                 thrownObject.GetComponent<ThrownObject>().velocity = delta / thrownObject.GetComponent<ThrownObject>().time;
                 thrownObject.GetComponent<ThrownObject>().target = pos;
                 timer = 0f;
-                while (timer < .5f)
+                while (timer < .33f)
                 {
                     if (!knockback)
                     {
@@ -132,7 +132,9 @@ public class Slime : MonoBehaviour
             {
                 if (pickaxeSlime)
                 {
-                    Instantiate(pickaxePrefab, transform.position, transform.rotation);
+                    GameObject pickaxe = Instantiate(pickaxePrefab, transform.position, transform.rotation);
+                    pickaxe.GetComponent<Item>().itemType = ItemType.Pickaxe;
+                    pickaxe.transform.localScale = new Vector3(2f, 2f, 2f);
                 }
                 Destroy(gameObject);
                 /*health = 0;
@@ -155,11 +157,13 @@ public class Slime : MonoBehaviour
         yield return new WaitForSeconds(.6667f);
         if (pickaxeSlime)
         {
-            Instantiate(pickaxePrefab, transform.position, transform.rotation);
+            GameObject pickaxe = Instantiate(pickaxePrefab, transform.position, transform.rotation);
+            pickaxe.GetComponent<Item>().itemType = ItemType.Pickaxe;
+            pickaxe.transform.localScale = new Vector3(2f, 2f, 2f);
         }
         yield return new WaitForSeconds(.1333f);
         deathCollider.SetActive(true);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         float timer = 0f;
         while(timer < 1f)
         {

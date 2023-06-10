@@ -65,10 +65,6 @@ public class Item : MonoBehaviour
             float distence = floatCycleDistence * -Mathf.Sin(timer / floatCycleTime * Mathf.PI);
             transform.position += new Vector3(0f, curentYpos - distence, 0f);
             curentYpos = distence;
-            if (timer > floatCycleTime * Mathf.PI * 2f)
-            {
-                timer -= floatCycleTime * Mathf.PI * 2f;
-            }
         }
     }
 
@@ -118,14 +114,23 @@ public class Item : MonoBehaviour
             timer+=Time.deltaTime;
             transform.position += distance * Time.deltaTime;
         }
-        Player.inventoryProgress[(int)itemType]++;
-        if ((int)itemType <= 5)
+        if (itemType == ItemType.Pickaxe)
         {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().UpdateItemAmount();
+            Player.inventoryProgress[18] += 16;
+            Player.hasPickaxe = true;
+            Destroy(gameObject);
         }
-        else if ((int)itemType >= 2)
+        else
         {
-            PlayerInventory.instance.UpdateItem((int)itemType);
+            Player.inventoryProgress[(int)itemType]++;
+            if ((int)itemType <= 5)
+            {
+                GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().UpdateItemAmount();
+            }
+            else if ((int)itemType >= 2)
+            {
+                PlayerInventory.instance.UpdateItem((int)itemType);
+            }
         }
         Destroy(gameObject);
     }
