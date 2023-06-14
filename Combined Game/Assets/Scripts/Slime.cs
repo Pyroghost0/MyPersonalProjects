@@ -25,6 +25,7 @@ public class Slime : MonoBehaviour
     public GameObject projectilePrefab;
     public bool pickaxeSlime = false;
     public EnemyColor enemyColor;
+    public GameObject destroyedBodyPrefab;
 
     public AudioSource WalkSound;
     public AudioSource shootSound;
@@ -134,8 +135,11 @@ public class Slime : MonoBehaviour
                 {
                     GameObject pickaxe = Instantiate(pickaxePrefab, transform.position, transform.rotation);
                     pickaxe.GetComponent<Item>().itemType = ItemType.Pickaxe;
+                    pickaxe.GetComponent<ParticleSystem>().Play();
                     pickaxe.transform.localScale = new Vector3(2f, 2f, 2f);
                 }
+#pragma warning disable CS0618 // Type or member is obsolete
+                Instantiate(destroyedBodyPrefab, transform.position, transform.rotation).GetComponent<ParticleSystem>().startColor = enemyColor == EnemyColor.Green ? new Color(0f, 1f, 0f, .3f) : enemyColor == EnemyColor.Purple ? new Color(1f, 0f, 1f, .3f) : new Color(1f, .5f, 0f, .3f);
                 Destroy(gameObject);
                 /*health = 0;
                 StopAllCoroutines();
@@ -159,6 +163,7 @@ public class Slime : MonoBehaviour
         {
             GameObject pickaxe = Instantiate(pickaxePrefab, transform.position, transform.rotation);
             pickaxe.GetComponent<Item>().itemType = ItemType.Pickaxe;
+            pickaxe.GetComponent<ParticleSystem>().Play();
             pickaxe.transform.localScale = new Vector3(2f, 2f, 2f);
         }
         yield return new WaitForSeconds(.1333f);

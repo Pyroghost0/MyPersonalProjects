@@ -169,6 +169,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 8587536837933915042, guid: 2b2bb0e9b859a3f4d809a6aadd9f8c02, type: 3}
   pickaxeSlime: 0
   enemyColor: 3
+  destroyedBodyPrefab: {fileID: 2721823107300695985, guid: 2690132f8da681c44a4035da4941afc7, type: 3}
   WalkSound: {fileID: 2561893953666817552}
   shootSound: {fileID: 4932321127576871562}
   deathSound: {fileID: 3279577182810816667}

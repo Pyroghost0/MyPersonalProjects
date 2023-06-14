@@ -41,7 +41,8 @@ public class Powder : MonoBehaviour
     {
         if (collision.gameObject.layer >= 14)
         {
-            rigidbody2D.bodyType = RigidbodyType2D.Static;
+            Destroy(rigidbody2D);
+            //rigidbody2D.bodyType = RigidbodyType2D.Static;
             gameObject.layer = 14;
         }
     }

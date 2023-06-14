@@ -266,6 +266,7 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
                 }
                 else if (stationType == StationType.Defence)
                 {
+                    Debug.Log(Player.inventoryProgress[20]);
                     buttons[0].interactable = buttons[0].interactable && (Player.inventoryProgress[20] / 1) % 2 == 0;
                     buttons[1].interactable = buttons[1].interactable && (Player.inventoryProgress[20] / 2) % 2 == 0;
                     buttons[2].interactable = buttons[2].interactable && (Player.inventoryProgress[20] / 4) % 2 == 0;
@@ -414,6 +415,7 @@ public class UpgradeStations : MonoBehaviour, InteractableObject
                 else if (num == 2)
                 {
                     GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().shortButtonSound.Play();
+                    fireProgress.fillAmount = 0f;
                     Player.inventoryProgress[6] += (Player.inventoryProgress[21] / 2) % 2 == 1 ? (ushort)10 : (ushort)3;
                     PlayerInventory.instance.UpdateItem(6);
                     Player.inventoryProgress[21] = 6;

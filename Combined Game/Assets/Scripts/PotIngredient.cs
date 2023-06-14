@@ -19,10 +19,11 @@ public class PotIngredient : MonoBehaviour
     public ingredient ingredientType;
     //private bool used = false;
     public bool inWater = false;
-    private bool touchingWater = false;
+    //private bool touchingWater = false;
     public Collider2D ingredientCollider;
     private Collider2D mouseCollider;
     private Collider2D potCollider;
+    private Collider2D potWaterCollider;
     private bool holding = false;
     private SpriteRenderer waterRenderer;
     public SpriteRenderer ingredientRenderer;
@@ -32,6 +33,8 @@ public class PotIngredient : MonoBehaviour
     public Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
 
+    public AudioSource splashSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +43,7 @@ public class PotIngredient : MonoBehaviour
 #pragma warning restore CS0618 // Type or member is obsolete
         mouseCollider = GameObject.FindGameObjectWithTag("Mouse").GetComponent<Collider2D>();
         potCollider = GameObject.FindGameObjectWithTag("Pot").GetComponent<Collider2D>();
+        potWaterCollider = GameObject.FindGameObjectWithTag("Pot Water").GetComponent<Collider2D>();
         waterRenderer = GameObject.FindGameObjectWithTag("Pot Water").GetComponent<SpriteRenderer>();
         waterRenderer.color = potRed > potGreen && potRed > potBlue ? new Color(1f, potGreen / potRed, potBlue / potRed) : potGreen > potBlue ? new Color(potRed / potGreen, 1f, potBlue / potGreen) : new Color(potRed / potBlue, potGreen / potBlue, 1f);
         camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -100,6 +104,11 @@ public class PotIngredient : MonoBehaviour
             rigidbody.drag = 4f;
             holding = false;
         }
+
+        if (!inWater && !holding && ingredientCollider.IsTouching(potCollider))
+        {
+            rigidbody.AddForce((waterRenderer.transform.position - transform.position).normalized * 5f);
+        }
     }
 
     IEnumerator Ingredient()
@@ -115,13 +124,13 @@ public class PotIngredient : MonoBehaviour
                     rigidbody.AddForce((ingredientCollider.ClosestPoint(mouseCollider.transform.position) - ((Vector2)transform.position)) * 100f);
                 }
             }
-            else if (touchingWater && !ingredientCollider.IsTouching(potCollider)) {
+            else if (ingredientCollider.IsTouching(potWaterCollider) && !ingredientCollider.IsTouching(potCollider)) {
                 inWater = true;
             }
             yield return new WaitForFixedUpdate();
         }
 
-        GameObject.FindGameObjectWithTag("Potion Maker").GetComponent<PotionMaker>().ingredientOrder.Add(ingredientType);
+        //GameObject.FindGameObjectWithTag("Potion Maker").GetComponent<PotionMaker>().ingredientOrder.Add(ingredientType);
         ingredientRenderer.sortingOrder = 5;
         gameObject.layer = 0;
         float timer = 0f;
@@ -135,6 +144,7 @@ public class PotIngredient : MonoBehaviour
 
         bool used = false;
         particleSystem.Play();
+        splashSound.Play();
         while (!used)
         {
             float temp = size;
@@ -169,7 +179,7 @@ public class PotIngredient : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    /*private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Pot Water"))
         {
@@ -183,5 +193,5 @@ public class PotIngredient : MonoBehaviour
         {
             touchingWater = false;
         }
-    }
+    }*/
 }

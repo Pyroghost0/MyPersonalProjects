@@ -14,6 +14,7 @@ public class MainMenuManager : MonoBehaviour
     public AudioMixer musicMixer;
     public AudioMixer effsctsMixer;
     public static bool doneLoading = false;
+    public static bool wentToHouse = false;
 
     public AudioSource longButtonSound;
 
@@ -24,6 +25,7 @@ public class MainMenuManager : MonoBehaviour
         Player.select = 0;
         if (Data.Exists())
         {
+            Player.inventoryProgress = Data.Progress();
             musicMixer.SetFloat("Volume", (Mathf.Log10(GameController.musicValue + 1f) * 50f) - 80f);
             effsctsMixer.SetFloat("Volume", (Mathf.Log10(GameController.effectsValue + 1f) * 50f) - 80f);
             continueButton.interactable = true;
@@ -73,6 +75,7 @@ public class MainMenuManager : MonoBehaviour
     IEnumerator AppearLoad()
     {
         longButtonSound.Play();
+        BGM.instance.GetComponent<BGM>().Destroy(MusicType.Overworld);
         UpdatePlayer();
         eventSystem.SetActive(false);
         doneLoading = false;
@@ -86,7 +89,14 @@ public class MainMenuManager : MonoBehaviour
         }
         loadingImage.color = Color.black;
         GameController.fromMainMenu = true;
-        AsyncOperation ao = SceneManager.LoadSceneAsync(Player.floatTime != 1200f ? "Game" : "House", LoadSceneMode.Additive);
+        wentToHouse = Player.inventoryProgress[16] % 4 >= 1;
+        if (Player.inventoryProgress[16] % 4 == 2)
+        {
+            Player.inventoryProgress[16]--;
+            Player.inventoryProgress[21] -= 4;//Resets when you go outside
+        }
+        Debug.Log(wentToHouse);
+        AsyncOperation ao = SceneManager.LoadSceneAsync(wentToHouse ? "House" : "Game", LoadSceneMode.Additive);
         yield return new WaitUntil(() => ao.isDone);
         doneLoading = true;
         canvas.SetActive(false);
@@ -94,7 +104,6 @@ public class MainMenuManager : MonoBehaviour
 
     public static void UpdatePlayer()
     {
-        Debug.Log(Player.inventoryProgress);
         Player.maxHealth = 4 + (Player.inventoryProgress[20] % 2) + (Player.inventoryProgress[20] / 2 % 2) + (Player.inventoryProgress[20] / 4 % 2) + (Player.inventoryProgress[20] / 8 % 2);
         Player.health = Player.maxHealth;
         Player.healed = false;

@@ -10,28 +10,38 @@ using UnityEngine.UI;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.Rendering.PostProcessing;/* NOTE: I had an error getting the packege in visual studio
+*Close VSCode
+Edit -> Preferences -> External Tools
+change External Script Editor -> "Open By File Extension"
+Change it back to "Visual Studio Code"
+Check "Generate All*/
 
 public class GameController : MonoBehaviour
 {
-    public GameObject startScreen;
-    public GameObject endScreen;
-    public TextMeshProUGUI resultDescriptionText;
-    public TextMeshProUGUI resultText;
+    public GameObject tutorialObjects;
+    public RectTransform deadScreen;
+    public RectTransform winScreen;
 
     public GameObject pauseScreen;
     private bool timeScale0;
     public Image loadingImage;
+    private bool canPause = true;
     public static bool paused = false;
     public static bool fromMainMenu = false;
     public static bool fromDungeon = false;
     public static bool fromPotion = false;
     public Cinemachine.CinemachineVirtualCamera cinemachineVirtualCamera;
+    public PostProcessVolume postProcess;
     //public static bool doneLoading = false;
 
     public GameObject tiredScreen;
     public GameObject tutorialScreen;
+    public GameObject letterScreen;
     public TextMeshProUGUI titleText;
+    public TextMeshProUGUI letterTitleText;
     public TextMeshProUGUI explainationText;
+    public TextMeshProUGUI letterExplainationText;
     public TextMeshProUGUI dayText;
     public TextMeshProUGUI savingText;
     public RectTransform dayTextTransform;
@@ -55,8 +65,6 @@ public class GameController : MonoBehaviour
     //On start set timescale
     void Start()
     {
-        musicValue = 50;
-        effectsValue = 50;
         musicSlider.value = musicValue;
         effectsSlider.value = effectsValue;
         MusicSlider();
@@ -89,6 +97,7 @@ public class GameController : MonoBehaviour
             yield return new WaitForEndOfFrame();
             if (SceneManager.GetSceneByName("Game").IsValid())
             {
+                StartCoroutine(DayLightCoroutine());
                 if (Player.floatTime == 0f)
                 {
                     TerrainGenerator.instance.GenerateTerrain(35);
@@ -96,7 +105,7 @@ public class GameController : MonoBehaviour
                 }
                 else if (Player.inventoryProgress[16] == 0)
                 {
-                    Debug.Log("Tutorial");
+                    StartCoroutine(TutorialCoroutine());
                 }
             }
             AsyncOperation ao = SceneManager.UnloadSceneAsync("Main Menu");
@@ -115,7 +124,7 @@ public class GameController : MonoBehaviour
         {
             if (SceneManager.GetActiveScene().name == "Game")
             {
-                if (TerrainGenerator.instance != null)
+                if (TerrainGenerator.instance != null && !MainMenuManager.wentToHouse)
                 {
                     TerrainGenerator.parent = SceneManager.GetSceneByName("Game").GetRootGameObjects()[0].transform;
                     TerrainGenerator.instance.Load();
@@ -123,11 +132,16 @@ public class GameController : MonoBehaviour
                 else
                 {
                     yield return new WaitForEndOfFrame();//Wait for it to generate if load to house
+                    MainMenuManager.wentToHouse = false;
                 }
                 if (Player.floatTime == 0f)
                 {
                     TerrainGenerator.instance.GenerateTerrain(35);
                     StartCoroutine(EnemyCoroutine());
+                }
+                else if (Player.inventoryProgress[16] == 0)
+                {
+                    StartCoroutine(TutorialCoroutine());
                 }
             }
             else if (Player.floatTime == 1200f)
@@ -139,16 +153,18 @@ public class GameController : MonoBehaviour
             //AsyncOperation ao = SceneManager.UnloadSceneAsync("House");
             //yield return new WaitUntil(() => ao.isDone);
         }
+        if (SceneManager.GetSceneByName("Game").IsValid())
+        {
+            StartCoroutine(DayLightCoroutine());
+            StartCoroutine(DayCoroutine());
+        }
+        yield return new WaitForEndOfFrame();
         float timer = 0f;
         while (timer < 1f)
         {
             loadingImage.color = new Color(0f, 0f, 0f, 1f - timer);
             yield return new WaitForEndOfFrame();
             timer += Time.unscaledDeltaTime;
-        }
-        if (SceneManager.GetActiveScene().name == "Game" && (Player.floatTime == 0f || Player.floatTime == 240f))
-        {
-            StartCoroutine(DayCoroutine());
         }
         Resume(false);
         loadingImage.gameObject.SetActive(false);
@@ -177,9 +193,21 @@ public class GameController : MonoBehaviour
         //yield return new WaitUntil(() => ao.isDone);
     }
 
+    IEnumerator TutorialCoroutine()
+    {
+        tutorialObjects.SetActive(true);
+        Player.gatherEfficiency[1] = 0f;
+        yield return new WaitForSeconds(5f);
+        if (GameObject.FindGameObjectWithTag("Player").transform.position == Vector3.zero)
+        {
+            Tutorial("Movement", "Move around using WASD or the arrow keys");
+            //yield return new WaitUntil(() => GameObject.FindGameObjectWithTag("Player").transform.position != Vector3.zero);
+        }
+    }
+
     void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)) && !loadingImage.gameObject.activeSelf)
+        if ((Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)) && !loadingImage.gameObject.activeSelf && canPause)
         {
             if (paused)
             {
@@ -218,7 +246,7 @@ public class GameController : MonoBehaviour
                 spawnedPickaxe = true;
                 Instantiate(pickaxeSlimePrefab, player.position + new Vector3(Mathf.Sin(rotation) * 10f, Mathf.Cos(rotation) * 10f), transform.rotation);
             }
-            yield return new WaitForSeconds(Mathf.Min(Random.Range(3f * Mathf.Pow(1.5f, -1.5f*day)+1f, 5f * Mathf.Pow(1.5f, -day)+2f), (240f - Player.floatTime) / Player.timeMultiplier));
+            yield return new WaitForSeconds(Mathf.Min(Random.Range(3.5f * Mathf.Pow(1.25f, -.75f*day)+1f, 5f * Mathf.Pow(1.15f, -day)+2f), (240f - Player.floatTime) / Player.timeMultiplier));
         }
         Player.inventoryProgress[16] = (ushort)((day+1) * 4);
         if (House.isMade)
@@ -236,7 +264,8 @@ public class GameController : MonoBehaviour
     IEnumerator DayCoroutine()
     {
         dayText.gameObject.SetActive(true);
-        dayText.text = (Player.floatTime != 0f ? "Day " : "Night ")+ (Player.inventoryProgress[16] / 4 + 1);
+        //Debug.Log(Player.floatTime);
+        dayText.text = (Player.floatTime > 100f ? "Day " : "Night ")+ (Player.inventoryProgress[16] / 4 + 1);
         float timer = 0f;
         while (timer < 1f)
         {
@@ -257,6 +286,10 @@ public class GameController : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         dayText.gameObject.SetActive(false);
+        if (dayText.text == "Night 1")
+        {
+            Tutorial("Shooting", "It seems like the infinite arrows you keep in your pocket might finally come in handy.\n\nAim with you mouse & Left-Click to shoot\n\nAny throwable object can be thrown with Right-Click");
+        }
     }
 
     IEnumerator SavingCoroutine()
@@ -287,7 +320,13 @@ public class GameController : MonoBehaviour
 
     IEnumerator DayLightCoroutine()
     {
-        yield break;
+        ColorGrading settings = postProcess.sharedProfile.GetSetting<ColorGrading>();
+        while (true)
+        {
+            settings.postExposure.value = (Player.floatTime > 400f && Player.floatTime < 1120f ? 1f : -2f ) * Mathf.Sqrt(Mathf.Abs(Mathf.Sin((Player.floatTime - 400f) * Mathf.PI / 720f))) - .5f;
+            //Debug.Log(settings.postExposure.value);
+            yield return new WaitForFixedUpdate();
+        }
     }
 
     public void Pause()
@@ -321,25 +360,37 @@ public class GameController : MonoBehaviour
         Player.inventoryProgress = Data.Exists() ? Data.Progress() : new ushort[24];
         Player.inventoryProgress[23] = volume;
         MainMenuManager.UpdatePlayer();
+        BGM.instance.GetComponent<BGM>().Destroy(MusicType.Overworld);
         LoadScene("Game");//Can't die in house
     }
 
     //Sets up end game screen
-    public void EndGame(bool won)
+    public void Lose()
     {
-        if (won)
-        {
-            resultText.text = "You Win";
-            //resultDescriptionText.text = "Congratulations, Thanks For Playing My Game.";
-        }
-        else
-        {
-            resultText.text = "You Lose";
-            //resultDescriptionText.text = "Try Again, I Won't Bite";
-        }
-        StopAllCoroutines();
+        StartCoroutine(MoveScreen(deadScreen));
+    }
+
+    public void Win()
+    {
+        StartCoroutine(MoveScreen(winScreen));
+    }
+
+    IEnumerator MoveScreen(RectTransform screen)
+    {
+        loadingImage.color = Color.clear;
+        loadingImage.gameObject.SetActive(true);
+        screen.gameObject.SetActive(true);
+        canPause = false;
         Time.timeScale = 0f;
-        endScreen.SetActive(true);
+        float timer = 0f;
+        while (timer < 2f)
+        {
+            screen.anchoredPosition = new Vector2(0f, Mathf.Sin(timer * .25f * Mathf.PI) * 540f - 540f);
+            timer += Time.unscaledDeltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        screen.anchoredPosition = Vector2.zero;
+        loadingImage.gameObject.SetActive(false);
     }
 
     //Switches to main menu screen
@@ -352,7 +403,13 @@ public class GameController : MonoBehaviour
             TerrainGenerator.resourceTypes = null;
             Destroy(TerrainGenerator.instance.gameObject);
         }
+        BGM.instance.GetComponent<BGM>().Destroy(MusicType.MainMenuHouse);
         StartCoroutine(AppearLoad("Main Menu"));
+    }
+
+    public void ItchLink()
+    {
+        Application.OpenURL("https://emptywisp.itch.io/");
     }
 
     //Quit game
@@ -362,19 +419,32 @@ public class GameController : MonoBehaviour
         Application.Quit();
     }
 
-    public void Tutorial(string title, string explaination)
+    public void Tutorial(string title, string explaination, bool letter = false)
     {
-        tutorialScreen.SetActive(true);
-        titleText.text = title;
-        explainationText.text = explaination;
+        if (letter)
+        {
+            letterScreen.SetActive(true);
+            letterTitleText.text = title;
+            letterExplainationText.text = explaination;
+        }
+        else
+        {
+            tutorialScreen.SetActive(true);
+            titleText.text = title;
+            explainationText.text = explaination;
+        }
         Time.timeScale = 0f;
     }
 
-    public void Tired()
+    public void Tired(bool show = true)
     {
+        if (SceneManager.GetSceneByName("Dungeon").IsValid())
+        {
+            Player.inventoryProgress[22]--;
+        }
         Player.inventoryProgress[16]++;
         Data.Save(TerrainGenerator.resourceTypes, Player.inventoryProgress);
-        tiredScreen.SetActive(true);
+        tiredScreen.SetActive(show);
         Time.timeScale = 0f;
     }
 
@@ -382,6 +452,7 @@ public class GameController : MonoBehaviour
     {
         shortButtonSound.Play();
         StartCoroutine(AppearLoad("House"));
+        BGM.instance.GetComponent<BGM>().Destroy(MusicType.MainMenuHouse);
     }
 
     public void StartDayCoroutineDueToNewDay()
@@ -394,6 +465,7 @@ public class GameController : MonoBehaviour
     {
         shortButtonSound.Play();
         tutorialScreen.SetActive(false);
+        letterScreen.SetActive(false);
         Time.timeScale = 1f;
     }
 

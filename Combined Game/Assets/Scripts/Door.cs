@@ -65,6 +65,13 @@ public class Door : MonoBehaviour
                 Player.inventoryProgress[16]++;
                 Data.Save(TerrainGenerator.resourceTypes, Player.inventoryProgress);
             }
+            else if (Player.floatTime >= 1140f && loadScene == "House")
+            {
+                Player.healed = false;
+                Player.floatTime = 1200f;
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().Tired(false);
+            }
+            BGM.instance.GetComponent<BGM>().Destroy(loadScene == "Game" ? MusicType.Overworld : loadScene == "House" ? MusicType.MainMenuHouse : loadScene == "Dungeon" ? MusicType.Dungeon : MusicType.Boss);
             Player.instance.doorSound.Play();
             GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().LoadScene(loadScene);
         }

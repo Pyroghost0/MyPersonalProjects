@@ -29,6 +29,8 @@ public class Bottle : MonoBehaviour
     public Rigidbody2D rigidbody;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
 
+    public AudioSource shakeSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -88,13 +90,15 @@ public class Bottle : MonoBehaviour
                         SetUp(dustRender, new Color(lightestColor.r + ((darkestColor.r - lightestColor.r) * colorScale), lightestColor.g + ((darkestColor.g - lightestColor.g) * colorScale), lightestColor.b + ((darkestColor.b - lightestColor.b) * colorScale)), this);
                 }
             }
+            shakeSound.volume = leftoverDust != 0 ? rigidbody.velocity.magnitude / 100f : 0f;
             //else
             //{
-                //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, 0f, Mathf.Atan2((center.position - transform.position).y, (center.position - transform.position).x) * 57.2958f + 90f), Time.deltaTime * 3f);
+            //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, 0f, Mathf.Atan2((center.position - transform.position).y, (center.position - transform.position).x) * 57.2958f + 90f), Time.deltaTime * 3f);
             //}
         }
         else
         {
+            shakeSound.volume = 0f;
             holding = false;
         }
     }
@@ -103,9 +107,9 @@ public class Bottle : MonoBehaviour
     {
         for (int i = 0; i < bottles.Count; i++)
         {
-            bottles[i].spriteRenderer.sortingOrder = -5001 + (i * 3);
-            bottles[i].dustSpriteRenderer.sortingOrder = -5002 + (i * 3);
-            bottles[i].label.sortingOrder = -5000 + (i * 3);
+            bottles[i].spriteRenderer.sortingOrder = -5001 + (i * 5);
+            bottles[i].dustSpriteRenderer.sortingOrder = -5002 + (i * 5);
+            bottles[i].label.sortingOrder = -5000 + (i * 5);
         }
     }
 }

@@ -40,10 +40,11 @@ public class Enemy : MonoBehaviour
     public Sprite[] bodySprites;
     public Sprite[] enemySprites;
     public GameObject bodyPrefab;
-    public GameObject itemPrefab;
+    public GameObject deadSoundPrefab;
+    public GameObject destroyedBodySoundPrefab;
     public EnemyColor enemyColor;
 
-    public 
+    public AudioSource hitSound;
 
     //Sets up variables
     void Start()
@@ -93,6 +94,7 @@ public class Enemy : MonoBehaviour
             else
             {
                 //StartCoroutine(IFrames());
+                hitSound.Play();
                 StartCoroutine(Knockback((transform.position - collision.transform.position).normalized, 1f));// collision.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude * 3f));
             }
         }
@@ -122,7 +124,15 @@ public class Enemy : MonoBehaviour
                 {
                     spawner.EnemyDeath();
                 }
+#pragma warning disable CS0618 // Type or member is obsolete
+                Instantiate(destroyedBodySoundPrefab, transform.position, transform.rotation).GetComponent<ParticleSystem>().startColor = enemyColor == EnemyColor.Red ? new Color(0.2641509f, 0.1240628f, 0.05401868f) :
+            enemyColor == EnemyColor.Yellow ? new Color(0.2627451f, 0.1336386f, 0.05490196f) : new Color(0.2175974f, 0.05490196f, 0.2627451f);
+#pragma warning restore CS0618 // Type or member is obsolete
                 Destroy(gameObject);
+            }
+            else
+            {
+                hitSound.Play();
             }
         }
     }
@@ -156,6 +166,8 @@ public class Enemy : MonoBehaviour
             Instantiate(bodyPrefab, transform.position + new Vector3(-.16f, 0f, 0f), transform.rotation).GetComponent<SpriteRenderer>().sprite = bodySprites[((int)enemyColor) * 8 + 6];
             Instantiate(bodyPrefab, transform.position + new Vector3(.24f, 0f, 0f), transform.rotation).GetComponent<Body>().SetHead(bodySprites[((int)enemyColor) * 8 + 7]);
         }
+
+        Instantiate(deadSoundPrefab, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 

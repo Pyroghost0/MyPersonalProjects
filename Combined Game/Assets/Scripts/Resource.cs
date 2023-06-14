@@ -84,7 +84,7 @@ public class Resource : MonoBehaviour, InteractableObject
         {
             transform.position += new Vector3(Random.Range(-.2f, .2f), Random.Range(-.25f, .25f));
         }
-        spriteRenderer.sortingOrder = -(int)(transform.position.y * 10f);
+        spriteRenderer.sortingOrder = possibleItems[0] == ItemType.Orangeberry ? -(int)((transform.position.y + .3f) * 10f) : -(int)(transform.position.y * 10f);
     }
 
     public void Interact()//Player p)
@@ -94,7 +94,15 @@ public class Resource : MonoBehaviour, InteractableObject
             gatherTime = totalGatherTime;
         }*/
         //player = p;
-        gatherCoroutine = StartCoroutine(GatherCoroutine());
+        if (Player.gatherEfficiency[(int)miningType] != 0)
+        {
+            gatherCoroutine = StartCoroutine(GatherCoroutine());
+        }
+        else
+        {
+            Player.instance.interaction = null;
+            Player.instance.animator.SetTrigger("Stop");
+        }
     }
 
     IEnumerator GatherCoroutine()

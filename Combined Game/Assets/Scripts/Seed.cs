@@ -18,6 +18,8 @@ public class Seed : MonoBehaviour
     public Collider2D mouseCollider;
     private bool holding = false;
 
+    public AudioSource holdSound;
+
     void Start()
     {
         camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -45,6 +47,7 @@ public class Seed : MonoBehaviour
                 if (seedCollider.IsTouching(mouseCollider))
                 {
                     holding = true;
+                    holdSound.Play();
                 }
             }
             else if (Input.GetKeyUp(KeyCode.Mouse0))
@@ -73,6 +76,7 @@ public class Seed : MonoBehaviour
     {
         if (collision.CompareTag("Apple"))
         {
+            collision.GetComponent<AudioSource>().Play();
             Destroy(gameObject);
         }
     }

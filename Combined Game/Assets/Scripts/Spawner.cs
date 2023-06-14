@@ -53,14 +53,13 @@ public class Spawner : MonoBehaviour
         //while (numEnemies < maxEnemies)
         {
             yield return new WaitForSeconds(Random.Range(averageRespawnTime / 4, averageRespawnTime * 3 / 4));
-            if ((player.position - transform.position).magnitude < spawnDistence)
+            yield return new WaitUntil(() => ((player.position - transform.position).magnitude < spawnDistence));
+            yield return new WaitUntil(() => (player.position - transform.position).magnitude >= closeSpawnDistance);
+            SpawnEnemy();
+            if (totalSpawned == maxEnemiesPerCycle)
             {
-                yield return new WaitUntil(() => (player.position - transform.position).magnitude >= closeSpawnDistance);
-                SpawnEnemy();
-                if (totalSpawned == maxEnemiesPerCycle)
-                {
-                    spriteRenderer.color = new Color(.5f, .5f, .5f);
-                }
+                spriteRenderer.color = new Color(.5f, .5f, .5f);
+                break;
             }
             yield return new WaitForSeconds(Random.Range(averageRespawnTime / 4, averageRespawnTime * 3 / 4));
         }

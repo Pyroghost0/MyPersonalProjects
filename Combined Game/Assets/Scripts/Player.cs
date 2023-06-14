@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
     public List<Transform> objectsInRadius = new List<Transform>();
 
     public static Player instance;
-    public static bool hasPickaxe = true;
+    public static bool hasPickaxe = false;
     public InteractableObject interaction;
 
     public static bool healed = false;
@@ -63,19 +63,32 @@ public class Player : MonoBehaviour
     public static float floatTime;
     public static ushort dayTime;
     public TextMeshProUGUI dayTimeText;
+    private bool addTime = true;
+    public ParticleSystem ZParticle;
 
     public AudioSource[] gatherSounds;
     public AudioSource doorSound;
     public AudioSource arrowSound;
     public AudioSource hurtSound;
 
-    void Start()
+    IEnumerator Start()
     {
+        addTime = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Boss";
         instance = this;
         Select(select);
         UpdateHealth(0);
         UpdateTime();
         UpdateItemAmount();
+        if (!inHouse && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Boss")
+        {
+            while (true)
+            {
+                yield return new WaitUntil(() => floatTime > 1140f);
+                ZParticle.Play();
+                yield return new WaitUntil(() => floatTime <= 1140f);
+                ZParticle.Stop();
+            }
+        }
     }
 
     //Updates movement and attacks
@@ -104,7 +117,7 @@ public class Player : MonoBehaviour
                 Select(3);
             }
 
-            if (Input.GetKey(KeyCode.Alpha9) && Input.GetKey(KeyCode.Alpha0))
+            /*if (Input.GetKey(KeyCode.Alpha9) && Input.GetKey(KeyCode.Alpha0))
             {
                 for (int i = 0; i < 16; i++)
                 {
@@ -117,7 +130,7 @@ public class Player : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.Return) && Input.GetKey(KeyCode.Alpha0))
             {
                 floatTime += 60f;
-            }
+            }*/
 
             if (inHouse)
             {
@@ -163,20 +176,20 @@ public class Player : MonoBehaviour
             else
             {
                 //Time
-                floatTime += Time.deltaTime * timeMultiplier;
+                if (addTime)
+                {
+                    floatTime += Time.deltaTime * timeMultiplier;
+                }
                 if (floatTime >= 1200f && House.isMade)
                 {
-                    if (floatTime >= 1200f && House.isMade)
-                    {
-                        floatTime = 1200f;
-                        GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().Tired();
-                    }
-                    else if (floatTime >= 1440)
-                    {
-                        floatTime -= 1440f;
-                        inventoryProgress[21] = Player.inventoryProgress[21] / 4 % 4 == 2 ? Player.inventoryProgress[21] : (ushort)(Player.inventoryProgress[21] + 4);
-                        GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().StartDayCoroutineDueToNewDay();
-                    }
+                    floatTime = 1200f;
+                    GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().Tired();
+                }
+                else if (floatTime >= 1440)
+                {
+                    floatTime -= 1440f;
+                    inventoryProgress[21] = Player.inventoryProgress[21] / 4 % 4 == 2 ? Player.inventoryProgress[21] : (ushort)(Player.inventoryProgress[21] + 4);
+                    GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().StartDayCoroutineDueToNewDay();
                 }
                 UpdateTime();
 
@@ -314,8 +327,8 @@ public class Player : MonoBehaviour
     {
         dayTime = (ushort)floatTime;
         //dayTimeText.text = (dayTime % 720 / 60 == 0 ? 12 : dayTime % 720 / 60).ToString() + ":" + (dayTime % 60 / 10 == 0 ? "0" + dayTime % 60 : dayTime % 60) + (dayTime / 720 == 0 ? "AM" : "PM");
-        dayTimeText.text = (dayTime % 720 / 60 == 0 ? 12 : dayTime % 720 / 60).ToString() + ":" + (dayTime % 60 / 15 == 0 ? "00" : dayTime % 60 / 15 * 15) + (dayTime / 720 == 0 ? "AM" : "PM");
-        clock.rotation = Quaternion.Euler(0f, 0f, (floatTime-240f) / 4f);
+        dayTimeText.text = (dayTime % 720 / 60 == 0 ? 12 : dayTime % 720 / 60).ToString() + ":" + (dayTime % 60 / 15 == 0 ? "00" : dayTime % 60 / 15 * 15) + (dayTime < 720 ? "AM" : "PM");
+        clock.rotation = Quaternion.Euler(0f, 0f, (floatTime-700f) / 4f);
     }
 
     /*public void ButtonSelect(int num)
@@ -350,6 +363,7 @@ public class Player : MonoBehaviour
         if (health <= 0){
             health = 0;
             Debug.Log("Died");
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().Lose();
         }
         else if (health > maxHealth)
         {
@@ -401,14 +415,6 @@ public class Player : MonoBehaviour
                 StartCoroutine(Knockback((transform.position - collision.transform.position).normalized, 3));
                 StartCoroutine(IFrames());
             }
-            else
-            {
-                GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().EndGame(false);
-            }
-        }
-        else if (collision.gameObject.CompareTag("Goal"))
-        {
-            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().EndGame(true);
         }
     }
 
@@ -420,12 +426,7 @@ public class Player : MonoBehaviour
             //healthText.text = "Health: " + health;
             if (health > 0)
             {
-                //StopAllCoroutines();
                 StartCoroutine(IFrames());
-            }
-            else
-            {
-                GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().EndGame(false);
             }
         }
     }

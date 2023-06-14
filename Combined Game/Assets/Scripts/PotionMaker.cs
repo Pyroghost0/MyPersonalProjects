@@ -42,7 +42,7 @@ public class PotionMaker : MonoBehaviour
     public TextMeshProUGUI instrcutions;
     //private static ingredient[] ingredientList1 = {ingredient.Voidshroom, ingredient.GroundUpIceFlower };
     //private static ingredient[] ingredientList2 = {ingredient.Orangeberry, ingredient.AppleSeeds, ingredient.Orangeberry };
-    public static ItemType goal = ItemType.Red;
+    public static ItemType goal = ItemType.Free;
     public PotionInstruction[] potionInstructions;/* = { new PotionInstruction(instruction.Ground, ingredient.IceFlower, 2f),
         new PotionInstruction(instruction.Extract, ingredient.IceFlower),
         new PotionInstruction(instruction.AddIngredient, ingredientList1), new PotionInstruction(instruction.Stir, ingredientList1, 3f),
@@ -80,6 +80,8 @@ public class PotionMaker : MonoBehaviour
     public TextMeshProUGUI resultPotionText;
     public TextMeshProUGUI notesText;
     public GameObject endButton;
+
+    public AudioSource popSound;
 
     void Update()
     {
@@ -285,7 +287,7 @@ public class PotionMaker : MonoBehaviour
                     //Debug.Log(ingredients[i].name + ": "+ ingredients[i].GetComponent<PotIngredient>().size );
                     //Debug.Log(i < ingredients.Length ? 1f - ingredients[i].GetComponent<PotIngredient>().size : 1f);
                 }
-                gameResult = Mathf.Max(1f - Mathf.Abs(potionInstruction.idealResult - gameResult), 0f);
+                gameResult = Mathf.Max(potionInstruction.idealResult != 3f ? Mathf.Sqrt(1f - Mathf.Abs(potionInstruction.idealResult - gameResult)) : 1f - Mathf.Abs(potionInstruction.idealResult - gameResult), 0f);
                 Debug.Log(gameResult);
                 result *= gameResult;
                 if (gameResult > .8f)
@@ -440,8 +442,8 @@ public class PotionMaker : MonoBehaviour
                 }
                 int total = rocks + charcoal + sulfer;
                 Debug.Log("Rocks: " + rocks + ", Charcoal " + charcoal + ", Sulfer: " + sulfer);
-                float gameResult = Mathf.Sqrt( Mathf.Max( Mathf.Min( Mathf.Min( ((rocks*100f) / (total*75f)) > 1f ? 2f - ((rocks * 100f) / (total * 75f)) : ((rocks * 100f) / (total * 75f)), 
-                    ((charcoal * 100f) / (total * 15f)) > 1f ? 2f - ((charcoal * 100f) / (total * 15f)) : ((charcoal * 100f) / (total * 15f))), ((sulfer * 100f) / (total * 10f)) > 1f ? 2f - ((sulfer * 100f) / (total * 10f)) : ((sulfer * 100f) / (total * 10f))), 0f));
+                float gameResult = Mathf.Pow( Mathf.Max( Mathf.Min( Mathf.Min( ((rocks*100f) / (total*75f)) > 1f ? 2f - ((rocks * 100f) / (total * 75f)) : ((rocks * 100f) / (total * 75f)), 
+                    ((charcoal * 100f) / (total * 15f)) > 1f ? 2f - ((charcoal * 100f) / (total * 15f)) : ((charcoal * 100f) / (total * 15f))), ((sulfer * 100f) / (total * 10f)) > 1f ? 2f - ((sulfer * 100f) / (total * 10f)) : ((sulfer * 100f) / (total * 10f))), 0f), .35f);
                 Debug.Log(gameResult);
                 result *= gameResult;
                 if (gameResult > .8f)
@@ -485,6 +487,8 @@ public class PotionMaker : MonoBehaviour
         Debug.Log("Star: " + star);
         for (int i = 0; i < star; i++)
         {
+            popSound.pitch = .5f + (i / 10f);
+            popSound.Play();
             resultPotionText.text = "x" + ((int)((i + 1) / 10f * UpgradeStations.potionAmount));
             for (int j = 0; j < 4; j++)
             {
@@ -512,6 +516,8 @@ public class PotionMaker : MonoBehaviour
             Debug.Log("Star: " + star);
             for (int i = temp; i < star; i++)
             {
+                popSound.pitch = .5f + (i / 10f);
+                popSound.Play();
                 resultPotionText.text = "x" + ((int)((i + 1) / 10f * UpgradeStations.potionAmount));
                 for (int j = 0; j < 4; j++)
                 {
@@ -521,6 +527,8 @@ public class PotionMaker : MonoBehaviour
             }
             yield return new WaitForSeconds(.5f);
         }
+        popSound.pitch *= 2;
+        popSound.Play();
         notesText.text = notes.Count > 0 ? notes[Random.Range(0, notes.Count)] : "Average all around";
         endButton.SetActive(true);
         Player.inventoryProgress[goal == ItemType.Red ? 3 : goal == ItemType.Yellow ? 4 : goal == ItemType.Blue ? 5 : 2] += (ushort)(star / 10f * UpgradeStations.potionAmount);
@@ -534,9 +542,10 @@ public class PotionMaker : MonoBehaviour
     public bool AllInPot()
     {
         GameObject[] ingredients = GameObject.FindGameObjectsWithTag("Ingredient");
+        //Debug.Log(ingredients.Length);
         foreach(GameObject ingredient in ingredients)
         {
-            if (!ingredient.GetComponent<PotIngredient>().inWater)
+            if (ingredient.GetComponent<PotIngredient>() != null && !ingredient.GetComponent<PotIngredient>().inWater)
             {
                 return false;
             }
@@ -601,10 +610,10 @@ public class PotionMaker : MonoBehaviour
     IEnumerator Hide(Transform scene)
     {
         raycast.SetActive(true);
-        float timer = 0f;
-        while(timer < 1.5f)
+        float timer = .5f;
+        while(timer < 2f)
         {
-            scene.position +=  new Vector3(200f * Mathf.Pow(timer, 3f) * Time.deltaTime, 0f);
+            scene.position +=  new Vector3(10f * Mathf.Pow(timer, 3f) * Time.deltaTime, 0f);
             timer += Time.deltaTime;
             yield return new WaitForFixedUpdate();
         }

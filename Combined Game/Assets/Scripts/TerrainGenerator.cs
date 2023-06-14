@@ -85,7 +85,6 @@ public class TerrainGenerator : MonoBehaviour
                     }
                 }
                 GenerateUnavailableTerrain();
-                Load();
                 regenerate = false;
             }
         }
@@ -100,13 +99,13 @@ public class TerrainGenerator : MonoBehaviour
         //House
         for (int i = 20; i < 30; i++)
         {
-            for (int j = 30; j < 35; j++)
+            for (int j = 29; j < 35; j++)
             {
                 terrain[i, j] = TerrainType.Unavailable;
             }
         }
-        terrain[24, 29] = TerrainType.Unavailable;
-        terrain[25, 29] = TerrainType.Unavailable;
+        terrain[24, 28] = TerrainType.Unavailable;
+        terrain[25, 28] = TerrainType.Unavailable;
 
         //Dungeon
         for (int i = 40; i < 47; i++)

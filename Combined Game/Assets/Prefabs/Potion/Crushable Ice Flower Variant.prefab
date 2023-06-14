@@ -25,7 +25,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7676735873288403321, guid: 44ec517ddad418d49a0c295928c92549, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.92387956
+      value: 0.9659258
       objectReference: {fileID: 0}
     - target: {fileID: 7676735873288403321, guid: 44ec517ddad418d49a0c295928c92549, type: 3}
       propertyPath: m_LocalRotation.x
@@ -37,7 +37,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7676735873288403321, guid: 44ec517ddad418d49a0c295928c92549, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.38268343
+      value: 0.2588191
       objectReference: {fileID: 0}
     - target: {fileID: 7676735873288403321, guid: 44ec517ddad418d49a0c295928c92549, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -49,11 +49,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7676735873288403321, guid: 44ec517ddad418d49a0c295928c92549, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -45
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676735873288403323, guid: 44ec517ddad418d49a0c295928c92549, type: 3}
+      propertyPath: maxDamage
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7676735873288403326, guid: 44ec517ddad418d49a0c295928c92549, type: 3}
       propertyPath: m_Name
       value: Crushable Ice Flower Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8155174090840439828, guid: 44ec517ddad418d49a0c295928c92549, type: 3}
+      propertyPath: m_Pitch
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44ec517ddad418d49a0c295928c92549, type: 3}

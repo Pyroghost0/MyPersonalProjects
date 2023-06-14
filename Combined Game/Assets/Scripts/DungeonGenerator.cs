@@ -10,6 +10,7 @@ public class DungeonGenerator : MonoBehaviour
     public float[] rarity;
     public TextMeshProUGUI floorText;
     public RectTransform floorTextTransform;
+    public GameObject note;
     private const float startX = -7.5f;
     private const float startY = -.5f;
 
@@ -24,16 +25,21 @@ public class DungeonGenerator : MonoBehaviour
         terrain[13, 6] = TerrainType.Unavailable;
         terrain[14, 6] = TerrainType.Unavailable;
         Player.inventoryProgress[22]++;
+        if (Player.inventoryProgress[22] == 1)
+        {
+            terrain[8, 5] = TerrainType.Unavailable;
+            Instantiate(note, new Vector3(startX + 8, startY + 5), transform.rotation);
+        }
         MustSpawn(prefabs[0]);
         MustSpawn(prefabs[1]);
-        int numSpawners = (int)Random.Range(7f * Mathf.Log10(Mathf.Pow(Player.inventoryProgress[22], .75f)) + 2.5f, 7f * Mathf.Log10(Player.inventoryProgress[22]) + 2.5f);
+        int numSpawners = (int)Random.Range(7f * Mathf.Log10(Mathf.Pow(Player.inventoryProgress[22], .4f)) + 2.5f, 7f * Mathf.Log10(Player.inventoryProgress[22] * .5f) + 3.5f);
         for (int i = 0; i < numSpawners; i++)
         {
             MustSpawn(prefabs[2]);
         }
         //rarity[2] = Player.inventoryProgress[22];
         //Debug.Log(Player.inventoryProgress[22]);
-        GenerateTerrain(Mathf.Sqrt(Mathf.Pow( Player.inventoryProgress[22], 1.15f  )));
+        GenerateTerrain(Mathf.Pow( Player.inventoryProgress[22], 1.075f  ));
         StartCoroutine(DungeonFloorTextCoroutine());
     }
 

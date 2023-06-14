@@ -31,6 +31,8 @@ public class MortarIngredient : MonoBehaviour
     public Rigidbody2D rigidbody2D;
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
 
+    public AudioSource smashSound;
+
     void Start()
     {
         /*orderNum--;
@@ -78,6 +80,8 @@ public class MortarIngredient : MonoBehaviour
         spriteRenderer.sprite = sprite;
         pixelCollider.Regenerate();
         rigidbody2D.mass = values.Count * .1f;
+        smashSound.volume = ((float)values.Count) / fullTotal;
+        smashSound.Play();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -90,7 +94,7 @@ public class MortarIngredient : MonoBehaviour
             {
                 if (level < 4)
                 {
-                    int attemptAmount = values.Count / (5 - level);
+                    int attemptAmount = (int)(values.Count * 1.5f / (5 - level));
                     for (int childNum = 0; childNum < 5 - level && values.Count > 0; childNum++)
                     {
                         List<int> attemptValues = new List<int>();
@@ -125,13 +129,18 @@ public class MortarIngredient : MonoBehaviour
                 foreach (int value in values)
                 {
                     total++;
-                    if (Random.value <= .25f)
+                    if (total % 4 == 0)
                     {
                         Instantiate(powder, transform.position + (transform.up * (startPixel + (.0625f * (value / originalTexture.width)))) + (transform.right * (startPixel + (.0625f * (value % originalTexture.width)))), transform.rotation)
                             .GetComponent<Powder>().SetUp(total, originalTexture.GetPixel(value / originalTexture.width, value % originalTexture.height));
                     }
                 }
                 Destroy(gameObject);
+            }
+            else
+            {
+                smashSound.volume = Mathf.Min(Mathf.Pow((values.Count * rigidbody2D.velocity.magnitude) / fullTotal / 50f, .5f), .5f);
+                smashSound.Play();
             }
         }
     }

@@ -73,7 +73,8 @@ public class Body : MonoBehaviour
     {
         doubleDeath = true;
 #pragma warning disable CS0618 // Type or member is obsolete
-        Instantiate(smokePrefab, transform.position, transform.rotation).GetComponent<ParticleSystem>().startColor = enemyColor == EnemyColor.Red ? new Color(0.2641509f, 0.1240628f, 0.05401868f) : enemyColor == EnemyColor.Yellow ? new Color(0.2627451f, 0.1336386f, 0.05490196f) : new Color(0.2175974f, 0.05490196f, 0.2627451f);
+        Instantiate(smokePrefab, transform.position, transform.rotation).GetComponent<ParticleSystem>().startColor = enemyColor == EnemyColor.Red ? new Color(0.2641509f, 0.1240628f, 0.05401868f) : 
+            enemyColor == EnemyColor.Yellow ? new Color(0.2627451f, 0.1336386f, 0.05490196f) : new Color(0.2175974f, 0.05490196f, 0.2627451f);
 #pragma warning restore CS0618 // Type or member is obsolete
         Destroy(gameObject);
     }

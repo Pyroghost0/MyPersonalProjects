@@ -28,6 +28,10 @@ public class House : MonoBehaviour
             upgradeAmountObject.SetActive(true);
             isMade = false;
         }
+        else
+        {
+            StartCoroutine(ChangeHouse());
+        }
     }
 
     IEnumerator Build()
@@ -47,13 +51,24 @@ public class House : MonoBehaviour
         if (spriteNum == 64)
         {
             yield return new WaitForSeconds(.05f);
-            spriteRenderer.sprite = sprites[65];
+            StartCoroutine(ChangeHouse());
             isMade = true;
             doorObject.SetActive(true);
         }
         Player.instance.speed = speed;
         active = false;
         constructionSounds.Stop();
+    }
+
+    IEnumerator ChangeHouse()
+    {
+        while (true)
+        {
+            spriteRenderer.sprite = sprites[65];
+            yield return new WaitUntil(() => Player.floatTime >= 240f);
+            spriteRenderer.sprite = sprites[66];
+            yield return new WaitUntil(() => Player.floatTime < 240f);
+        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)

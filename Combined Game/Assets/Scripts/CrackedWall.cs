@@ -13,7 +13,7 @@ public class CrackedWall : MonoBehaviour
 
     void Start()
     {
-        if ((Player.inventoryProgress[20] / num) % 2 == 1)
+        if ((Player.inventoryProgress[18] / num) % 2 == 1)
         {
             Destroy(gameObject);
         }
@@ -24,7 +24,7 @@ public class CrackedWall : MonoBehaviour
     {
         if (collision.CompareTag("Explosion"))
         {
-            Player.inventoryProgress[20] += num;
+            Player.inventoryProgress[18] += num;
             gameObject.SetActive(false);
         }
     }
