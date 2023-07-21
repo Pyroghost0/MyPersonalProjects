@@ -29,6 +29,8 @@ public class Attacker : MonoBehaviour
     private Attack[] attacks;
     private int prevAttack;
     //private Attack moveLeft;
+    public AudioSource talkSound;
+    private float talkVolume;
 
     //A stack of commands to keep track of the history of commands
     //public Stack<Command> commandHistory;
@@ -46,24 +48,39 @@ public class Attacker : MonoBehaviour
         //moveLeft = new DiagnalAttack(attackExecutor);
         //commandHistory = new Stack<Command>();
         prevAttack = Random.Range(0, attacks.Length);
+        talkVolume = talkSound.volume;
         StartCoroutine(TrashyBehaivior());
     }
 
     IEnumerator Talk(string text, float time)
     {
+        //Debug.LogError(text);
         //animator.SetTrigger("Talk");
         //enemyAnimator.ResetTrigger("Talk End");
+        yield return new WaitUntil(() => talkSound.volume == talkVolume);
+        talkSound.pitch = attackExecutor.multiplier;
+        talkSound.Play();
         enemyAnimator.SetTrigger("Talk Start");
         StartCoroutine(FadeInText(time));
         textBoxText.text = text;
         float timer = 0f;
-        while (timer < time)
+        while (timer < time - 1f)
         {
             textBox.rotation = Quaternion.Euler(0f, 0f, Mathf.Sin(timer*5f) * 4f);
             textBoxTextTransform.localRotation = Quaternion.Euler(0f, 0f, Mathf.Sin(timer*3f) * 2f);
             yield return new WaitForFixedUpdate();
             timer += Time.deltaTime;
         }
+        while (timer < time)
+        {
+            talkSound.volume = (time - timer) * talkVolume;
+            textBox.rotation = Quaternion.Euler(0f, 0f, Mathf.Sin(timer * 5f) * 4f);
+            textBoxTextTransform.localRotation = Quaternion.Euler(0f, 0f, Mathf.Sin(timer * 3f) * 2f);
+            yield return new WaitForFixedUpdate();
+            timer += Time.deltaTime;
+        }
+        talkSound.volume = talkVolume;
+        talkSound.Stop();
         enemyAnimator.SetTrigger("Talk End");
         //enemyAnimator.ResetTrigger("Talk Start");
         //enemyAnimator.ResetTrigger("Powerup");
@@ -100,7 +117,7 @@ public class Attacker : MonoBehaviour
         textBox.gameObject.SetActive(false);
     }
 
-    IEnumerator ECoroutine()
+    IEnumerator ECoroutine()//E
     {
         eRenderer.gameObject.SetActive(true);
         for (int i = 0; i < eSprites.Length; i++)
@@ -112,6 +129,7 @@ public class Attacker : MonoBehaviour
 
     IEnumerator TrashyBehaivior()
     {
+        yield return new WaitForFixedUpdate();
         yield return new WaitUntil(() => Time.timeScale != 0f);
         if (GameController.easyMode)
         {
@@ -484,7 +502,7 @@ public class Attacker : MonoBehaviour
         //Hard Mode -------------------------------
         else
         {
-            /*if (GameController.openMainMenu || !GameController.skipSeenTexts)
+            if (GameController.openMainMenu || !GameController.skipSeenTexts)
             {
                 StartCoroutine(Talk("wHAt Did yOU jUsT dO?\ndId YOu jUSt tHRow tHaT TRaSH in ThE RecyCLe!", 5f));
                 yield return new WaitForSeconds(5f);
@@ -492,9 +510,9 @@ public class Attacker : MonoBehaviour
                 yield return new WaitForSeconds(5f);
             }
             else
-            {*/
+            {
                 yield return new WaitForSeconds(1f);
-            //}
+            }
             int ranLine = 0;
             attackExecutor.multiplier = 1.4f;
             enemyAnimator.SetFloat("Multiplier", 1.4f);
@@ -699,7 +717,7 @@ public class Attacker : MonoBehaviour
                 yield return new WaitUntil(() => !attackExecutor.isAttacking);
                 yield return new WaitForSeconds(.5f);
             }
-
+            
             ranLine--;
             enemyAnimator.SetFloat("Multiplier", .8f);
             StartCoroutine(Talk("i C! tHIs wON't wORk. gO0d tHINg i'Ve oNLy bEen USinG 1 hANd!", 5f));

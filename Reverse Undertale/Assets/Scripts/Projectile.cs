@@ -18,6 +18,7 @@ public class Projectile : MonoBehaviour
     public bool destroyedFromExit = true;
     private bool following = false;
     //private bool currentlyFollowing = false;
+    public AudioSource truckSound;
 
     void Start()
     {
@@ -55,13 +56,17 @@ public class Projectile : MonoBehaviour
             //frontTruck.transform.localScale = new Vector3(-1f, 1f, 1f);
         }
         backTruck.gameObject.SetActive(false);
+        truckSound.timeSamples = Random.Range(0, truckSound.clip.samples);
+        float initSound = truckSound.volume;
         float timer = 0f;
         while (timer < growTime)
         {
             frontTruck.size = new Vector2(timer * 2.45098f / growTime, frontTruck.size.y);
+            truckSound.volume = (timer / growTime) * initSound;
             yield return new WaitForFixedUpdate();
             timer += Time.deltaTime;
         }
+        truckSound.volume = initSound;
         frontTruck.size = new Vector2(frontTruck.size.y, frontTruck.size.y);
 
         yield return new WaitForSeconds(endingTime - (growTime * 2f));
@@ -72,6 +77,7 @@ public class Projectile : MonoBehaviour
         while (timer > 0f)
         {
             backTruck.size = new Vector2(timer * 2.45098f / growTime, backTruck.size.y);
+            truckSound.volume = (timer / growTime) * initSound;
             yield return new WaitForFixedUpdate();
             timer -= Time.deltaTime;
         }

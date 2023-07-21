@@ -106,6 +106,7 @@ MonoBehaviour:
   blackBullet: 1
   grow: 1
   destroyedFromExit: 1
+  truckSound: {fileID: 0}
 --- !u!50 &6384629052926706392
 Rigidbody2D:
   serializedVersion: 4
@@ -261,10 +262,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d7dd08a21ca0e0344a1d824380d926b0, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 992839214d4abfb459094859c2394f5f, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.6
-  m_Pitch: 1
+  m_Volume: 1
+  m_Pitch: 0.95
   Loop: 0
   Mute: 0
   Spatialize: 0

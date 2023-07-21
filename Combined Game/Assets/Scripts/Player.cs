@@ -117,7 +117,7 @@ public class Player : MonoBehaviour
                 Select(3);
             }
 
-            /*if (Input.GetKey(KeyCode.Alpha9) && Input.GetKey(KeyCode.Alpha0))
+            if (Input.GetKey(KeyCode.Alpha9) && Input.GetKey(KeyCode.Alpha0))
             {
                 for (int i = 0; i < 16; i++)
                 {
@@ -130,7 +130,7 @@ public class Player : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.Return) && Input.GetKey(KeyCode.Alpha0))
             {
                 floatTime += 60f;
-            }*/
+            }
 
             if (inHouse)
             {

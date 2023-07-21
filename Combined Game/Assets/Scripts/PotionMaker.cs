@@ -186,7 +186,7 @@ public class PotionMaker : MonoBehaviour
                 else if (gameResult < .2f)
                 {
                     //notes.Add("Your grounding could use some work in step " + step);
-                    notes.Add("When grounding the " + potionInstruction.ingredients[0] + ", you didn't make it the right size");
+                    notes.Add("When grinding the " + potionInstruction.ingredients[0] + ", you didn't make it the right size");
                 }
                 //Destroy(mortarAndPestal);
                 GameObject[] powders = GameObject.FindGameObjectsWithTag("Falling Dust");
@@ -413,6 +413,7 @@ public class PotionMaker : MonoBehaviour
             {
                 string newText = "Measure the crushed rock, charcoal powder, and crushed sulfer to a 75:15:10 ratio respectively.";
                 instrcutions.text = newText + "\n\nPress the \"Next\" button when you are done.";
+                Bottle.bottles = new List<Bottle>();
                 GameObject measure = Instantiate(measurePrefab);
                 yield return new WaitUntil(() => buttonClick);//Disable and move to next instruction
                 buttonClick = false;

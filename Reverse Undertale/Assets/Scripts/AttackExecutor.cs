@@ -27,8 +27,10 @@ public class AttackExecutor : MonoBehaviour
     public GameObject truckPortals;
     public Transform[] portalTransforms;
 
+    public AudioClip[] cannanClips;
     public AudioSource truckSound;
     public AudioSource cannonSound;
+    public AudioSource cannonFireSound;
     public AudioSource shakeSound;
     //public AudioSource bagSound;
     public AudioSource portalSound;
@@ -119,6 +121,9 @@ public class AttackExecutor : MonoBehaviour
         rightPortal.SetActive(true);
         Color color = new Color(Random.Range(.75f, 1f), Random.Range(.75f, 1f), Random.Range(.75f, 1f), 0f);
         float timer = 0f;
+        truckSound.timeSamples = Random.Range(0, truckSound.clip.samples);
+        truckSound.Play();
+        float initSound = truckSound.volume;
         while (timer < .25f / startMultiplier)
         {
             leftPortal.GetComponent<SpriteRenderer>().color = color;
@@ -131,7 +136,9 @@ public class AttackExecutor : MonoBehaviour
         leftPortal.GetComponent<SpriteRenderer>().color = color;
         rightPortal.GetComponent<SpriteRenderer>().color = color;
 
-        truckSound.Play();
+        //truckSound.loop = true;
+        //truckSound.Play();
+
         //Truck Size = 3.67647
         //Truck Distance = 9.426
         //Real Distance = 5.75 (7.75 - 2)
@@ -153,12 +160,14 @@ public class AttackExecutor : MonoBehaviour
         timer = 0f;
         while (timer < 2.9252f / startMultiplier)
         {
+            truckSound.volume = (timer * startMultiplier / 2.9252f) * initSound;
             truck.size = new Vector2(timer * startMultiplier * .83788f, truck.size.y);
             frontTruck.position = leftToRight ? new Vector3(2f + (timer * startMultiplier * 1.2568f), 2.5f, 0f) : new Vector3(7.75f - (timer * startMultiplier * 1.2568f), 2.5f, 0f);
             yield return new WaitForFixedUpdate();
             timer += Time.deltaTime;
         }
         truck.size = new Vector2(truck.size.y, truck.size.y);
+        truckSound.volume = initSound;
 
         while (timer < 4.5748f / startMultiplier)
         {
@@ -172,14 +181,16 @@ public class AttackExecutor : MonoBehaviour
 
         while (timer < 7.5f / startMultiplier)
         {
+            truckSound.volume = ((7.5f - timer * startMultiplier) / 2.9252f) * initSound;
             truck.size = new Vector2((7.5f - timer * startMultiplier) * .83788f, truck.size.y);
             backTruck.position = leftToRight ? new Vector3(-1.67647f + (timer * startMultiplier * 1.2568f), 2.5f, 0f) : new Vector3(11.42647f - (timer * startMultiplier * 1.2568f), 2.5f, 0f);
             yield return new WaitForFixedUpdate();
             timer += Time.deltaTime;
         }
         truck.gameObject.SetActive(false);
+        //truckSound.loop = false;
         truckSound.Stop();
-
+        truckSound.volume = initSound;
         while (timer < 7.75f / startMultiplier)
         {
             leftPortal.GetComponent<SpriteRenderer>().color = color;
@@ -209,6 +220,9 @@ public class AttackExecutor : MonoBehaviour
         float x = 1.75f * startMultiplier;
         for (int i = 0; i < total; i++)
         {
+            cannonSound.clip = cannanClips[Random.Range(0, cannanClips.Length)];
+            cannonSound.pitch = Random.Range(.65f, 1f);
+            cannonFireSound.Play();
             cannonSound.Play();
             bool leftSide = Random.value < .5f;
             //float x = Random.Range(1.5f, 2f) * startMultiplier;

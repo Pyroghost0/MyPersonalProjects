@@ -134,7 +134,7 @@ public class GameController : MonoBehaviour
         if (won)
         {
             resultText.text = "You Win";
-            resultDescriptionText.text = easyMode ? "Now You're Ready For Hard Mode" : "Congratulations, Thanks For Playing My Game.";
+            resultDescriptionText.text = easyMode ? "Now You're Ready For Hard Mode" : "Congratulations, Thanks For\nPlaying My Game.";
         }
         else
         {
