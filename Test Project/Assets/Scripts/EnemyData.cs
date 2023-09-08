@@ -11,7 +11,7 @@ public class EnemyData : ScriptableObject
     [Header("General (Header)")]
     [SerializeField] private string privateName = "...";
     public string _name => privateName;//Can see the name variables through this (Can't see private variables in enemy class)
-    public enemyType enemyType;
+    public EnemyType enemyType;
     public bool attackingEnemy;
     public int damage;
     [Seporator()]

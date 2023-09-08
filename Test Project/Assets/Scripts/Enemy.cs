@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum enemyType { 
+public enum EnemyType { 
     Empty = 0,
     Skeleton = 1,
     Buddy = 2

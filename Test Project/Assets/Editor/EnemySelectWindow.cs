@@ -5,7 +5,7 @@ using UnityEditor;
 
 public class EnemySelectWindow : EditorWindow
 {
-    private enemyType selectedEnemyType = enemyType.Empty;
+    private EnemyType selectedEnemyType = EnemyType.Empty;
     private int num = 0;
     private GameObject[] selectedObjects;
 
@@ -29,7 +29,7 @@ public class EnemySelectWindow : EditorWindow
             EditorGUILayout.Space(10 + width);
             GUILayout.Label("Selection Filters:", EditorStyles.boldLabel);
             //Need to cast for enums
-            selectedEnemyType = (enemyType)(EditorGUILayout.EnumPopup("Select Enemy Type:", selectedEnemyType));
+            selectedEnemyType = (EnemyType)(EditorGUILayout.EnumPopup("Select Enemy Type:", selectedEnemyType));
             EditorGUILayout.Space(5);
             if (GUILayout.Button("Select All"))
             {
