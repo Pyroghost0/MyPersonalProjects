@@ -19,7 +19,7 @@ MonoBehaviour:
   speed: 25
   health: 50
   enemyAbilities:
-  - _name: qgdvgd
+  - _name: My Name For My Ability
     damage: 0
   - _name: 
     damage: 0
